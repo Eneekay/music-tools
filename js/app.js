@@ -34,23 +34,15 @@
 
   if (!reduceMotion) requestAnimationFrame(animateBlobs);
 
-  (function networkCanvas() {
-    var canvas = document.getElementById('network-canvas');
+  (function notesCanvas() {
+    var canvas = document.getElementById('notes-canvas');
     if (!canvas) return;
     var ctx = canvas.getContext('2d');
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-    var width = 0, height = 0, particles = [], notes = [];
-    var mouse = { x: -9999, y: -9999, active: false };
-    var LINK_DIST = 150, MOUSE_DIST = 190;
-    var DOT_COLOR = '111, 194, 255', LINE_COLOR = '111, 194, 255', MOUSE_LINE_COLOR = '255, 122, 51';
+    var width = 0, height = 0, notes = [];
     var NOTE_COLOR = '201, 194, 182';
     var NOTE_GLYPHS = ['♩', '♪', '♫', '♬'];
-
-    function particleCount() {
-      var area = width * height;
-      return Math.max(24, Math.min(80, Math.round(area / 22000)));
-    }
 
     function noteCount() {
       var area = width * height;
@@ -65,18 +57,6 @@
       canvas.style.width = width + 'px';
       canvas.style.height = height + 'px';
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      var count = particleCount();
-      particles = [];
-      for (var i = 0; i < count; i++) {
-        particles.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          vx: (Math.random() - 0.5) * 0.3,
-          vy: (Math.random() - 0.5) * 0.3,
-          r: 1.3 + Math.random() * 1.3
-        });
-      }
 
       var nCount = noteCount();
       notes = [];
@@ -98,14 +78,9 @@
       }
     }
 
-    function onMouseMove(e) { mouse.x = e.clientX; mouse.y = e.clientY; mouse.active = true; }
-    function onMouseLeave() { mouse.active = false; mouse.x = -9999; mouse.y = -9999; }
-
-    window.addEventListener('mousemove', onMouseMove, { passive: true });
-    window.addEventListener('mouseleave', onMouseLeave, { passive: true });
     window.addEventListener('resize', resize);
 
-    function stepNotes() {
+    function step() {
       for (var i = 0; i < notes.length; i++) {
         var n = notes[i];
         n.x += n.vx;
@@ -119,7 +94,8 @@
       }
     }
 
-    function drawNotes() {
+    function draw() {
+      ctx.clearRect(0, 0, width, height);
       for (var i = 0; i < notes.length; i++) {
         var n = notes[i];
         ctx.save();
@@ -131,67 +107,6 @@
         ctx.textBaseline = 'middle';
         ctx.fillText(n.glyph, 0, 0);
         ctx.restore();
-      }
-    }
-
-    function step() {
-      stepNotes();
-      for (var i = 0; i < particles.length; i++) {
-        var p = particles[i];
-        if (mouse.active) {
-          var dx = p.x - mouse.x, dy = p.y - mouse.y;
-          var dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < MOUSE_DIST && dist > 0.01) {
-            var force = (MOUSE_DIST - dist) / MOUSE_DIST * 0.04;
-            p.vx += (dx / dist) * force;
-            p.vy += (dy / dist) * force;
-          }
-        }
-        p.vx *= 0.985; p.vy *= 0.985;
-        var speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-        var maxSpeed = 0.9;
-        if (speed > maxSpeed) { p.vx = (p.vx / speed) * maxSpeed; p.vy = (p.vy / speed) * maxSpeed; }
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < -20) p.x = width + 20;
-        if (p.x > width + 20) p.x = -20;
-        if (p.y < -20) p.y = height + 20;
-        if (p.y > height + 20) p.y = -20;
-      }
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, width, height);
-      drawNotes();
-      for (var i = 0; i < particles.length; i++) {
-        for (var j = i + 1; j < particles.length; j++) {
-          var a = particles[i], b = particles[j];
-          var dx = a.x - b.x, dy = a.y - b.y;
-          var dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < LINK_DIST) {
-            var opacity = (1 - dist / LINK_DIST) * 0.5;
-            ctx.strokeStyle = 'rgba(' + LINE_COLOR + ',' + opacity + ')';
-            ctx.lineWidth = 1;
-            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
-          }
-        }
-        if (mouse.active) {
-          var p = particles[i];
-          var mdx = p.x - mouse.x, mdy = p.y - mouse.y;
-          var mdist = Math.sqrt(mdx * mdx + mdy * mdy);
-          if (mdist < MOUSE_DIST) {
-            var mOpacity = (1 - mdist / MOUSE_DIST) * 0.6;
-            ctx.strokeStyle = 'rgba(' + MOUSE_LINE_COLOR + ',' + mOpacity + ')';
-            ctx.lineWidth = 1;
-            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
-          }
-        }
-      }
-      for (var k = 0; k < particles.length; k++) {
-        var pt = particles[k];
-        ctx.beginPath();
-        ctx.arc(pt.x, pt.y, pt.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(' + DOT_COLOR + ',0.8)';
-        ctx.fill();
       }
     }
 

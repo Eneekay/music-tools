@@ -29,7 +29,7 @@ body {
 
 /* ---------- background layers ---------- */
 
-#network-canvas {
+#notes-canvas {
   position: fixed;
   inset: 0;
   width: 100%;
@@ -65,10 +65,16 @@ body {
   .blob { transition: none !important; }
 }
 
-/* ---------- drifting contour lines (pentagram-style staff, nekarantanis.co.uk) ----------
-   Five wavy horizontal lines, each the same 1440-wide periodic curve repeated
-   twice across a 2880-wide viewBox, drifting at its own speed/direction.
-   Translating by exactly -50% (one whole period) loops seamlessly. */
+/* ---------- drifting contour-line staves (pentagram-style, nekarantanis.co.uk) ----------
+   Three groups of five wavy horizontal lines, each group a single <svg> so its
+   five lines share one transform and always move as a rigid unit - they can
+   never drift out of lockstep with each other. Within a group every line is
+   the exact same waveform shifted by a constant baseline offset, so the
+   vertical gap between any two lines is fixed everywhere along x: they are
+   mathematically guaranteed to never cross, regardless of wave amplitude.
+   Each path is the same 1440-wide periodic curve repeated twice across a
+   2880-wide viewBox; translating by exactly -50% (one whole period) loops
+   seamlessly. */
 
 .contour-bg {
   position: fixed;
@@ -78,32 +84,35 @@ body {
   pointer-events: none;
 }
 
-.contour-bg svg { position: absolute; top: 0; left: 0; width: 200%; height: 100%; display: block; }
+.contour-group {
+  position: absolute;
+  left: 0;
+  width: 200%;
+  height: 64px;
+  display: block;
+  will-change: transform;
+}
 
-.contour-svg { animation: contourDriftLeft 62s linear infinite; will-change: transform; }
-.contour-svg--b { animation-name: contourDriftRight; animation-duration: 78s; }
-.contour-svg--c { animation-duration: 54s; }
-.contour-svg--d { animation-name: contourDriftRight; animation-duration: 88s; }
-.contour-svg--e { animation-duration: 95s; }
+.contour-group--a { top: 9%; animation: contourDriftLeft 62s linear infinite; }
+.contour-group--b { top: 45%; animation: contourDriftRight 78s linear infinite; }
+.contour-group--c { bottom: 11%; animation: contourDriftLeft 90s linear infinite; }
 
 .contour-line {
   fill: none;
   stroke-width: 1.5px;
   vector-effect: non-scaling-stroke;
   shape-rendering: geometricPrecision;
-  stroke: rgba(var(--nk-c4-rgb), 0.2);
+  stroke: rgba(var(--nk-c4-rgb), 0.24);
 }
 
-.contour-line--b { stroke-opacity: 0.7; }
-.contour-line--c { stroke-opacity: 0.85; }
-.contour-line--d { stroke-opacity: 0.6; }
-.contour-line--e { stroke-opacity: 0.45; }
+.contour-group--b .contour-line { stroke: rgba(var(--nk-c4-rgb), 0.32); }
+.contour-group--c .contour-line { stroke: rgba(var(--nk-c4-rgb), 0.18); }
 
 @keyframes contourDriftLeft  { from { transform: translateX(0); }     to { transform: translateX(-50%); } }
 @keyframes contourDriftRight { from { transform: translateX(-50%); } to { transform: translateX(0); } }
 
 @media (prefers-reduced-motion: reduce) {
-  .contour-svg { animation: none; }
+  .contour-group { animation: none; }
 }
 
 /* ---------- frosted glass ---------- */
