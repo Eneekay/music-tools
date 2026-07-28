@@ -40,14 +40,21 @@
     var ctx = canvas.getContext('2d');
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-    var width = 0, height = 0, particles = [];
+    var width = 0, height = 0, particles = [], notes = [];
     var mouse = { x: -9999, y: -9999, active: false };
     var LINK_DIST = 150, MOUSE_DIST = 190;
     var DOT_COLOR = '111, 194, 255', LINE_COLOR = '111, 194, 255', MOUSE_LINE_COLOR = '255, 122, 51';
+    var NOTE_COLOR = '201, 194, 182';
+    var NOTE_GLYPHS = ['♩', '♪', '♫', '♬'];
 
     function particleCount() {
       var area = width * height;
       return Math.max(24, Math.min(80, Math.round(area / 22000)));
+    }
+
+    function noteCount() {
+      var area = width * height;
+      return Math.max(6, Math.min(16, Math.round(area / 130000)));
     }
 
     function resize() {
@@ -70,6 +77,25 @@
           r: 1.3 + Math.random() * 1.3
         });
       }
+
+      var nCount = noteCount();
+      notes = [];
+      for (var j = 0; j < nCount; j++) {
+        var size = 15 + Math.random() * 17;
+        var angle = Math.random() * Math.PI * 2;
+        var speed = 0.12 + Math.random() * 0.26;
+        notes.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          glyph: NOTE_GLYPHS[Math.floor(Math.random() * NOTE_GLYPHS.length)],
+          size: size,
+          rotation: Math.random() * Math.PI * 2,
+          rotationSpeed: (Math.random() - 0.5) * 0.006,
+          opacity: 0.22 + Math.random() * 0.2
+        });
+      }
     }
 
     function onMouseMove(e) { mouse.x = e.clientX; mouse.y = e.clientY; mouse.active = true; }
@@ -79,7 +105,37 @@
     window.addEventListener('mouseleave', onMouseLeave, { passive: true });
     window.addEventListener('resize', resize);
 
+    function stepNotes() {
+      for (var i = 0; i < notes.length; i++) {
+        var n = notes[i];
+        n.x += n.vx;
+        n.y += n.vy;
+        n.rotation += n.rotationSpeed;
+        var half = n.size * 0.6;
+        if (n.x - half < 0) { n.x = half; n.vx = -n.vx; }
+        else if (n.x + half > width) { n.x = width - half; n.vx = -n.vx; }
+        if (n.y - half < 0) { n.y = half; n.vy = -n.vy; }
+        else if (n.y + half > height) { n.y = height - half; n.vy = -n.vy; }
+      }
+    }
+
+    function drawNotes() {
+      for (var i = 0; i < notes.length; i++) {
+        var n = notes[i];
+        ctx.save();
+        ctx.translate(n.x, n.y);
+        ctx.rotate(n.rotation);
+        ctx.font = n.size + 'px "Space Grotesk", sans-serif';
+        ctx.fillStyle = 'rgba(' + NOTE_COLOR + ',' + n.opacity + ')';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(n.glyph, 0, 0);
+        ctx.restore();
+      }
+    }
+
     function step() {
+      stepNotes();
       for (var i = 0; i < particles.length; i++) {
         var p = particles[i];
         if (mouse.active) {
@@ -105,6 +161,7 @@
 
     function draw() {
       ctx.clearRect(0, 0, width, height);
+      drawNotes();
       for (var i = 0; i < particles.length; i++) {
         for (var j = i + 1; j < particles.length; j++) {
           var a = particles[i], b = particles[j];
@@ -827,6 +884,24 @@
       return;
     }
   });
+
+  /* =========================================================================
+     Floating keyboard-shortcut hint (desktop only, matches nekarantanis.co.uk)
+     ========================================================================= */
+
+  (function kbdHintBehavior() {
+    var kbdHint = document.getElementById('kbdHint');
+    if (!kbdHint) return;
+    setTimeout(function () { kbdHint.classList.add('is-visible'); }, 900);
+
+    var lastScrollY = window.scrollY;
+    window.addEventListener('scroll', function () {
+      var y = window.scrollY;
+      if (y > lastScrollY + 4) kbdHint.classList.remove('is-visible');
+      else if (y < lastScrollY - 4) kbdHint.classList.add('is-visible');
+      lastScrollY = y;
+    }, { passive: true });
+  })();
 
   /* =========================================================================
      Init

@@ -10,6 +10,9 @@
   --nk-gold: #FF7A33;
   --nk-cream: #c9c2b6;
   --nk-cream-strong: #e8e4da;
+  --nk-c0-rgb: 16, 20, 31;
+  --nk-c4-rgb: 247, 246, 241;
+  --nk-shadow-pill: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 * { box-sizing: border-box; }
@@ -62,6 +65,47 @@ body {
   .blob { transition: none !important; }
 }
 
+/* ---------- drifting contour lines (pentagram-style staff, nekarantanis.co.uk) ----------
+   Five wavy horizontal lines, each the same 1440-wide periodic curve repeated
+   twice across a 2880-wide viewBox, drifting at its own speed/direction.
+   Translating by exactly -50% (one whole period) loops seamlessly. */
+
+.contour-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.contour-bg svg { position: absolute; top: 0; left: 0; width: 200%; height: 100%; display: block; }
+
+.contour-svg { animation: contourDriftLeft 62s linear infinite; will-change: transform; }
+.contour-svg--b { animation-name: contourDriftRight; animation-duration: 78s; }
+.contour-svg--c { animation-duration: 54s; }
+.contour-svg--d { animation-name: contourDriftRight; animation-duration: 88s; }
+.contour-svg--e { animation-duration: 95s; }
+
+.contour-line {
+  fill: none;
+  stroke-width: 1.5px;
+  vector-effect: non-scaling-stroke;
+  shape-rendering: geometricPrecision;
+  stroke: rgba(var(--nk-c4-rgb), 0.2);
+}
+
+.contour-line--b { stroke-opacity: 0.7; }
+.contour-line--c { stroke-opacity: 0.85; }
+.contour-line--d { stroke-opacity: 0.6; }
+.contour-line--e { stroke-opacity: 0.45; }
+
+@keyframes contourDriftLeft  { from { transform: translateX(0); }     to { transform: translateX(-50%); } }
+@keyframes contourDriftRight { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .contour-svg { animation: none; }
+}
+
 /* ---------- frosted glass ---------- */
 
 .glass {
@@ -108,7 +152,7 @@ body {
 .dash-columns {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: stretch;
   gap: clamp(0.8rem, 1.4vw, 1.25rem);
 }
 
@@ -134,9 +178,24 @@ body {
   border-color: rgba(111, 194, 255, 0.25);
 }
 
+/* one filler widget per column absorbs the extra height once the row of
+   columns is stretched to match the tallest column, so no column is left
+   shorter than the others */
+.metro-widget,
+.counter-widget,
+.poly-widget {
+  flex: 1 1 auto;
+  justify-content: center;
+}
+
 @media (max-width: 1050px), (max-height: 760px) {
   .dash-columns { flex-direction: column; }
   .widget { width: 100%; }
+  .metro-widget,
+  .counter-widget,
+  .poly-widget {
+    flex: 0 0 auto;
+  }
 }
 
 .widget-eyebrow {
@@ -797,35 +856,85 @@ body {
   cursor: pointer;
 }
 
-/* ---------- keyboard help footer ---------- */
+/* ---------- floating keyboard-shortcut hint (desktop only, nekarantanis.co.uk pattern) ----------
+   Fades in shortly after load, fades out on scroll down, fades back in on
+   scroll up. The outer element only ever handles position/opacity/visibility;
+   the visible pill (background, padding, shadow) and the bounce live on
+   .kbd-hint-inner, so the whole box moves as one piece without stacking a
+   looping transform on the same element that's mid fade-transition. */
 
-.kbd-help {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.5rem 1.4rem;
-  padding: 0.4rem 0 0;
-  text-align: center;
+.kbd-hint {
+  position: fixed;
+  left: 16px;
+  bottom: 16px;
+  z-index: 55;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s;
+  pointer-events: none;
 }
 
-.kbd-help span {
-  font-size: 0.68rem;
-  color: var(--nk-cream);
+.kbd-hint.is-visible { opacity: 1; visibility: visible; }
+
+.kbd-hint-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.7rem 0.9rem;
+  background: var(--nk-c4);
+  border-radius: 12px;
+  box-shadow: var(--nk-shadow-pill);
+}
+
+@keyframes kbdHintBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .kbd-hint.is-visible .kbd-hint-inner { animation: kbdHintBounce 2.4s ease-in-out infinite; }
+}
+
+.kbd-hint-row {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.kbd-hint-combo {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.2rem;
+  flex-shrink: 0;
 }
 
-kbd {
-  display: inline-block;
-  min-width: 1.4em;
-  text-align: center;
-  padding: 0.15rem 0.4rem;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+.kbd-hint-dash { color: var(--nk-c0); font-size: 0.7rem; opacity: 0.6; }
+
+.kbd-hint-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 0.35rem;
+  flex-shrink: 0;
+  border: 1px solid rgba(var(--nk-c0-rgb), 0.2);
+  border-radius: 5px;
+  background: var(--nk-c3);
+  color: var(--nk-c0);
   font-family: 'Space Grotesk', sans-serif;
   font-size: 0.68rem;
   font-weight: 600;
-  color: var(--nk-c4);
+}
+
+.kbd-hint-key--wide { min-width: 52px; }
+
+.kbd-hint-text {
+  font-size: 0.7rem;
+  color: #5b5348;
+  white-space: nowrap;
+}
+
+@media (max-width: 900px), (hover: none) and (pointer: coarse) {
+  .kbd-hint { display: none; }
 }
