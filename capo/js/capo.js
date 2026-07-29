@@ -1,39 +1,19 @@
-/* Capo Calculator — pick the open-chord shapes you know (the classic CAGED
-   majors plus the three common open minors) and a target key; for every
-   shape whose quality matches that key, computes the capo fret that turns
-   the shape's natural root into the target root, sorted easiest-first.
-
-   The open-position fingering shown for each shape is found with the same
-   brute-force chord-tone search used by the Chord Chart Generator (kept as
-   a self-contained copy here per this codebase's per-tool convention),
-   restricted to fret 0-4 only, since a "shape" specifically means how it's
-   fingered open/uncapoed - capoing doesn't change the fingering, only the
-   sounding pitch. No external libraries. */
+/* Capo & Key Transposer — type a chord sequence and a target key; every
+   chord is transposed by the same interval and shown two ways: "Use Capo"
+   keeps your original shapes exactly as typed and reports the capo fret
+   that makes them sound in the target key (the classic guitarist's
+   shortcut), while "New Chords" finds fresh full-neck fingerings for the
+   actual transposed chords, for players who'd rather not capo. The chord
+   parser and fingering search are self-contained copies of the Chord Chart
+   Generator's (per this codebase's per-tool convention), extended to also
+   remember each chord's original quality suffix so a transposed chord can
+   be re-spelled with a new root but the same quality. No external
+   libraries. */
 (function () {
   'use strict';
 
   var SVG_NS = 'http://www.w3.org/2000/svg';
   var MT = window.MusicTheory;
-
-  /* =========================================================================
-     The eight classic open-chord shapes
-     ========================================================================= */
-
-  var SHAPES = [
-    { id: 'C', root: 0, quality: 'major', label: 'C shape', intervals: [0, 4, 7] },
-    { id: 'A', root: 9, quality: 'major', label: 'A shape', intervals: [0, 4, 7] },
-    { id: 'G', root: 7, quality: 'major', label: 'G shape', intervals: [0, 4, 7] },
-    { id: 'E', root: 4, quality: 'major', label: 'E shape', intervals: [0, 4, 7] },
-    { id: 'D', root: 2, quality: 'major', label: 'D shape', intervals: [0, 4, 7] },
-    { id: 'Am', root: 9, quality: 'minor', label: 'Am shape', intervals: [0, 3, 7] },
-    { id: 'Em', root: 4, quality: 'minor', label: 'Em shape', intervals: [0, 3, 7] },
-    { id: 'Dm', root: 2, quality: 'minor', label: 'Dm shape', intervals: [0, 3, 7] }
-  ];
-
-  /* =========================================================================
-     Target-key builder — note letter + accidental, mirroring the Chord
-     Chart Generator's builder for a consistent interaction pattern.
-     ========================================================================= */
 
   var LETTER_SEMITONE = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
   var KEY_LETTERS = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
@@ -42,18 +22,129 @@
     { label: '♭', value: 'b' },
     { label: '♯', value: '#' }
   ];
-  // Conventional spelling per pitch class, used when cycling the target key
-  // with the arrow keys (there's no single "correct" letter+accidental for
-  // a pitch class, so pick the everyday default rather than guess).
+  // Conventional spelling per pitch class, used for auto-detecting the
+  // original key and when cycling the target key with the arrow keys -
+  // there's no single "correct" letter+accidental for a pitch class, so
+  // pick the everyday default rather than guess.
   var PC_SPELLING = [
     { letter: 'C', acc: '' }, { letter: 'D', acc: 'b' }, { letter: 'D', acc: '' }, { letter: 'E', acc: 'b' },
     { letter: 'E', acc: '' }, { letter: 'F', acc: '' }, { letter: 'F', acc: '#' }, { letter: 'G', acc: '' },
     { letter: 'A', acc: 'b' }, { letter: 'A', acc: '' }, { letter: 'B', acc: 'b' }, { letter: 'B', acc: '' }
   ];
 
+  function letterAccToPc(letter, acc) {
+    return (((LETTER_SEMITONE[letter] + (acc === '#' ? 1 : acc === 'b' ? -1 : 0)) % 12) + 12) % 12;
+  }
+
   /* =========================================================================
-     Fingering search (position 0 only) — copy of the Chord Chart
-     Generator's algorithm, trimmed to a single open-position window.
+     Chord-name parsing — copy of the Chord Chart Generator's parser,
+     extended to also return the raw quality suffix (e.g. "m7", "sus4") so a
+     transposed chord can be respelled with a new root but the same quality.
+     ========================================================================= */
+
+  var QUALITIES = {
+    '': { intervals: [0, 4, 7] },
+    'maj': { intervals: [0, 4, 7] },
+    'M': { intervals: [0, 4, 7] },
+    'm': { intervals: [0, 3, 7] },
+    'min': { intervals: [0, 3, 7] },
+    '-': { intervals: [0, 3, 7] },
+    '5': { intervals: [0, 7] },
+    'dim': { intervals: [0, 3, 6] },
+    'dim7': { intervals: [0, 3, 6, 9] },
+    'm7b5': { intervals: [0, 3, 6, 10] },
+    'aug': { intervals: [0, 4, 8] },
+    '+': { intervals: [0, 4, 8] },
+    'sus2': { intervals: [0, 2, 7] },
+    'sus4': { intervals: [0, 5, 7] },
+    'sus': { intervals: [0, 5, 7] },
+    '6': { intervals: [0, 4, 7, 9] },
+    'maj6': { intervals: [0, 4, 7, 9] },
+    'm6': { intervals: [0, 3, 7, 9] },
+    'min6': { intervals: [0, 3, 7, 9] },
+    '6/9': { intervals: [0, 4, 7, 9, 14] },
+    '69': { intervals: [0, 4, 7, 9, 14] },
+    '7': { intervals: [0, 4, 7, 10] },
+    '7sus4': { intervals: [0, 5, 7, 10] },
+    '7sus2': { intervals: [0, 2, 7, 10] },
+    '7b5': { intervals: [0, 4, 6, 10] },
+    '7#5': { intervals: [0, 4, 8, 10] },
+    '7b9': { intervals: [0, 4, 7, 10, 13] },
+    '7#9': { intervals: [0, 4, 7, 10, 15] },
+    '7#11': { intervals: [0, 4, 7, 10, 18] },
+    'maj7': { intervals: [0, 4, 7, 11] },
+    'M7': { intervals: [0, 4, 7, 11] },
+    'maj7#5': { intervals: [0, 4, 8, 11] },
+    'm7': { intervals: [0, 3, 7, 10] },
+    'min7': { intervals: [0, 3, 7, 10] },
+    'mmaj7': { intervals: [0, 3, 7, 11] },
+    'mM7': { intervals: [0, 3, 7, 11] },
+    'm(maj7)': { intervals: [0, 3, 7, 11] },
+    '9': { intervals: [0, 4, 7, 10, 14] },
+    'maj9': { intervals: [0, 4, 7, 11, 14] },
+    'm9': { intervals: [0, 3, 7, 10, 14] },
+    'add9': { intervals: [0, 4, 7, 14] },
+    'madd9': { intervals: [0, 3, 7, 14] },
+    '11': { intervals: [0, 4, 7, 10, 14, 17] },
+    'm11': { intervals: [0, 3, 7, 10, 14, 17] },
+    'maj11': { intervals: [0, 4, 7, 11, 14, 17] },
+    '13': { intervals: [0, 4, 7, 10, 14, 17, 21] },
+    'maj13': { intervals: [0, 4, 7, 11, 14, 17, 21] },
+    'm13': { intervals: [0, 3, 7, 10, 14, 17, 21] }
+  };
+
+  function parseChordName(raw) {
+    if (!raw) return null;
+    var input = raw.trim().replace(/\s+/g, '').replace(/♭/g, 'b').replace(/♯/g, '#');
+    if (!input) return null;
+
+    var m = /^([A-Ga-g])([#b]?)([^\/]*)(?:\/([A-Ga-g])([#b]?))?$/.exec(input);
+    if (!m) return null;
+
+    var rootLetter = m[1].toUpperCase();
+    var rootAcc = m[2] || '';
+    var qualityRaw = m[3] || '';
+    var bassLetter = m[4] ? m[4].toUpperCase() : null;
+    var bassAcc = m[5] || '';
+
+    var quality = QUALITIES[qualityRaw];
+    if (!quality) return null;
+
+    var rootPc = letterAccToPc(rootLetter, rootAcc);
+    var bassPc = bassLetter ? letterAccToPc(bassLetter, bassAcc) : null;
+
+    return {
+      rootPc: rootPc,
+      qualitySuffix: qualityRaw,
+      intervals: quality.intervals,
+      bassPc: bassPc,
+      displayName: rootLetter + rootAcc + qualityRaw + (bassLetter ? '/' + bassLetter + bassAcc : '')
+    };
+  }
+
+  function transposeChord(chord, shift, flats) {
+    var newRootPc = ((chord.rootPc + shift) % 12 + 12) % 12;
+    var newBassPc = chord.bassPc !== null ? ((chord.bassPc + shift) % 12 + 12) % 12 : null;
+    var name = MT.noteNameForPc(newRootPc, flats) + chord.qualitySuffix;
+    if (newBassPc !== null) name += '/' + MT.noteNameForPc(newBassPc, flats);
+    return { rootPc: newRootPc, qualitySuffix: chord.qualitySuffix, intervals: chord.intervals, bassPc: newBassPc, displayName: name };
+  }
+
+  function parseSequence(raw) {
+    var trimmed = (raw || '').trim();
+    if (!trimmed) return [];
+    return trimmed.split(/[\s,|]+/).filter(Boolean).map(function (tok) {
+      return { raw: tok, chord: parseChordName(tok) };
+    });
+  }
+
+  /* =========================================================================
+     Fingering search — copy of the Chord Chart Generator's full-neck
+     search, used two ways: restricted to OPEN_POSITIONS (fret 0 only, a
+     window of 4) for "Use Capo" mode, since a shape you already play open
+     doesn't change when you capo it; or the full POSITIONS sweep for "New
+     Chords" mode, which needs to find a fresh voicing for the transposed
+     chord anywhere on the neck.
      ========================================================================= */
 
   function toneWeight(semitoneFromRoot) {
@@ -79,12 +170,15 @@
   }
 
   var WINDOW = 4;
+  var POSITIONS = [0, 3, 6, 9];
+  var OPEN_POSITIONS = [0];
 
-  function optionsForString(openMidi, requiredPcsSet) {
+  function optionsForString(openMidi, position, requiredPcsSet) {
     var opts = [{ fret: -1 }];
     var openPc = ((openMidi % 12) + 12) % 12;
     if (requiredPcsSet[openPc]) opts.push({ fret: 0 });
-    for (var f = 1; f <= WINDOW; f++) {
+    var start = Math.max(1, position);
+    for (var f = start; f <= position + WINDOW; f++) {
       var pc = ((openMidi + f) % 12 + 12) % 12;
       if (requiredPcsSet[pc]) opts.push({ fret: f });
     }
@@ -96,8 +190,7 @@
   // on top of it for whichever strings need them. Detecting a barre means
   // finding the widest contiguous run of strings at the shape's minimum
   // fret, where the only illegal gap is an OPEN string; muted strings and
-  // strings fretted higher are both fine pass-throughs (see the Chord
-  // Chart Generator's identical helper for the full reasoning).
+  // strings fretted higher are both fine pass-throughs.
   function detectBarre(fretPattern) {
     var minFret = null;
     fretPattern.forEach(function (fe) { if (fe.fret > 0 && (minFret === null || fe.fret < minFret)) minFret = fe.fret; });
@@ -150,9 +243,6 @@
     return groups;
   }
 
-  // Every finger group - the barre (if any) plus whatever else is grouped
-  // on top of / around it - counts as "one finger". Powers both the
-  // playability penalty below and barre-bar/finger-number rendering.
   function computeFingerGroups(fretPattern) {
     var barre = detectBarre(fretPattern);
     var barreCovered = {};
@@ -202,28 +292,20 @@
     var span = frettedFrets.length ? (Math.max.apply(null, frettedFrets) - Math.min.apply(null, frettedFrets)) : 0;
     var lowestFretted = frettedFrets.length ? Math.min.apply(null, frettedFrets) : 0;
 
-    // A human has 4 fretting fingers - penalize shapes that would need more
-    // (because the fretted notes can't be grouped under a barre), even if
-    // every note is musically correct, so the search prefers a real barre
-    // or a genuinely simpler voicing over an unplayable stretch.
     var fingerCount = estimateFingerCount(fretPattern);
     var fingerPenalty = Math.max(0, fingerCount - 4) * 4;
 
     return mutedCount * 1.5 + missingWeight * 2.5 + (bassOk ? 0 : 6) + span * 1.0 + lowestFretted * 1.2 + fingerPenalty;
   }
 
-  function bestOpenFingering(openMidis, rootPc, intervals) {
-    var weightedTones = buildChordTones(rootPc, intervals);
-    var requiredPcsSet = {};
-    weightedTones.forEach(function (t) { requiredPcsSet[t.pc] = true; });
-
-    var optionsPerString = openMidis.map(function (om) { return optionsForString(om, requiredPcsSet); });
+  function bestForPosition(openMidis, position, weightedTones, requiredPcsSet, requiredBassPc) {
+    var optionsPerString = openMidis.map(function (om) { return optionsForString(om, position, requiredPcsSet); });
     var best = null;
     var current = new Array(openMidis.length);
 
     function dfs(idx) {
       if (idx === openMidis.length) {
-        var cost = scoreCandidate(current, openMidis, weightedTones, rootPc);
+        var cost = scoreCandidate(current, openMidis, weightedTones, requiredBassPc);
         if (cost !== null && (!best || cost < best.cost)) best = { cost: cost, fretPattern: current.slice() };
         return;
       }
@@ -237,10 +319,27 @@
     return best;
   }
 
-  // Only draw a barre bar (the visual decoration) across at least this many
-  // strings - the bar spans the barre's full reach (spanLo..spanHi), not
-  // just the strings sounding at its own fret, since that's the finger's
-  // actual physical extent.
+  function searchChord(chord, openMidis, positions) {
+    var weightedTones = buildChordTones(chord.rootPc, chord.intervals);
+    var requiredBassPc = chord.bassPc !== null ? chord.bassPc : chord.rootPc;
+    var requiredPcsSet = {};
+    weightedTones.forEach(function (t) { requiredPcsSet[t.pc] = true; });
+    requiredPcsSet[requiredBassPc] = true;
+
+    var found = [];
+    var seen = {};
+    positions.forEach(function (pos) {
+      var result = bestForPosition(openMidis, pos, weightedTones, requiredPcsSet, requiredBassPc);
+      if (!result) return;
+      var key = result.fretPattern.map(function (fe) { return fe.fret; }).join(',');
+      if (seen[key]) return;
+      seen[key] = true;
+      found.push(result);
+    });
+    found.sort(function (a, b) { return a.cost - b.cost; });
+    return found[0] || null;
+  }
+
   var MIN_BARRE_STRINGS = 4;
 
   function findBarreGroups(fretPattern) {
@@ -265,25 +364,33 @@
 
   var state = {
     instrument: 'guitar',
-    keyLetter: 'F',
+    sequenceText: 'C G Am F',
+    origLetter: 'C',
+    origAccidental: '',
+    originalRoot: 0,
+    originalRootFlats: false,
+    originalAuto: true,
+    keyLetter: 'D',
     keyAccidental: '',
-    targetRoot: 5,
+    targetRoot: 2,
     targetRootFlats: false,
-    targetQuality: 'major',
-    selectedShapes: {}
+    voicingMode: 'capo'
   };
-  SHAPES.forEach(function (s) { state.selectedShapes[s.id] = true; });
 
   /* =========================================================================
      DOM refs
      ========================================================================= */
 
   var instrumentTabsEl = document.getElementById('instrumentTabs');
+  var sequenceInputEl = document.getElementById('sequenceInput');
+  var origNoteChipsEl = document.getElementById('origNoteChips');
+  var origAccidentalChipsEl = document.getElementById('origAccidentalChips');
+  var origCaptionEl = document.getElementById('origCaption');
+  var origAutoBtn = document.getElementById('origAutoBtn');
   var keyNoteChipsEl = document.getElementById('keyNoteChips');
   var keyAccidentalChipsEl = document.getElementById('keyAccidentalChips');
-  var keyQualityControlEl = document.getElementById('keyQualityControl');
-  var majorShapeChipsEl = document.getElementById('majorShapeChips');
-  var minorShapeChipsEl = document.getElementById('minorShapeChips');
+  var voicingControlEl = document.getElementById('voicingControl');
+  var capoBannerEl = document.getElementById('capoBanner');
   var resultRowEl = document.getElementById('resultRow');
 
   /* =========================================================================
@@ -313,15 +420,24 @@
   }
 
   /* =========================================================================
-     Chord-box diagram — always drawn at the nut (a "shape" is defined by
-     its open fingering; the capo fret is shown separately as the whole
-     point of the tool, not folded into the grid).
+     Chord-box diagram
      ========================================================================= */
 
   function buildChordBoxSvg(fretPattern, openMidis, rootPc) {
     var numStrings = openMidis.length;
     var GRID_W = 30, GRID_H = 30, PAD_TOP = 26, PAD_BOTTOM = 8, PAD_L = 18, PAD_R = 18;
-    var rows = WINDOW;
+    var minFretUsed = 0, maxFretUsed = 0;
+    fretPattern.forEach(function (fe) {
+      if (fe.fret > 0) {
+        if (minFretUsed === 0 || fe.fret < minFretUsed) minFretUsed = fe.fret;
+        if (fe.fret > maxFretUsed) maxFretUsed = fe.fret;
+      }
+    });
+    var baseFret = minFretUsed > WINDOW ? minFretUsed - 1 : 0;
+    // Normally WINDOW (4) rows is enough, but a "New Chords" full-neck
+    // search can occasionally return a voicing whose span reaches the edge
+    // of its search window - grow the grid rather than clip that note.
+    var rows = Math.max(WINDOW, maxFretUsed - baseFret);
     var width = PAD_L + (numStrings - 1) * GRID_W + PAD_R;
     var height = PAD_TOP + rows * GRID_H + PAD_BOTTOM;
 
@@ -335,7 +451,7 @@
 
     for (var r = 0; r <= rows; r++) {
       var line = document.createElementNS(SVG_NS, 'line');
-      line.setAttribute('class', r === 0 ? 'chordbox-nut' : 'chordbox-fret-line');
+      line.setAttribute('class', (r === 0 && baseFret === 0) ? 'chordbox-nut' : 'chordbox-fret-line');
       line.setAttribute('x1', PAD_L); line.setAttribute('y1', rowY(r));
       line.setAttribute('x2', PAD_L + (numStrings - 1) * GRID_W); line.setAttribute('y2', rowY(r));
       svg.appendChild(line);
@@ -347,6 +463,15 @@
       sl.setAttribute('x1', stringX(s)); sl.setAttribute('y1', rowY(0));
       sl.setAttribute('x2', stringX(s)); sl.setAttribute('y2', rowY(rows));
       svg.appendChild(sl);
+    }
+
+    if (baseFret > 0) {
+      var baseLabel = document.createElementNS(SVG_NS, 'text');
+      baseLabel.setAttribute('class', 'chordbox-basefret');
+      baseLabel.setAttribute('x', PAD_L - 12);
+      baseLabel.setAttribute('y', rowY(0) + GRID_H / 2 + 4);
+      baseLabel.textContent = String(baseFret + 1);
+      svg.appendChild(baseLabel);
     }
 
     fretPattern.forEach(function (fe, i) {
@@ -361,7 +486,7 @@
 
     findBarreGroups(fretPattern).forEach(function (g) {
       var xs = g.strings.map(stringX);
-      var y = rowY(g.fret) - GRID_H / 2;
+      var y = rowY(g.fret - baseFret) - GRID_H / 2;
       var bar = document.createElementNS(SVG_NS, 'line');
       bar.setAttribute('class', 'chordbox-barre');
       bar.setAttribute('x1', Math.min.apply(null, xs)); bar.setAttribute('y1', y);
@@ -375,7 +500,7 @@
       var midi = openMidis[i] + fe.fret;
       var pc = ((midi % 12) + 12) % 12;
       var isRoot = pc === rootPc;
-      var cx = stringX(i), cy = rowY(fe.fret) - GRID_H / 2;
+      var cx = stringX(i), cy = rowY(fe.fret - baseFret) - GRID_H / 2;
 
       var dot = document.createElementNS(SVG_NS, 'circle');
       dot.setAttribute('class', 'chordbox-dot' + (isRoot ? ' is-root' : ''));
@@ -396,40 +521,6 @@
   }
 
   /* =========================================================================
-     Shape chips
-     ========================================================================= */
-
-  function renderShapeChips() {
-    majorShapeChipsEl.innerHTML = '';
-    minorShapeChipsEl.innerHTML = '';
-    SHAPES.forEach(function (shape) {
-      var btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'shape-chip';
-      btn.textContent = shape.label;
-      btn.setAttribute('data-shape', shape.id);
-      btn.addEventListener('click', function () {
-        state.selectedShapes[shape.id] = !state.selectedShapes[shape.id];
-        syncShapeChipState();
-        renderResults();
-      });
-      (shape.quality === 'major' ? majorShapeChipsEl : minorShapeChipsEl).appendChild(btn);
-    });
-    syncShapeChipState();
-  }
-
-  function syncShapeChipState() {
-    var chips = Array.prototype.slice.call(majorShapeChipsEl.querySelectorAll('.shape-chip'))
-      .concat(Array.prototype.slice.call(minorShapeChipsEl.querySelectorAll('.shape-chip')));
-    chips.forEach(function (chip) {
-      var id = chip.getAttribute('data-shape');
-      var shape = SHAPES.filter(function (s) { return s.id === id; })[0];
-      chip.classList.toggle('is-active', !!state.selectedShapes[id]);
-      chip.classList.toggle('is-irrelevant', shape.quality !== state.targetQuality);
-    });
-  }
-
-  /* =========================================================================
      Results
      ========================================================================= */
 
@@ -438,67 +529,164 @@
     return tuning.notes.map(function (n) { return MT.parseNoteName(n); });
   }
 
-  function capoFretFor(shapeRootPc, targetRootPc) {
-    return ((targetRootPc - shapeRootPc) % 12 + 12) % 12;
+  function updateOrigCaption() {
+    origCaptionEl.textContent = state.originalAuto
+      ? 'Auto-detected from the first chord you typed.'
+      : 'Manually set — click Auto-detect to sync with the sequence again.';
+  }
+
+  function syncAutoOriginal(tokens) {
+    if (!state.originalAuto) return;
+    var firstValid = tokens.filter(function (t) { return t.chord; })[0];
+    if (!firstValid) return;
+    var pc = firstValid.chord.rootPc;
+    if (pc === state.originalRoot) return;
+    var spelling = PC_SPELLING[pc];
+    state.originalRoot = pc;
+    state.origLetter = spelling.letter;
+    state.origAccidental = spelling.acc;
+    state.originalRootFlats = spelling.acc === 'b';
+    renderOrigNoteChips();
+    renderOrigAccidentalChips();
+  }
+
+  function buildInvalidCard(raw) {
+    var card = document.createElement('div');
+    card.className = 'result-card is-invalid';
+    var title = document.createElement('div');
+    title.className = 'result-shape-title';
+    title.textContent = raw;
+    card.appendChild(title);
+    var msg = document.createElement('div');
+    msg.className = 'result-fret is-none';
+    msg.textContent = 'Not recognized';
+    card.appendChild(msg);
+    return card;
+  }
+
+  function buildResultCard(opts) {
+    var card = document.createElement('div');
+    card.className = 'result-card';
+
+    var title = document.createElement('div');
+    title.className = 'result-shape-title';
+    title.textContent = opts.primaryName;
+    card.appendChild(title);
+
+    if (!opts.fingering) {
+      var none = document.createElement('div');
+      none.className = 'result-fret is-none';
+      none.textContent = 'No clean voicing found';
+      card.appendChild(none);
+      return card;
+    }
+
+    if (opts.capoFret > 0) {
+      var fretEl = document.createElement('div');
+      fretEl.className = 'result-fret';
+      fretEl.textContent = 'Capo ' + opts.capoFret;
+      card.appendChild(fretEl);
+    } else {
+      var noCapoEl = document.createElement('div');
+      noCapoEl.className = 'result-fret is-none';
+      noCapoEl.textContent = 'No capo';
+      card.appendChild(noCapoEl);
+    }
+
+    card.appendChild(buildChordBoxSvg(opts.fingering.fretPattern, opts.openMidis, opts.rootPc));
+
+    var soundsAs = document.createElement('div');
+    soundsAs.className = 'result-sounds-as';
+    soundsAs.textContent = opts.secondaryLabel;
+    card.appendChild(soundsAs);
+
+    var playBtn = document.createElement('button');
+    playBtn.type = 'button';
+    playBtn.className = 'result-play-btn';
+    playBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5z"></path></svg><span>Play</span>';
+    playBtn.addEventListener('click', function () { playResult(opts.fingering.fretPattern, opts.openMidis, opts.capoFret); });
+    card.appendChild(playBtn);
+
+    return card;
+  }
+
+  function renderCapoBanner(shift) {
+    var targetName = MT.noteNameForPc(state.targetRoot, state.targetRootFlats);
+    if (state.voicingMode === 'capo') {
+      if (shift === 0) {
+        capoBannerEl.className = 'capo-banner is-none';
+        capoBannerEl.textContent = 'Already in ' + targetName + ' — no capo needed, play the chords exactly as typed.';
+      } else {
+        capoBannerEl.className = 'capo-banner';
+        capoBannerEl.innerHTML = 'Capo Fret <strong>' + shift + '</strong> — play the exact chords you typed above, and they’ll sound in ' + targetName + '.';
+      }
+    } else {
+      capoBannerEl.className = 'capo-banner is-alt';
+      capoBannerEl.textContent = 'No capo — here are the actual chord shapes to play in ' + targetName + '.';
+    }
   }
 
   function renderResults() {
+    var tokens = parseSequence(state.sequenceText);
+    syncAutoOriginal(tokens);
+    updateOrigCaption();
+
     resultRowEl.innerHTML = '';
-    var openMidis = getCurrentOpenMidis();
-    var targetName = MT.noteNameForPc(state.targetRoot, state.targetRootFlats);
 
-    var viable = SHAPES.filter(function (s) { return s.quality === state.targetQuality && state.selectedShapes[s.id]; });
-
-    if (!viable.length) {
-      var empty = document.createElement('div');
-      empty.className = 'result-empty';
-      empty.textContent = 'Select at least one ' + state.targetQuality + ' shape above to see capo options for ' +
-        targetName + ' ' + (state.targetQuality === 'major' ? 'Major' : 'Minor') + '.';
-      resultRowEl.appendChild(empty);
+    if (!tokens.length) {
+      capoBannerEl.className = 'capo-banner is-none';
+      capoBannerEl.textContent = '';
+      var emptyAll = document.createElement('div');
+      emptyAll.className = 'result-empty';
+      emptyAll.textContent = 'Type a chord sequence above — e.g. C G Am F — to see it transposed.';
+      resultRowEl.appendChild(emptyAll);
       return;
     }
 
-    var results = viable.map(function (shape) {
-      var fret = capoFretFor(shape.root, state.targetRoot);
-      var fingering = bestOpenFingering(openMidis, shape.root, shape.intervals);
-      return { shape: shape, fret: fret, fingering: fingering };
-    }).filter(function (r) { return r.fingering; });
+    var validTokens = tokens.filter(function (t) { return t.chord; });
+    if (!validTokens.length) {
+      capoBannerEl.className = 'capo-banner is-none';
+      capoBannerEl.textContent = '';
+      var emptyValid = document.createElement('div');
+      emptyValid.className = 'result-empty';
+      emptyValid.textContent = 'None of those look like recognized chords. Try something like C, G, Am, F, or Dm7.';
+      resultRowEl.appendChild(emptyValid);
+      return;
+    }
 
-    results.sort(function (a, b) { return a.fret - b.fret; });
+    var openMidis = getCurrentOpenMidis();
+    var shift = ((state.targetRoot - state.originalRoot) % 12 + 12) % 12;
 
-    results.forEach(function (r, idx) {
-      var card = document.createElement('div');
-      card.className = 'result-card' + (idx === 0 ? ' is-first' : '');
+    renderCapoBanner(shift);
 
-      var title = document.createElement('div');
-      title.className = 'result-shape-title';
-      title.textContent = r.shape.label;
-      card.appendChild(title);
-
-      var fretEl = document.createElement('div');
-      if (r.fret === 0) {
-        fretEl.className = 'result-fret is-none';
-        fretEl.textContent = 'No capo needed';
-      } else {
-        fretEl.className = 'result-fret';
-        fretEl.textContent = 'Capo Fret ' + r.fret;
+    tokens.forEach(function (tok) {
+      if (!tok.chord) {
+        resultRowEl.appendChild(buildInvalidCard(tok.raw));
+        return;
       }
-      card.appendChild(fretEl);
-
-      card.appendChild(buildChordBoxSvg(r.fingering.fretPattern, openMidis, r.shape.root));
-
-      var soundsAs = document.createElement('div');
-      soundsAs.className = 'result-sounds-as';
-      soundsAs.textContent = r.shape.label + ' → sounds as ' + targetName + (state.targetQuality === 'minor' ? 'm' : '');
-      card.appendChild(soundsAs);
-
-      var playBtn = document.createElement('button');
-      playBtn.type = 'button';
-      playBtn.className = 'result-play-btn';
-      playBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5z"></path></svg><span>Play</span>';
-      playBtn.addEventListener('click', function () { playResult(r.fingering.fretPattern, openMidis, r.fret); });
-      card.appendChild(playBtn);
-
+      var transposed = transposeChord(tok.chord, shift, state.targetRootFlats);
+      var card;
+      if (state.voicingMode === 'capo') {
+        var foundOpen = searchChord(tok.chord, openMidis, OPEN_POSITIONS);
+        card = buildResultCard({
+          primaryName: tok.chord.displayName,
+          secondaryLabel: shift === 0 ? 'Sounds as written' : 'Sounds as ' + transposed.displayName,
+          fingering: foundOpen,
+          rootPc: tok.chord.rootPc,
+          capoFret: shift,
+          openMidis: openMidis
+        });
+      } else {
+        var foundNew = searchChord(transposed, openMidis, POSITIONS);
+        card = buildResultCard({
+          primaryName: transposed.displayName,
+          secondaryLabel: 'was ' + tok.chord.displayName,
+          fingering: foundNew,
+          rootPc: transposed.rootPc,
+          capoFret: 0,
+          openMidis: openMidis
+        });
+      }
       resultRowEl.appendChild(card);
     });
   }
@@ -522,9 +710,58 @@
     renderResults();
   }
 
-  function applyKeyBuilder() {
-    var pc = (((LETTER_SEMITONE[state.keyLetter] + (state.keyAccidental === '#' ? 1 : state.keyAccidental === 'b' ? -1 : 0)) % 12) + 12) % 12;
-    state.targetRoot = pc;
+  sequenceInputEl.addEventListener('input', function () {
+    state.sequenceText = sequenceInputEl.value;
+    renderResults();
+  });
+
+  function renderOrigNoteChips() {
+    origNoteChipsEl.innerHTML = '';
+    KEY_LETTERS.forEach(function (letter) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'builder-chip' + (state.origLetter === letter ? ' is-active' : '');
+      btn.textContent = letter;
+      btn.addEventListener('click', function () {
+        state.origLetter = letter;
+        state.originalAuto = false;
+        applyOrigKeyBuilder();
+        renderOrigNoteChips();
+      });
+      origNoteChipsEl.appendChild(btn);
+    });
+  }
+
+  function renderOrigAccidentalChips() {
+    origAccidentalChipsEl.innerHTML = '';
+    KEY_ACCIDENTALS.forEach(function (acc) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'builder-chip' + (state.origAccidental === acc.value ? ' is-active' : '');
+      btn.textContent = acc.label;
+      btn.addEventListener('click', function () {
+        state.origAccidental = acc.value;
+        state.originalAuto = false;
+        applyOrigKeyBuilder();
+        renderOrigAccidentalChips();
+      });
+      origAccidentalChipsEl.appendChild(btn);
+    });
+  }
+
+  function applyOrigKeyBuilder() {
+    state.originalRoot = letterAccToPc(state.origLetter, state.origAccidental);
+    state.originalRootFlats = state.origAccidental === 'b';
+    renderResults();
+  }
+
+  origAutoBtn.addEventListener('click', function () {
+    state.originalAuto = true;
+    renderResults();
+  });
+
+  function applyTargetKeyBuilder() {
+    state.targetRoot = letterAccToPc(state.keyLetter, state.keyAccidental);
     state.targetRootFlats = state.keyAccidental === 'b';
     renderResults();
   }
@@ -539,7 +776,7 @@
       btn.addEventListener('click', function () {
         state.keyLetter = letter;
         renderKeyNoteChips();
-        applyKeyBuilder();
+        applyTargetKeyBuilder();
       });
       keyNoteChipsEl.appendChild(btn);
     });
@@ -555,7 +792,7 @@
       btn.addEventListener('click', function () {
         state.keyAccidental = acc.value;
         renderKeyAccidentalChips();
-        applyKeyBuilder();
+        applyTargetKeyBuilder();
       });
       keyAccidentalChipsEl.appendChild(btn);
     });
@@ -567,7 +804,7 @@
     state.keyAccidental = spelling.acc;
     renderKeyNoteChips();
     renderKeyAccidentalChips();
-    applyKeyBuilder();
+    applyTargetKeyBuilder();
   }
 
   function wireSegControl(el, onChange) {
@@ -581,16 +818,22 @@
     });
   }
 
-  wireSegControl(keyQualityControlEl, function (value) {
-    state.targetQuality = value;
-    syncShapeChipState();
+  wireSegControl(voicingControlEl, function (value) {
+    state.voicingMode = value;
     renderResults();
   });
 
+  function toggleVoicingMode() {
+    var next = state.voicingMode === 'capo' ? 'new' : 'capo';
+    state.voicingMode = next;
+    voicingControlEl.querySelectorAll('button').forEach(function (b) {
+      b.classList.toggle('is-active', b.getAttribute('data-value') === next);
+    });
+    renderResults();
+  }
+
   /* =========================================================================
-     Keyboard input — instrument numbers match the site-wide 1-5 mapping
-     (guitar=1, ukulele=3) even though only two are offered here, so the
-     same key always means the same instrument across every tool.
+     Keyboard input
      ========================================================================= */
 
   function isTypingTarget(el) {
@@ -607,7 +850,7 @@
 
     if (e.key === 'ArrowLeft') { e.preventDefault(); cycleTargetRoot(-1); return; }
     if (e.key === 'ArrowRight') { e.preventDefault(); cycleTargetRoot(1); return; }
-
+    if (e.key === 'v' || e.key === 'V') { toggleVoicingMode(); return; }
     if (e.key === '1') { setInstrument('guitar'); return; }
     if (e.key === '3') { setInstrument('ukulele'); return; }
   });
@@ -616,8 +859,9 @@
      Init
      ========================================================================= */
 
-  renderShapeChips();
+  renderOrigNoteChips();
+  renderOrigAccidentalChips();
   renderKeyNoteChips();
   renderKeyAccidentalChips();
-  applyKeyBuilder(); // default: F major - a friendly, non-trivial demo, also renders results
+  applyTargetKeyBuilder(); // default target: D — also renders results, which syncs Original Key from "C G Am F"
 })();

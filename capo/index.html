@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Capo Calculator — Music Tools</title>
-<meta name="description" content="Pick the open-chord shapes you know and the key you want to play in — find out which fret to capo.">
+<title>Capo &amp; Key Transposer — Music Tools</title>
+<meta name="description" content="Type a chord sequence and instantly see it transposed to any key — with the capo fret to play your original shapes, or fresh chord voicings if you'd rather not capo. Handy for vocal range changes too.">
 <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -46,8 +46,8 @@
 
   <header class="app-header">
     <a class="back-link" href="../">&larr; Music Tools</a>
-    <h1 class="app-title">Capo Calculator</h1>
-    <p class="app-sub">Pick the open-chord shapes you know and the key you want to play in — find out which fret to capo</p>
+    <h1 class="app-title">Capo &amp; Key Transposer</h1>
+    <p class="app-sub">Type a chord sequence and see it transposed to any key instantly &mdash; handy for capo shortcuts and vocal range changes.</p>
   </header>
 
   <section class="widget instrument-widget glass">
@@ -58,7 +58,34 @@
     </div>
   </section>
 
+  <section class="widget sequence-widget glass">
+    <span class="widget-eyebrow">Chord Sequence</span>
+    <div class="sequence-input-row">
+      <input type="text" class="sequence-text-input" id="sequenceInput" value="C G Am F" autocomplete="off" spellcheck="false">
+    </div>
+    <p class="capo-hint">Separate chords with spaces &mdash; e.g. <strong>C G Am F</strong> or <strong>Em7 A7 Dmaj7</strong>. Slash chords like C/E work too.</p>
+  </section>
+
   <div class="dash-columns">
+
+    <div class="dash-col">
+      <section class="widget key-widget widget--filler glass">
+        <span class="widget-eyebrow">Original Key</span>
+
+        <div class="builder-row">
+          <span class="seg-label">Note</span>
+          <div class="builder-chips" id="origNoteChips"></div>
+        </div>
+
+        <div class="builder-row">
+          <span class="seg-label">Accidental</span>
+          <div class="builder-chips" id="origAccidentalChips"></div>
+        </div>
+
+        <p class="key-caption" id="origCaption"></p>
+        <button type="button" class="auto-detect-btn" id="origAutoBtn">Auto-detect from sequence</button>
+      </section>
+    </div>
 
     <div class="dash-col">
       <section class="widget key-widget widget--filler glass">
@@ -73,39 +100,24 @@
           <span class="seg-label">Accidental</span>
           <div class="builder-chips" id="keyAccidentalChips"></div>
         </div>
-
-        <div class="builder-row">
-          <span class="seg-label">Major / Minor</span>
-          <div class="seg-control" id="keyQualityControl">
-            <button type="button" data-value="major" class="is-active">Major</button>
-            <button type="button" data-value="minor">Minor</button>
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <div class="dash-col">
-      <section class="widget shapes-widget widget--filler glass">
-        <span class="widget-eyebrow">Shapes</span>
-        <p class="capo-hint">Pick the open shapes you're comfortable playing &mdash; matching shapes are shown sorted so the easiest capo fret comes first.</p>
-
-        <div class="shape-picker">
-          <div class="shape-group">
-            <span class="shape-group-label">Major Shapes</span>
-            <div class="shape-chips" id="majorShapeChips"></div>
-          </div>
-          <div class="shape-group">
-            <span class="shape-group-label">Minor Shapes</span>
-            <div class="shape-chips" id="minorShapeChips"></div>
-          </div>
-        </div>
       </section>
     </div>
 
   </div>
 
   <section class="widget results-widget glass">
-    <span class="widget-eyebrow">Capo Options</span>
+    <span class="widget-eyebrow">Transposed Sequence</span>
+
+    <div class="voicing-control-row">
+      <span class="seg-label">Voicing</span>
+      <div class="seg-control" id="voicingControl">
+        <button type="button" data-value="capo" class="is-active">Use Capo</button>
+        <button type="button" data-value="new">New Chords</button>
+      </div>
+    </div>
+
+    <p class="capo-banner" id="capoBanner"></p>
+
     <div class="result-row" id="resultRow"></div>
   </section>
 
@@ -114,6 +126,7 @@
 <div class="kbd-hint" id="kbdHint" aria-hidden="true">
   <div class="kbd-hint-inner">
     <div class="kbd-hint-row"><span class="kbd-hint-combo"><kbd class="kbd-hint-key">&larr;</kbd><kbd class="kbd-hint-key">&rarr;</kbd></span><span class="kbd-hint-text">Target key</span></div>
+    <div class="kbd-hint-row"><kbd class="kbd-hint-key">V</kbd><span class="kbd-hint-text">Toggle voicing</span></div>
     <div class="kbd-hint-row"><kbd class="kbd-hint-key">1</kbd><span class="kbd-hint-text">Guitar</span></div>
     <div class="kbd-hint-row"><kbd class="kbd-hint-key">3</kbd><span class="kbd-hint-text">Ukulele</span></div>
   </div>
