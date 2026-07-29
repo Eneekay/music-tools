@@ -367,13 +367,14 @@
       pattern: { kick: [0, 10], snare: [4, 12], closedHat: [0, 2, 4, 6, 8, 10, 12, 14] }
     },
     {
-      id: 'trap', label: 'Trap', genre: 'Trap', bpm: 140, steps: 32, kit: 'tr808',
-      desc: 'Half-time clap over a syncopated kick, with dense rolling hi-hats and open-hat lifts — the trap hallmark.',
+      id: 'gfunk', label: 'G-Funk', genre: 'G-Funk', bpm: 94, steps: 16, kit: 'linndrum',
+      desc: 'A laid-back, syncopated West Coast groove with a swinging pocket — the G-funk bounce.',
       pattern: {
-        kick: [0, 10, 20],
-        clap: [16],
-        closedHat: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
-        openHat: [15, 31]
+        kick: [0, 6, 10],
+        snare: [4, 12],
+        rim: [3, 11],
+        closedHat: [0, 2, 4, 6, 8, 10, 12, 14],
+        openHat: [14]
       }
     },
     {
