@@ -1,0 +1,103 @@
+/* Music Tools — homepage-only styles: the instrument filter bar and the
+   small instrument tag badges on each tool card. Shared chrome (background
+   layers, glass, widget, tool-grid/tool-card) lives in site.css. */
+
+.filter-widget { align-items: center; }
+
+.instrument-filter-row {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem 0.9rem;
+}
+
+.instrument-filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.instrument-filter-chips button {
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--nk-cream-strong);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.76rem;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.instrument-filter-chips button:hover, .instrument-filter-chips button:focus-visible {
+  border-color: rgba(111, 194, 255, 0.4);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.instrument-filter-chips button.is-active {
+  background: var(--nk-c2);
+  border-color: var(--nk-c2);
+  color: #fff;
+}
+
+.filter-clear {
+  border: none;
+  background: none;
+  color: var(--nk-c1);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.72rem;
+  cursor: pointer;
+  padding: 0.3rem 0.2rem;
+  opacity: 0.8;
+}
+
+.filter-clear:hover, .filter-clear:focus-visible { opacity: 1; text-decoration: underline; }
+
+.filter-hint {
+  width: 100%;
+  margin: 0.9rem 0 0;
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--nk-cream);
+}
+
+/* ---------- card tag badges ---------- */
+
+.card-tags {
+  margin-top: auto;
+  padding-top: 0.4rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.card-tag {
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--nk-cream);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.card-tag--all {
+  color: var(--nk-gold);
+  background: rgba(255, 122, 51, 0.14);
+  border-color: rgba(255, 122, 51, 0.3);
+}
+
+/* ---------- filtering ---------- */
+
+.tool-card.is-hidden { display: none; }
+
+@media (max-width: 640px) {
+  .instrument-filter-row { justify-content: center; }
+}

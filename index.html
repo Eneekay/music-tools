@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link href="css/site.css?v=1" rel="stylesheet">
+<link href="css/home.css?v=1" rel="stylesheet">
 </head>
 <body>
 
@@ -52,9 +53,25 @@
     <p class="app-sub">A growing collection of small, focused tools for practicing and playing music.</p>
   </header>
 
+  <section class="widget filter-widget glass">
+    <span class="widget-eyebrow">Filter by Instrument</span>
+    <div class="instrument-filter-row">
+      <div class="instrument-filter-chips" id="instrumentFilterChips">
+        <button type="button" data-instrument="guitar">Guitar</button>
+        <button type="button" data-instrument="bass">Bass</button>
+        <button type="button" data-instrument="ukulele">Ukulele</button>
+        <button type="button" data-instrument="violin">Violin</button>
+        <button type="button" data-instrument="bouzouki">Bouzouki</button>
+        <button type="button" data-instrument="piano">Piano</button>
+      </div>
+      <button type="button" class="filter-clear" id="clearInstrumentFilter">Clear</button>
+    </div>
+    <p class="filter-hint" id="filterHint">Showing all 8 tools.</p>
+  </section>
+
   <div class="tool-grid">
 
-    <a class="tool-card glass" href="metronome/">
+    <a class="tool-card glass" href="metronome/" data-instruments="all">
       <span class="tool-card-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M8.5 20h7l-2-14.5a1 1 0 0 0-1-.9h-1a1 1 0 0 0-1 .9L8.5 20z"></path>
@@ -64,9 +81,10 @@
       </span>
       <h2 class="tool-card-title">Metronome</h2>
       <p class="tool-card-desc">Pendulum &amp; numeric click, custom rhythms, polyrhythms, and four switchable click sounds.</p>
+      <div class="card-tags"><span class="card-tag card-tag--all">All Instruments</span></div>
     </a>
 
-    <a class="tool-card glass" href="tuner/">
+    <a class="tool-card glass" href="tuner/" data-instruments="guitar,bass,ukulele,violin,bouzouki">
       <span class="tool-card-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M8 3v6a4 4 0 0 0 8 0V3"></path>
@@ -75,9 +93,12 @@
       </span>
       <h2 class="tool-card-title">Tuner</h2>
       <p class="tool-card-desc">Guitar, bass, ukulele, violin &amp; bouzouki, with tuning presets, microtuning and mic pitch detection.</p>
+      <div class="card-tags">
+        <span class="card-tag">Guitar</span><span class="card-tag">Bass</span><span class="card-tag">Ukulele</span><span class="card-tag">Violin</span><span class="card-tag">Bouzouki</span>
+      </div>
     </a>
 
-    <a class="tool-card glass" href="scales/">
+    <a class="tool-card glass" href="scales/" data-instruments="guitar,bass,ukulele,violin,bouzouki,piano">
       <span class="tool-card-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <line x1="4" y1="6" x2="4" y2="18"></line>
@@ -91,10 +112,13 @@
         </svg>
       </span>
       <h2 class="tool-card-title">Scale Finder</h2>
-      <p class="tool-card-desc">Major, minor, pentatonic, blues &amp; modal scales mapped across the fretboard.</p>
+      <p class="tool-card-desc">Major, minor, pentatonic, blues &amp; modal scales mapped across the fretboard &mdash; or a piano keyboard.</p>
+      <div class="card-tags">
+        <span class="card-tag">Guitar</span><span class="card-tag">Bass</span><span class="card-tag">Ukulele</span><span class="card-tag">Violin</span><span class="card-tag">Bouzouki</span><span class="card-tag">Piano</span>
+      </div>
     </a>
 
-    <a class="tool-card glass" href="trainer/">
+    <a class="tool-card glass" href="trainer/" data-instruments="guitar,bass,ukulele,violin,bouzouki">
       <span class="tool-card-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <line x1="4" y1="6" x2="4" y2="18"></line>
@@ -108,9 +132,12 @@
       </span>
       <h2 class="tool-card-title">Fretboard Trainer</h2>
       <p class="tool-card-desc">Flash-card note drills with tap or mic answers, a built-in metronome and live session stats.</p>
+      <div class="card-tags">
+        <span class="card-tag">Guitar</span><span class="card-tag">Bass</span><span class="card-tag">Ukulele</span><span class="card-tag">Violin</span><span class="card-tag">Bouzouki</span>
+      </div>
     </a>
 
-    <a class="tool-card glass" href="chords/">
+    <a class="tool-card glass" href="chords/" data-instruments="guitar,bass,ukulele,violin,bouzouki">
       <span class="tool-card-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <rect x="6" y="4" width="12" height="16" rx="2"></rect>
@@ -123,9 +150,12 @@
       </span>
       <h2 class="tool-card-title">Chord Chart Generator</h2>
       <p class="tool-card-desc">Type a chord name and get fingering diagrams — a quick reference or embeddable widget.</p>
+      <div class="card-tags">
+        <span class="card-tag">Guitar</span><span class="card-tag">Bass</span><span class="card-tag">Ukulele</span><span class="card-tag">Violin</span><span class="card-tag">Bouzouki</span>
+      </div>
     </a>
 
-    <a class="tool-card glass" href="capo/">
+    <a class="tool-card glass" href="capo/" data-instruments="guitar,ukulele">
       <span class="tool-card-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <rect x="4" y="9" width="16" height="4" rx="2"></rect>
@@ -138,9 +168,12 @@
       </span>
       <h2 class="tool-card-title">Capo Calculator</h2>
       <p class="tool-card-desc">Pick the open-chord shapes you know and the key you want to play in — find out which fret to capo.</p>
+      <div class="card-tags">
+        <span class="card-tag">Guitar</span><span class="card-tag">Ukulele</span>
+      </div>
     </a>
 
-    <a class="tool-card glass" href="ear/">
+    <a class="tool-card glass" href="ear/" data-instruments="guitar,bass,ukulele,violin,bouzouki,piano">
       <span class="tool-card-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M8 17c-2.5-1.5-4-4-4-7a6 6 0 0 1 12 0c0 1.8-.7 2.6-1.5 3.4-.7.8-1.5 1.5-1.5 3.1a2.5 2.5 0 0 1-5 0"></path>
@@ -149,9 +182,12 @@
       </span>
       <h2 class="tool-card-title">Interval Ear Trainer</h2>
       <p class="tool-card-desc">Guess the interval, name the note against a reference, or go in cold with God Mode.</p>
+      <div class="card-tags">
+        <span class="card-tag">Guitar</span><span class="card-tag">Bass</span><span class="card-tag">Ukulele</span><span class="card-tag">Violin</span><span class="card-tag">Bouzouki</span><span class="card-tag">Piano</span>
+      </div>
     </a>
 
-    <a class="tool-card glass" href="progressions/">
+    <a class="tool-card glass" href="progressions/" data-instruments="all">
       <span class="tool-card-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M9 18V5l12-2v13"></path>
@@ -161,6 +197,7 @@
       </span>
       <h2 class="tool-card-title">Chord Progression Randomizer</h2>
       <p class="tool-card-desc">Pull tagged progressions by key, vibe and genre for songwriting practice on any instrument.</p>
+      <div class="card-tags"><span class="card-tag card-tag--all">All Instruments</span></div>
     </a>
 
   </div>
@@ -168,5 +205,6 @@
 </div>
 
 <script src="js/background.js?v=1"></script>
+<script src="js/home.js?v=1"></script>
 </body>
 </html>
