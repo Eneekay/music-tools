@@ -183,7 +183,7 @@
     var openMidis = tuning.notes.map(function (n) { return MT.parseNoteName(n); });
     var numStrings = openMidis.length;
 
-    var FRET_W = 50, STR_H = 42, PAD_L = 40, PAD_R = 34, PAD_TOP = 20, PAD_BOTTOM = 42;
+    var FRET_W = 50, STR_H = 42, PAD_L = 58, PAD_R = 52, PAD_TOP = 20, PAD_BOTTOM = 42;
     var fc = state.fretCount;
     var width = PAD_L + fc * FRET_W + PAD_R;
     var height = PAD_TOP + (numStrings - 1) * STR_H + PAD_BOTTOM;
@@ -211,12 +211,15 @@
       line.setAttribute('x2', xMax); line.setAttribute('y2', yString(i));
       fretboardSvg.appendChild(line);
 
-      // Open-string note, labeled at the nut end (left in normal
-      // orientation, right when left-handed, since xFret(0) tracks the nut).
+      // Open-string note, labeled clear of the nut end (left in normal
+      // orientation, right when left-handed, since xFret(0) tracks the
+      // nut) - offset well past the open-string target dot's radius (11)
+      // so the label reads as beside the fretboard, not sitting on top of
+      // the nut wire or the dot itself.
       var openPc = ((openMidis[i] % 12) + 12) % 12;
       var strLabel = document.createElementNS(SVG_NS, 'text');
       strLabel.setAttribute('class', 'string-label');
-      strLabel.setAttribute('x', String(xFret(0) + (state.leftHanded ? 12 : -12)));
+      strLabel.setAttribute('x', String(xFret(0) + (state.leftHanded ? 24 : -24)));
       strLabel.setAttribute('y', String(yString(i)));
       strLabel.setAttribute('text-anchor', state.leftHanded ? 'start' : 'end');
       strLabel.textContent = promptNameForPc(openPc);
