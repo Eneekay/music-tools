@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Scale Finder — Music Tools</title>
-<meta name="description" content="Find major, minor, pentatonic, blues and modal scales on a fretboard for guitar, bass, ukulele, violin and bouzouki.">
+<meta name="description" content="Find major, minor, pentatonic, blues and modal scales on a fretboard or piano keyboard for guitar, bass, ukulele, violin, bouzouki and piano.">
 <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -62,10 +62,11 @@
           <button type="button" class="instrument-tab" data-instrument="ukulele">Ukulele</button>
           <button type="button" class="instrument-tab" data-instrument="violin">Violin</button>
           <button type="button" class="instrument-tab" data-instrument="bouzouki">Bouzouki</button>
+          <button type="button" class="instrument-tab" data-instrument="piano">Piano</button>
         </div>
       </div>
 
-      <div class="control-group">
+      <div class="control-group" id="tuningControlGroup">
         <span class="seg-label">Tuning</span>
         <select class="tuning-select" id="tuningSelect"></select>
       </div>
@@ -94,8 +95,11 @@
       </div>
     </div>
 
-    <div class="fretboard-wrap">
+    <div class="fretboard-wrap" id="fretboardWrap">
       <svg class="fretboard-svg" id="fretboardSvg" preserveAspectRatio="xMinYMin meet"></svg>
+    </div>
+    <div class="piano-wrap" id="pianoWrap" hidden>
+      <svg class="piano-keyboard-svg" id="pianoSvg" preserveAspectRatio="xMinYMin meet"></svg>
     </div>
   </section>
 
@@ -114,7 +118,7 @@
           </div>
         </div>
 
-        <div class="display-row">
+        <div class="display-row" id="fretsDisplayRow">
           <span class="seg-label">Frets</span>
           <div class="seg-control" id="fretCountControl">
             <button type="button" data-value="12" class="is-active">12</button>
@@ -131,7 +135,7 @@
           </label>
         </div>
 
-        <div class="display-row display-row--switch">
+        <div class="display-row display-row--switch" id="leftHandedDisplayRow">
           <span class="seg-label">Left-handed</span>
           <label class="switch">
             <input type="checkbox" id="leftHandedToggle">
@@ -181,7 +185,7 @@
 <div class="kbd-hint" id="kbdHint" aria-hidden="true">
   <div class="kbd-hint-inner">
     <div class="kbd-hint-row"><kbd class="kbd-hint-key kbd-hint-key--wide">Space</kbd><span class="kbd-hint-text">Play scale</span></div>
-    <div class="kbd-hint-row"><span class="kbd-hint-combo"><kbd class="kbd-hint-key">1</kbd><span class="kbd-hint-dash">&ndash;</span><kbd class="kbd-hint-key">5</kbd></span><span class="kbd-hint-text">Instrument</span></div>
+    <div class="kbd-hint-row"><span class="kbd-hint-combo"><kbd class="kbd-hint-key">1</kbd><span class="kbd-hint-dash">&ndash;</span><kbd class="kbd-hint-key">6</kbd></span><span class="kbd-hint-text">Instrument</span></div>
     <div class="kbd-hint-row"><span class="kbd-hint-combo"><kbd class="kbd-hint-key">&larr;</kbd><kbd class="kbd-hint-key">&rarr;</kbd></span><span class="kbd-hint-text">Root note</span></div>
     <div class="kbd-hint-row"><span class="kbd-hint-combo"><kbd class="kbd-hint-key">&uarr;</kbd><kbd class="kbd-hint-key">&darr;</kbd></span><span class="kbd-hint-text">Scale</span></div>
   </div>
@@ -190,6 +194,7 @@
 <script src="../js/background.js?v=1"></script>
 <script src="../js/theory.js?v=1"></script>
 <script src="../js/tones.js?v=1"></script>
+<script src="../js/piano.js?v=1"></script>
 <script src="js/scales.js?v=1"></script>
 </body>
 </html>

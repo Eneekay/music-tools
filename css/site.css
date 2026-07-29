@@ -508,3 +508,46 @@ body {
 @media (max-width: 900px), (hover: none) and (pointer: coarse) {
   .kbd-hint { display: none; }
 }
+
+/* ---------- shared piano keyboard (Scale Finder, Ear Trainer) ----------
+   Rendered by js/piano.js. Base key colors/borders live here since they
+   should look identical everywhere it appears; per-tool highlight-state
+   classes (is-root, is-tone, etc.) live in each tool's own stylesheet. */
+
+.piano-keyboard-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.piano-key {
+  cursor: pointer;
+  transition: fill 0.12s ease, stroke 0.12s ease;
+}
+
+.piano-key--white {
+  fill: var(--nk-c4);
+  stroke: rgba(16, 20, 31, 0.35);
+  stroke-width: 1;
+}
+
+.piano-key--white:hover { fill: rgba(111, 194, 255, 0.35); }
+
+.piano-key--black {
+  fill: var(--nk-c0);
+  stroke: rgba(255, 255, 255, 0.25);
+  stroke-width: 1;
+}
+
+.piano-key--black:hover { fill: var(--nk-c2h); }
+
+.piano-key-label {
+  fill: var(--nk-c0);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 10px;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.piano-key-label--black { fill: var(--nk-c4); font-size: 9px; }

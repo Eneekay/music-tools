@@ -104,14 +104,17 @@
     var t = audioCtx.currentTime;
     var vol = Math.max(state.toneVolume, 0.001);
 
-    if (state.waveform === 'realistic') {
+    if (state.waveform === 'realistic' && state.instrument !== 'piano') {
       window.InstrumentTones.playRealistic(audioCtx, audioCtx.destination, state.instrument, freq, t, vol);
       return;
     }
 
     var dur = duration || 0.6;
     var osc = audioCtx.createOscillator();
-    osc.type = state.waveform;
+    // "Realistic" has no piano model (that's a synthesis project of its own,
+    // not what the piano *view* is about) - fall back to a plain tone rather
+    // than passing an invalid oscillator type.
+    osc.type = state.waveform === 'realistic' ? 'triangle' : state.waveform;
     osc.frequency.setValueAtTime(freq, t);
 
     var gain = audioCtx.createGain();
@@ -130,9 +133,15 @@
 
   var instrumentTabsEl = document.getElementById('instrumentTabs');
   var tuningSelect = document.getElementById('tuningSelect');
+  var tuningControlGroupEl = document.getElementById('tuningControlGroup');
   var rootPickerEl = document.getElementById('rootPicker');
   var scaleSelect = document.getElementById('scaleSelect');
+  var fretboardWrapEl = document.getElementById('fretboardWrap');
   var fretboardSvg = document.getElementById('fretboardSvg');
+  var pianoWrapEl = document.getElementById('pianoWrap');
+  var pianoSvg = document.getElementById('pianoSvg');
+  var fretsDisplayRowEl = document.getElementById('fretsDisplayRow');
+  var leftHandedDisplayRowEl = document.getElementById('leftHandedDisplayRow');
 
   var displayModeControl = document.getElementById('displayModeControl');
   var fretCountControl = document.getElementById('fretCountControl');
@@ -281,6 +290,57 @@
   }
 
   /* =========================================================================
+     Piano rendering — an alternative view to the fretboard, since piano
+     doesn't have "open-string tunings" the way the other instruments do.
+     ========================================================================= */
+
+  function flashPianoKey(midi) {
+    var el = pianoSvg.querySelector('[data-midi="' + midi + '"]');
+    if (!el) return;
+    el.classList.add('is-triggered');
+    setTimeout(function () { el.classList.remove('is-triggered'); }, 500);
+  }
+
+  function renderPiano() {
+    var scale = getCurrentScale();
+    var scaleSet = {};
+    scale.intervals.forEach(function (iv) { scaleSet[(state.root + iv) % 12] = iv; });
+    var chordSet = {};
+    (scale.chordTones || []).forEach(function (iv) { chordSet[(state.root + iv) % 12] = true; });
+
+    window.PianoKeyboard.render(pianoSvg, {
+      getKeyInfo: function (midi) {
+        var pc = ((midi % 12) + 12) % 12;
+        if (!(pc in scaleSet)) return null;
+        var isRoot = pc === state.root;
+        var isChordTone = !!chordSet[pc];
+        if (state.chordTonesOnly && !isChordTone) return null;
+        return { className: isRoot ? 'is-root' : 'is-tone', label: labelFor(pc, scaleSet[pc], scale) };
+      },
+      onKeyClick: function (midi) {
+        playTone(MT.midiToFreq(midi, 440, 0), 0.6);
+        flashPianoKey(midi);
+      }
+    });
+  }
+
+  /* =========================================================================
+     View dispatcher — swaps between the fretboard and the piano keyboard,
+     and hides controls that only make sense for a fretted instrument
+     (tuning, fret count, left-handed mirroring - piano has none of these).
+     ========================================================================= */
+
+  function renderCurrentView() {
+    var isPiano = state.instrument === 'piano';
+    fretboardWrapEl.hidden = isPiano;
+    pianoWrapEl.hidden = !isPiano;
+    tuningControlGroupEl.style.display = isPiano ? 'none' : '';
+    fretsDisplayRowEl.style.display = isPiano ? 'none' : '';
+    leftHandedDisplayRowEl.style.display = isPiano ? 'none' : '';
+    if (isPiano) renderPiano(); else renderFretboard();
+  }
+
+  /* =========================================================================
      Scale info panel
      ========================================================================= */
 
@@ -344,6 +404,7 @@
      ========================================================================= */
 
   function populateTuningSelect() {
+    if (state.instrument === 'piano') { tuningSelect.innerHTML = ''; return; }
     var data = MT.INSTRUMENTS[state.instrument];
     tuningSelect.innerHTML = '';
     data.tunings.forEach(function (t, i) {
@@ -367,14 +428,14 @@
   }
 
   function setInstrument(id) {
-    if (!MT.INSTRUMENTS[id]) return;
+    if (id !== 'piano' && !MT.INSTRUMENTS[id]) return;
     state.instrument = id;
     state.tuningIndex = 0;
     Array.prototype.forEach.call(instrumentTabsEl.querySelectorAll('.instrument-tab'), function (btn) {
       btn.classList.toggle('is-active', btn.getAttribute('data-instrument') === id);
     });
     populateTuningSelect();
-    renderFretboard();
+    renderCurrentView();
   }
 
   function setRoot(pc, flats) {
@@ -383,7 +444,7 @@
     Array.prototype.forEach.call(rootPickerEl.querySelectorAll('button'), function (b) {
       b.classList.toggle('is-active', parseInt(b.getAttribute('data-pc'), 10) === pc);
     });
-    renderFretboard();
+    renderCurrentView();
     renderScaleInfo();
   }
 
@@ -395,7 +456,7 @@
 
   tuningSelect.addEventListener('change', function () {
     state.tuningIndex = parseInt(tuningSelect.value, 10);
-    renderFretboard();
+    renderCurrentView();
   });
 
   rootPickerEl.addEventListener('click', function (e) {
@@ -406,7 +467,7 @@
 
   scaleSelect.addEventListener('change', function () {
     state.scaleId = scaleSelect.value;
-    renderFretboard();
+    renderCurrentView();
     renderScaleInfo();
   });
 
@@ -416,22 +477,22 @@
 
   wireSegControl(displayModeControl, function (value) {
     state.displayMode = value;
-    renderFretboard();
+    renderCurrentView();
   });
 
   wireSegControl(fretCountControl, function (value) {
     state.fretCount = parseInt(value, 10);
-    renderFretboard();
+    renderCurrentView();
   });
 
   chordTonesToggle.addEventListener('change', function () {
     state.chordTonesOnly = chordTonesToggle.checked;
-    renderFretboard();
+    renderCurrentView();
   });
 
   leftHandedToggle.addEventListener('change', function () {
     state.leftHanded = leftHandedToggle.checked;
-    renderFretboard();
+    renderCurrentView();
   });
 
   wireSegControl(waveControl, function (value) { state.waveform = value; });
@@ -459,7 +520,7 @@
     var newIdx = ((idx + dir) % SCALES.length + SCALES.length) % SCALES.length;
     state.scaleId = SCALES[newIdx].id;
     scaleSelect.value = state.scaleId;
-    renderFretboard();
+    renderCurrentView();
     renderScaleInfo();
   }
 
@@ -471,6 +532,7 @@
     if (e.key === 'ArrowRight') { e.preventDefault(); cycleRoot(1); return; }
     if (e.key === 'ArrowUp') { e.preventDefault(); cycleScale(-1); return; }
     if (e.key === 'ArrowDown') { e.preventDefault(); cycleScale(1); return; }
+    if (e.key === '6') { setInstrument('piano'); return; }
     if (/^[1-5]$/.test(e.key)) {
       var id = MT.INSTRUMENT_ORDER[parseInt(e.key, 10) - 1];
       if (id) setInstrument(id);

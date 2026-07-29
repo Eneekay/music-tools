@@ -188,6 +188,22 @@
   pointer-events: none;
 }
 
+/* ---------- piano keyboard (base key styles shared via site.css) ---------- */
+
+.piano-wrap {
+  width: 100%;
+  overflow-x: auto;
+  padding: 0.4rem 0.2rem 0.6rem;
+}
+
+.piano-keyboard-svg { min-width: 640px; }
+
+.piano-key.is-root { fill: var(--nk-gold) !important; }
+.piano-key.is-tone { fill: var(--nk-c1) !important; }
+.piano-key.is-triggered { fill: var(--nk-green) !important; }
+
+.piano-key-label.is-on-tone { fill: var(--nk-c0); }
+
 /* ---------- display widget ---------- */
 
 .display-row {
