@@ -181,7 +181,7 @@
   var listenBtn = document.getElementById('listenBtn');
   var listenBtnLabel = document.getElementById('listenBtnLabel');
   var tunerStatusEl = document.getElementById('tunerStatus');
-  var chromaticToggle = document.getElementById('chromaticToggle');
+  var modeControl = document.getElementById('modeControl');
 
   /* =========================================================================
      Instrument / string rendering
@@ -204,6 +204,10 @@
   }
 
   function renderStringsDOM() {
+    Array.prototype.forEach.call(document.querySelectorAll('.tuner-strings'), function (g) {
+      g.innerHTML = '';
+    });
+
     var svg = activeInstrumentSvg();
     var group = svg.querySelector('.tuner-strings');
     var nut = parseFloat(group.getAttribute('data-nut'));
@@ -213,7 +217,6 @@
     var notes = state.currentTargets;
     var n = notes.length;
 
-    group.innerHTML = '';
     stringPillsEl.innerHTML = '';
 
     notes.forEach(function (target, i) {
@@ -362,10 +365,15 @@
     renderStringsDOM();
   });
 
-  chromaticToggle.addEventListener('change', function () {
-    state.chromatic = chromaticToggle.checked;
+  function setMode(value) {
+    state.chromatic = value === 'chromatic';
+    Array.prototype.forEach.call(modeControl.querySelectorAll('button'), function (b) {
+      b.classList.toggle('is-active', b.getAttribute('data-value') === value);
+    });
     updateStringHighlights(currentMatch);
-  });
+  }
+
+  wireSegControl(modeControl, function (value) { setMode(value); });
 
   /* =========================================================================
      Pitch detection (autocorrelation) — no external libraries
@@ -574,9 +582,7 @@
     if (e.key === 'ArrowUp') { e.preventDefault(); setDetune(state.detune + (e.shiftKey ? 10 : 1)); return; }
     if (e.key === 'ArrowDown') { e.preventDefault(); setDetune(state.detune - (e.shiftKey ? 10 : 1)); return; }
     if (e.key.toLowerCase() === 'c') {
-      chromaticToggle.checked = !chromaticToggle.checked;
-      state.chromatic = chromaticToggle.checked;
-      updateStringHighlights(currentMatch);
+      setMode(state.chromatic ? 'preset' : 'chromatic');
       return;
     }
     if (/^[1-5]$/.test(e.key)) {
@@ -591,6 +597,7 @@
      ========================================================================= */
 
   needleEl.classList.add('is-idle');
+  setMode('preset');
   setInstrument('guitar');
   setA4(440);
   setDetune(0);

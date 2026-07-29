@@ -2,9 +2,44 @@
    layers, glass, dashboard/widget layout, floating keyboard hint) lives in
    ../../css/site.css. */
 
-/* ---------- instrument tabs ---------- */
+/* ---------- input tuner (merged mic-tuner + instrument picker) ---------- */
 
-.instrument-widget { align-items: center; }
+.input-tuner-widget { align-items: center; }
+
+.tuner-mode-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.input-tuner-body {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  width: 100%;
+}
+
+.input-tuner-instrument {
+  flex: 1 1 320px;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input-tuner-pitch {
+  flex: 1 1 240px;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* ---------- instrument tabs ---------- */
 
 .instrument-tabs {
   display: flex;
@@ -176,8 +211,6 @@
 
 /* ---------- tuner gauge (needle, echoes the metronome pendulum) ---------- */
 
-.tuner-widget { align-items: center; text-align: center; }
-
 .tuner-gauge {
   position: relative;
   width: 200px;
@@ -307,17 +340,6 @@
 }
 
 .tuner-status.is-error { color: var(--nk-gold); font-weight: 600; }
-
-.tuner-mode-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  margin-top: 0.9rem;
-  padding-top: 0.8rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  width: 100%;
-}
 
 /* ---------- calibration ---------- */
 
