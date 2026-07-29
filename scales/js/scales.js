@@ -77,7 +77,9 @@
     displayMode: 'notes',
     fretCount: 12,
     chordTonesOnly: false,
-    leftHanded: false
+    leftHanded: false,
+    waveform: 'triangle',
+    toneVolume: 0.7
   };
 
   function getCurrentTuning() {
@@ -100,16 +102,22 @@
     ensureAudioContext();
     if (audioCtx.state === 'suspended') audioCtx.resume();
     var t = audioCtx.currentTime;
-    var dur = duration || 0.6;
+    var vol = Math.max(state.toneVolume, 0.001);
 
+    if (state.waveform === 'realistic') {
+      window.InstrumentTones.playRealistic(audioCtx, audioCtx.destination, state.instrument, freq, t, vol);
+      return;
+    }
+
+    var dur = duration || 0.6;
     var osc = audioCtx.createOscillator();
-    osc.type = 'triangle';
+    osc.type = state.waveform;
     osc.frequency.setValueAtTime(freq, t);
 
     var gain = audioCtx.createGain();
     gain.gain.setValueAtTime(0.0001, t);
-    gain.gain.exponentialRampToValueAtTime(0.55, t + 0.02);
-    gain.gain.setValueAtTime(0.55, t + Math.max(dur - 0.15, 0.03));
+    gain.gain.exponentialRampToValueAtTime(vol, t + 0.02);
+    gain.gain.setValueAtTime(vol, t + Math.max(dur - 0.15, 0.03));
     gain.gain.exponentialRampToValueAtTime(0.0001, t + dur);
 
     osc.connect(gain); gain.connect(audioCtx.destination);
@@ -130,6 +138,8 @@
   var fretCountControl = document.getElementById('fretCountControl');
   var chordTonesToggle = document.getElementById('chordTonesToggle');
   var leftHandedToggle = document.getElementById('leftHandedToggle');
+  var waveControl = document.getElementById('waveControl');
+  var toneVolumeSlider = document.getElementById('toneVolumeSlider');
 
   var scaleInfoNameEl = document.getElementById('scaleInfoName');
   var scaleInfoNotesEl = document.getElementById('scaleInfoNotes');
@@ -403,6 +413,9 @@
     state.leftHanded = leftHandedToggle.checked;
     renderFretboard();
   });
+
+  wireSegControl(waveControl, function (value) { state.waveform = value; });
+  toneVolumeSlider.addEventListener('input', function () { state.toneVolume = parseFloat(toneVolumeSlider.value); });
 
   playScaleBtn.addEventListener('click', playScale);
 

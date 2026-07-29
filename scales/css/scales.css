@@ -256,3 +256,17 @@
   background: var(--nk-gold);
   box-shadow: 0 10px 24px rgba(255, 122, 51, 0.45);
 }
+
+/* ---------- reference tone ---------- */
+
+.tone-widget { align-items: center; text-align: center; }
+
+.tone-wave-control { justify-content: center; margin-bottom: 0.9rem; }
+
+.tone-hint {
+  margin: 0.9rem 0 0;
+  font-size: 0.68rem;
+  line-height: 1.5;
+  color: var(--nk-cream);
+  text-align: center;
+}

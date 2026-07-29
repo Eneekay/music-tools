@@ -156,6 +156,23 @@
       </section>
     </div>
 
+    <div class="dash-col">
+      <section class="widget tone-widget widget--filler glass">
+        <span class="widget-eyebrow">Reference Tone</span>
+        <div class="seg-control tone-wave-control" id="waveControl">
+          <button type="button" data-value="sine">Sine</button>
+          <button type="button" data-value="triangle" class="is-active">Triangle</button>
+          <button type="button" data-value="sawtooth">Saw</button>
+          <button type="button" data-value="realistic">Realistic</button>
+        </div>
+        <div class="volume-row">
+          <span>Volume</span>
+          <input type="range" id="toneVolumeSlider" min="0" max="1" step="0.01" value="0.7" aria-label="Reference tone volume">
+        </div>
+        <p class="tone-hint">&ldquo;Realistic&rdquo; models the sound of the selected instrument.</p>
+      </section>
+    </div>
+
   </div>
 
 </div>
@@ -171,6 +188,7 @@
 
 <script src="../js/background.js?v=1"></script>
 <script src="../js/theory.js?v=1"></script>
+<script src="../js/tones.js?v=1"></script>
 <script src="js/scales.js?v=1"></script>
 </body>
 </html>

@@ -61,9 +61,15 @@
     ensureAudioContext();
     if (audioCtx.state === 'suspended') audioCtx.resume();
     var t = audioCtx.currentTime;
-    var dur = 1.4;
     var vol = Math.max(state.toneVolume, 0.001);
 
+    if (state.waveform === 'realistic') {
+      var dur = 1.3;
+      window.InstrumentTones.playRealistic(audioCtx, audioCtx.destination, state.instrument, freq, t, vol);
+      return dur;
+    }
+
+    var dur2 = 1.4;
     var osc = audioCtx.createOscillator();
     osc.type = state.waveform;
     osc.frequency.setValueAtTime(freq, t);
@@ -71,12 +77,12 @@
     var gain = audioCtx.createGain();
     gain.gain.setValueAtTime(0.0001, t);
     gain.gain.exponentialRampToValueAtTime(vol, t + 0.03);
-    gain.gain.setValueAtTime(vol, t + dur - 0.3);
-    gain.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    gain.gain.setValueAtTime(vol, t + dur2 - 0.3);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + dur2);
 
     osc.connect(gain); gain.connect(audioCtx.destination);
-    osc.start(t); osc.stop(t + dur + 0.05);
-    return dur;
+    osc.start(t); osc.stop(t + dur2 + 0.05);
+    return dur2;
   }
 
   /* =========================================================================
