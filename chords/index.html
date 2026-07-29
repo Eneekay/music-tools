@@ -82,11 +82,36 @@
     <div class="chord-input-row">
       <input type="text" id="chordInput" class="chord-text-input" placeholder="e.g. Cmaj7" autocomplete="off" spellcheck="false" value="C">
     </div>
+    <p class="chord-hint">Type any chord name &mdash; e.g. Cmaj7, F#m, Bbsus4, D/F# &mdash; or pick one below, or build one with the selector.</p>
 
     <div class="quick-picks" id="quickPicks"></div>
 
     <div class="chord-info" id="chordInfo"></div>
     <p class="chord-error" id="chordError"></p>
+
+    <div class="builder-section">
+      <span class="builder-label">Or Build a Chord</span>
+
+      <div class="builder-row">
+        <span class="seg-label">Note</span>
+        <div class="builder-chips" id="builderRoot"></div>
+      </div>
+
+      <div class="builder-row">
+        <span class="seg-label">Accidental</span>
+        <div class="builder-chips" id="builderAccidental"></div>
+      </div>
+
+      <div class="builder-row">
+        <span class="seg-label">Quality</span>
+        <div class="builder-chips" id="builderFamily"></div>
+      </div>
+
+      <div class="builder-row">
+        <span class="seg-label">Extension</span>
+        <div class="builder-chips" id="builderExtension"></div>
+      </div>
+    </div>
   </section>
 
   <section class="widget diagrams-widget glass">

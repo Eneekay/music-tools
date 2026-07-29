@@ -263,7 +263,97 @@
   var chordErrorEl = document.getElementById('chordError');
   var diagramRowEl = document.getElementById('diagramRow');
 
-  var QUICK_PICKS = ['C', 'G', 'D', 'A', 'E', 'Am', 'Em', 'Dm', 'C7', 'G7', 'Cmaj7', 'Am7'];
+  var builderRootEl = document.getElementById('builderRoot');
+  var builderAccidentalEl = document.getElementById('builderAccidental');
+  var builderFamilyEl = document.getElementById('builderFamily');
+  var builderExtensionEl = document.getElementById('builderExtension');
+
+  var QUICK_PICKS = [
+    'C', 'D', 'E', 'F', 'G', 'A', 'B',
+    'Cm', 'Dm', 'Em', 'F#m', 'Gm', 'Am', 'Bm',
+    'C7', 'D7', 'E7', 'G7', 'A7', 'B7',
+    'Cmaj7', 'Dmaj7', 'Gmaj7',
+    'Am7', 'Dm7', 'Em7'
+  ];
+
+  /* =========================================================================
+     Chord builder — a guided note -> accidental -> quality -> extension tree
+     that composes a chord symbol and feeds it through the same free-text
+     input, so it always drives the exact same parse/search/render pipeline.
+     Extension suffixes are the literal QUALITIES dictionary keys (used
+     as-is, not concatenated), which sidesteps oddities like "7sus4" putting
+     the 7 before the "sus" instead of after.
+     ========================================================================= */
+
+  var BUILDER_ROOT_LETTERS = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+  var BUILDER_ACCIDENTALS = [
+    { label: '♮', value: '' },
+    { label: '♭', value: 'b' },
+    { label: '♯', value: '#' }
+  ];
+  var BUILDER_FAMILY_ORDER = ['major', 'minor', 'dim', 'aug', 'sus2', 'sus4', 'power'];
+  var BUILDER_FAMILY_TREE = {
+    major: {
+      label: 'Major',
+      extensions: [
+        { label: 'Triad', suffix: '' },
+        { label: '6', suffix: '6' },
+        { label: '6/9', suffix: '69' },
+        { label: 'Maj7', suffix: 'maj7' },
+        { label: '7', suffix: '7' },
+        { label: '9', suffix: '9' },
+        { label: 'Maj9', suffix: 'maj9' },
+        { label: 'Add9', suffix: 'add9' }
+      ]
+    },
+    minor: {
+      label: 'Minor',
+      extensions: [
+        { label: 'Triad', suffix: 'm' },
+        { label: '6', suffix: 'm6' },
+        { label: '7', suffix: 'm7' },
+        { label: 'Maj7', suffix: 'mmaj7' },
+        { label: '9', suffix: 'm9' },
+        { label: 'Add9', suffix: 'madd9' },
+        { label: '7♭5 (half-dim)', suffix: 'm7b5' }
+      ]
+    },
+    dim: {
+      label: 'Dim',
+      extensions: [
+        { label: 'Triad', suffix: 'dim' },
+        { label: '7', suffix: 'dim7' }
+      ]
+    },
+    aug: {
+      label: 'Aug',
+      extensions: [
+        { label: 'Triad', suffix: 'aug' }
+      ]
+    },
+    sus2: {
+      label: 'Sus2',
+      extensions: [
+        { label: 'Triad', suffix: 'sus2' },
+        { label: '7', suffix: '7sus2' }
+      ]
+    },
+    sus4: {
+      label: 'Sus4',
+      extensions: [
+        { label: 'Triad', suffix: 'sus4' },
+        { label: '7', suffix: '7sus4' }
+      ]
+    },
+    power: {
+      label: 'Power',
+      extensions: [
+        { label: '5', suffix: '5' }
+      ]
+    }
+  };
+
+  var builder = { root: 'C', accidental: '', family: 'major', extension: BUILDER_FAMILY_TREE.major.extensions[0] };
 
   var state = {
     instrument: 'guitar',
@@ -582,6 +672,81 @@
   }
 
   /* =========================================================================
+     Chord builder wiring
+     ========================================================================= */
+
+  function applyBuilder() {
+    chordInput.value = builder.root + builder.accidental + builder.extension.suffix;
+    renderAll();
+  }
+
+  function renderBuilderRoot() {
+    builderRootEl.innerHTML = '';
+    BUILDER_ROOT_LETTERS.forEach(function (letter) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'builder-chip' + (builder.root === letter ? ' is-active' : '');
+      btn.textContent = letter;
+      btn.addEventListener('click', function () {
+        builder.root = letter;
+        renderBuilderRoot();
+        applyBuilder();
+      });
+      builderRootEl.appendChild(btn);
+    });
+  }
+
+  function renderBuilderAccidental() {
+    builderAccidentalEl.innerHTML = '';
+    BUILDER_ACCIDENTALS.forEach(function (acc) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'builder-chip' + (builder.accidental === acc.value ? ' is-active' : '');
+      btn.textContent = acc.label;
+      btn.addEventListener('click', function () {
+        builder.accidental = acc.value;
+        renderBuilderAccidental();
+        applyBuilder();
+      });
+      builderAccidentalEl.appendChild(btn);
+    });
+  }
+
+  function renderBuilderFamily() {
+    builderFamilyEl.innerHTML = '';
+    BUILDER_FAMILY_ORDER.forEach(function (key) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'builder-chip' + (builder.family === key ? ' is-active' : '');
+      btn.textContent = BUILDER_FAMILY_TREE[key].label;
+      btn.addEventListener('click', function () {
+        builder.family = key;
+        builder.extension = BUILDER_FAMILY_TREE[key].extensions[0];
+        renderBuilderFamily();
+        renderBuilderExtension();
+        applyBuilder();
+      });
+      builderFamilyEl.appendChild(btn);
+    });
+  }
+
+  function renderBuilderExtension() {
+    builderExtensionEl.innerHTML = '';
+    BUILDER_FAMILY_TREE[builder.family].extensions.forEach(function (ext) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'builder-chip' + (builder.extension.suffix === ext.suffix ? ' is-active' : '');
+      btn.textContent = ext.label;
+      btn.addEventListener('click', function () {
+        builder.extension = ext;
+        renderBuilderExtension();
+        applyBuilder();
+      });
+      builderExtensionEl.appendChild(btn);
+    });
+  }
+
+  /* =========================================================================
      URL query param sync (?chord=&instrument=&tuning=&embed=1) — makes the
      current chord/instrument shareable or embeddable via <iframe>.
      ========================================================================= */
@@ -656,6 +821,10 @@
      ========================================================================= */
 
   renderQuickPicks();
+  renderBuilderRoot();
+  renderBuilderAccidental();
+  renderBuilderFamily();
+  renderBuilderExtension();
   populateTuningSelect();
   loadFromUrl();
   renderAll();

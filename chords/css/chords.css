@@ -96,6 +96,15 @@
 
 .chord-text-input.is-invalid { border-color: var(--nk-gold); }
 
+.chord-hint {
+  margin: 0.7rem 0 0;
+  font-size: 0.68rem;
+  line-height: 1.5;
+  color: var(--nk-cream);
+  text-align: center;
+  max-width: 480px;
+}
+
 /* ---------- quick picks ---------- */
 
 .quick-picks {
@@ -161,6 +170,66 @@
   color: var(--nk-gold);
   text-align: center;
   min-height: 1.2em;
+}
+
+/* ---------- chord builder ---------- */
+
+.builder-section {
+  width: 100%;
+  margin-top: 1.3rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.builder-label {
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--nk-gold);
+}
+
+.builder-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.builder-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem;
+  max-width: 560px;
+}
+
+.builder-chip {
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--nk-cream-strong);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.74rem;
+  padding: 0.4rem 0.7rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.builder-chip:hover, .builder-chip:focus-visible {
+  border-color: rgba(111, 194, 255, 0.4);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.builder-chip.is-active {
+  background: var(--nk-c2);
+  border-color: var(--nk-c2);
+  color: #fff;
 }
 
 /* ---------- diagrams widget ---------- */
