@@ -183,6 +183,13 @@
     function xFret(f) {
       return state.leftHanded ? (PAD_L + (fc - f) * FRET_W) : (PAD_L + f * FRET_W);
     }
+    // Fret 0 (open string) sits at the nut; fret N (N>=1) is played in the
+    // space between wire N-1 and wire N, so its marker belongs at that
+    // space's midpoint, not on the wire itself.
+    function xForFretSpace(f) {
+      if (f === 0) return xFret(0);
+      return (xFret(f - 1) + xFret(f)) / 2;
+    }
     function yString(i) { return PAD_TOP + i * STR_H; }
 
     fretboardSvg.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
@@ -210,7 +217,7 @@
 
     [3, 5, 7, 9, 12, 15, 17, 19, 21].forEach(function (mf) {
       if (mf > fc) return;
-      var cx = xFret(mf);
+      var cx = xForFretSpace(mf);
       var baseY = yString(numStrings - 1) + 18;
 
       var numEl = document.createElementNS(SVG_NS, 'text');
@@ -238,7 +245,7 @@
         var isChordTone = !!chordSet[pc];
         if (state.chordTonesOnly && !isChordTone) continue;
 
-        var cx2 = xFret(fr), cy2 = yString(s);
+        var cx2 = xForFretSpace(fr), cy2 = yString(s);
         var g = document.createElementNS(SVG_NS, 'g');
 
         var circle = document.createElementNS(SVG_NS, 'circle');
