@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Metronome</title>
-<meta name="description" content="A traditional-style metronome with numeric counting, custom rhythms, polyrhythms and switchable click sounds.">
+<title>Music Tools</title>
+<meta name="description" content="A growing collection of small, focused tools for practicing and playing music.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link href="css/style.css?v=3" rel="stylesheet">
+<link href="css/site.css?v=1" rel="stylesheet">
 </head>
 <body>
 
@@ -45,158 +45,44 @@
 <div class="blob blob-2" aria-hidden="true"></div>
 <div class="blob blob-3" aria-hidden="true"></div>
 
-<div class="dashboard" id="dashboard">
+<div class="dashboard">
 
   <header class="app-header">
-    <h1 class="app-title">Metronome</h1>
-    <p class="app-sub">Pendulum &amp; numeric click, custom rhythms, polyrhythms, switchable sounds</p>
+    <h1 class="app-title">Music Tools</h1>
+    <p class="app-sub">A growing collection of small, focused tools for practicing and playing music.</p>
   </header>
 
-  <div class="dash-columns">
+  <div class="tool-grid">
 
-    <div class="dash-col">
-      <section class="widget metro-widget glass">
-        <div class="metro-stage">
-          <div class="metro-body">
-            <div class="metro-scale">
-              <span class="metro-tick" style="--tick-angle:-25deg"></span>
-              <span class="metro-tick" style="--tick-angle:-12.5deg"></span>
-              <span class="metro-tick metro-tick--center" style="--tick-angle:0deg"></span>
-              <span class="metro-tick" style="--tick-angle:12.5deg"></span>
-              <span class="metro-tick" style="--tick-angle:25deg"></span>
-            </div>
-            <div class="metro-needle" id="metroNeedle">
-              <div class="metro-weight" id="metroWeight"></div>
-            </div>
-            <div class="metro-pivot"></div>
-          </div>
-        </div>
+    <a class="tool-card glass" href="metronome/">
+      <span class="tool-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8.5 20h7l-2-14.5a1 1 0 0 0-1-.9h-1a1 1 0 0 0-1 .9L8.5 20z"></path>
+          <path d="M7 15.5h10"></path>
+          <line x1="12" y1="18" x2="14.8" y2="6.4"></line>
+        </svg>
+      </span>
+      <h2 class="tool-card-title">Metronome</h2>
+      <p class="tool-card-desc">Pendulum &amp; numeric click, custom rhythms, polyrhythms, and four switchable click sounds.</p>
+    </a>
 
-        <div class="metro-transport">
-          <button type="button" class="metro-play" id="playBtn" aria-label="Start metronome" aria-pressed="false">
-            <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5z"></path></svg>
-            <svg class="icon-stop" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"></rect></svg>
-          </button>
-          <button type="button" class="metro-tap" id="tapBtn">Tap</button>
-        </div>
-
-        <div class="bpm-block">
-          <div class="bpm-row">
-            <button type="button" class="bpm-step" id="bpmDown" aria-label="Decrease tempo">–</button>
-            <div class="bpm-readout">
-              <input type="number" id="bpmInput" class="bpm-input" min="20" max="300" step="1" value="120" inputmode="numeric" aria-label="Beats per minute">
-              <span class="bpm-unit">BPM</span>
-            </div>
-            <button type="button" class="bpm-step" id="bpmUp" aria-label="Increase tempo">+</button>
-          </div>
-          <input type="range" id="bpmSlider" class="bpm-slider" min="20" max="300" step="1" value="120" aria-label="Tempo slider">
-        </div>
-      </section>
-    </div>
-
-    <div class="dash-col">
-      <section class="widget counter-widget glass">
-        <span class="widget-eyebrow">Beat</span>
-        <div class="beat-dots" id="beatDots"></div>
-        <div class="beat-number" id="beatNumber">–</div>
-        <div class="beat-meta" id="beatMeta">Ready</div>
-      </section>
-
-      <section class="widget rhythm-widget glass">
-        <span class="widget-eyebrow">Rhythm</span>
-        <div class="rhythm-presets" id="rhythmPresets"></div>
-        <div class="rhythm-custom">
-          <label class="rhythm-field">
-            <span>Beats</span>
-            <input type="number" id="numeratorInput" min="1" max="16" value="4" inputmode="numeric">
-          </label>
-          <span class="rhythm-slash">/</span>
-          <label class="rhythm-field">
-            <span>Note</span>
-            <select id="denominatorInput">
-              <option value="2">2</option>
-              <option value="4" selected>4</option>
-              <option value="8">8</option>
-              <option value="16">16</option>
-            </select>
-          </label>
-        </div>
-        <div class="rhythm-sub-row">
-          <span class="seg-label">Subdivide</span>
-          <div class="seg-control" id="subdivisionControl">
-            <button type="button" data-value="1" class="is-active">Off</button>
-            <button type="button" data-value="2">2</button>
-            <button type="button" data-value="3">3</button>
-            <button type="button" data-value="4">4</button>
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <div class="dash-col">
-      <section class="widget length-widget glass">
-        <span class="widget-eyebrow">Length</span>
-        <div class="length-row">
-          <span class="seg-label">Count</span>
-          <div class="seg-control" id="lengthControl">
-            <button type="button" data-value="infinite" class="is-active">∞</button>
-            <button type="button" data-value="bars">Bars</button>
-          </div>
-          <input type="number" id="barsInput" class="bars-input" min="1" max="999" value="8" disabled aria-label="Number of bars">
-        </div>
-        <div class="length-row">
-          <span class="seg-label">Count-in</span>
-          <div class="seg-control" id="precountControl">
-            <button type="button" data-value="0" class="is-active">Off</button>
-            <button type="button" data-value="1">1 bar</button>
-            <button type="button" data-value="2">2 bars</button>
-          </div>
-        </div>
-      </section>
-
-      <section class="widget poly-widget glass">
-        <div class="poly-header">
-          <span class="widget-eyebrow">Polyrhythm</span>
-          <label class="switch">
-            <input type="checkbox" id="polyToggle">
-            <span class="switch-track"><span class="switch-thumb"></span></span>
-          </label>
-        </div>
-        <div class="poly-ratio">
-          <input type="number" id="polyAInput" min="2" max="16" value="3" disabled aria-label="Polyrhythm layer A beats">
-          <span class="poly-colon">:</span>
-          <input type="number" id="polyBInput" min="2" max="16" value="4" disabled aria-label="Polyrhythm layer B beats">
-        </div>
-        <div class="poly-viz" id="polyViz">
-          <div class="poly-row" id="polyRowA" data-label="A"></div>
-          <div class="poly-row" id="polyRowB" data-label="B"></div>
-        </div>
-      </section>
-
-      <section class="widget sounds-widget glass">
-        <span class="widget-eyebrow">Sounds</span>
-        <div class="sound-kit" id="soundKit"></div>
-        <div class="sound-assign" id="soundAssign"></div>
-        <div class="volume-row">
-          <span>Volume</span>
-          <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.8" aria-label="Master volume">
-        </div>
-      </section>
+    <div class="tool-card tool-card-soon glass">
+      <span class="tool-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 18V5l12-2v13"></path>
+          <circle cx="6" cy="18" r="3"></circle>
+          <circle cx="18" cy="16" r="3"></circle>
+        </svg>
+      </span>
+      <h2 class="tool-card-title">More tools</h2>
+      <p class="tool-card-desc">Tuners, ear trainers and more are on the way.</p>
+      <span class="tool-card-tag">Coming soon</span>
     </div>
 
   </div>
 
 </div>
 
-<div class="kbd-hint" id="kbdHint" aria-hidden="true">
-  <div class="kbd-hint-inner">
-    <div class="kbd-hint-row"><kbd class="kbd-hint-key kbd-hint-key--wide">Space</kbd><span class="kbd-hint-text">Play / Stop</span></div>
-    <div class="kbd-hint-row"><span class="kbd-hint-combo"><kbd class="kbd-hint-key">&uarr;</kbd><kbd class="kbd-hint-key">&darr;</kbd></span><span class="kbd-hint-text">Tempo</span></div>
-    <div class="kbd-hint-row"><span class="kbd-hint-combo"><kbd class="kbd-hint-key">1</kbd><span class="kbd-hint-dash">&ndash;</span><kbd class="kbd-hint-key">9</kbd></span><span class="kbd-hint-text">Beats per bar</span></div>
-    <div class="kbd-hint-row"><kbd class="kbd-hint-key">T</kbd><span class="kbd-hint-text">Tap tempo</span></div>
-  </div>
-</div>
-
-<script src="js/app.js?v=3"></script>
+<script src="js/background.js?v=1"></script>
 </body>
 </html>
