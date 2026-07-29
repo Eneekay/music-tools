@@ -1,0 +1,408 @@
+/* Tuner — widget styles specific to this tool. Shared chrome (background
+   layers, glass, dashboard/widget layout, floating keyboard hint) lives in
+   ../../css/site.css. */
+
+/* ---------- instrument tabs ---------- */
+
+.instrument-widget { align-items: center; }
+
+.instrument-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: center;
+  margin-bottom: 0.8rem;
+}
+
+.instrument-tab {
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--nk-cream-strong);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.76rem;
+  padding: 0.4rem 0.65rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.instrument-tab:hover, .instrument-tab:focus-visible {
+  border-color: rgba(111, 194, 255, 0.4);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.instrument-tab.is-active {
+  background: var(--nk-c2);
+  border-color: var(--nk-c2);
+  color: #fff;
+}
+
+/* ---------- instrument diagram ---------- */
+
+.instrument-stage {
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.instrument-art {
+  display: none;
+  width: auto;
+  height: 100%;
+  max-height: 240px;
+}
+
+.instrument-art.is-active { display: block; }
+
+.instrument-body {
+  fill: rgba(255, 255, 255, 0.05);
+  stroke: rgba(255, 255, 255, 0.22);
+  stroke-width: 1.5;
+}
+
+.instrument-neck-edge {
+  stroke: rgba(255, 255, 255, 0.14);
+  stroke-width: 1;
+}
+
+.instrument-nut, .instrument-bridge {
+  stroke: rgba(255, 255, 255, 0.3);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.tuner-string {
+  stroke: var(--nk-cream);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  transition: stroke 0.15s ease, filter 0.15s ease;
+}
+
+.tuner-string-hit {
+  stroke: transparent;
+  stroke-width: 14;
+  cursor: pointer;
+}
+
+.tuner-string.is-playing {
+  stroke: var(--nk-c1);
+  filter: drop-shadow(0 0 4px rgba(111, 194, 255, 0.9));
+}
+
+.tuner-string.is-target {
+  stroke: var(--nk-gold);
+  filter: drop-shadow(0 0 4px rgba(255, 122, 51, 0.8));
+}
+
+.tuner-string.is-target.is-in-tune {
+  stroke: var(--nk-green);
+  filter: drop-shadow(0 0 5px rgba(74, 222, 128, 0.85));
+}
+
+/* ---------- string pills ---------- */
+
+.string-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: center;
+  margin: 0.8rem 0;
+}
+
+.string-pill {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--nk-cream-strong);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.72rem;
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+}
+
+.string-pill:hover, .string-pill:focus-visible {
+  border-color: rgba(111, 194, 255, 0.4);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.string-pill:active { transform: scale(0.95); }
+
+.string-pill.is-playing {
+  background: var(--nk-c1);
+  border-color: var(--nk-c1);
+  color: var(--nk-c0);
+}
+
+.string-pill.is-target {
+  border-color: var(--nk-gold);
+  color: var(--nk-c4);
+}
+
+.string-pill.is-target.is-in-tune {
+  border-color: var(--nk-green);
+  color: var(--nk-green);
+}
+
+/* ---------- tuning select ---------- */
+
+.tuning-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.tuning-select {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  padding: 0.4rem 0.6rem;
+  color: var(--nk-c4);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.8rem;
+  outline: none;
+  cursor: pointer;
+}
+
+.tuning-select:focus { border-color: var(--nk-c1); box-shadow: 0 0 0 3px rgba(111, 194, 255, 0.15); }
+
+/* ---------- tuner gauge (needle, echoes the metronome pendulum) ---------- */
+
+.tuner-widget { align-items: center; text-align: center; }
+
+.tuner-gauge {
+  position: relative;
+  width: 200px;
+  height: 110px;
+  margin: 0.4rem 0 0.9rem;
+}
+
+.gauge-scale { position: absolute; inset: 0; pointer-events: none; }
+
+.gauge-tick {
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  width: 2px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 2px;
+  transform-origin: bottom center;
+  transform: translateX(-50%) rotate(var(--tick-angle)) translateY(-84px);
+}
+
+.gauge-tick--center {
+  background: var(--nk-green);
+  height: 16px;
+  opacity: 0.7;
+}
+
+.tuner-needle {
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  width: 4px;
+  height: 92px;
+  background: linear-gradient(to top, var(--nk-c1), rgba(111, 194, 255, 0.15));
+  border-radius: 3px;
+  transform-origin: bottom center;
+  transform: translateX(-50%) rotate(0deg);
+  box-shadow: 0 0 14px rgba(111, 194, 255, 0.55);
+  transition: transform 0.12s ease-out, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tuner-needle.is-in-tune {
+  background: linear-gradient(to top, var(--nk-green), rgba(74, 222, 128, 0.15));
+  box-shadow: 0 0 16px rgba(74, 222, 128, 0.7);
+}
+
+.tuner-needle.is-idle { transform: translateX(-50%) rotate(0deg); opacity: 0.3; }
+
+.tuner-pivot {
+  position: absolute;
+  left: 50%;
+  bottom: -2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--nk-c4);
+  transform: translateX(-50%);
+  box-shadow: 0 0 8px rgba(247, 246, 241, 0.5);
+}
+
+/* ---------- tuner readout ---------- */
+
+.tuner-note {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(2.8rem, 5.6vw, 3.8rem);
+  line-height: 1;
+  color: var(--nk-c4);
+  text-shadow: 0 0 40px rgba(111, 194, 255, 0.28);
+  transition: color 0.2s ease;
+}
+
+.tuner-note.is-in-tune { color: var(--nk-green); }
+
+.tuner-cents {
+  margin-top: 0.35rem;
+  font-size: clamp(0.78rem, 1.2vw, 0.92rem);
+  font-weight: 600;
+  color: var(--nk-cream);
+  min-height: 1.3em;
+}
+
+.tuner-cents.is-in-tune { color: var(--nk-green); }
+
+.tuner-freq {
+  margin-top: 0.15rem;
+  font-size: 0.68rem;
+  color: var(--nk-cream);
+  min-height: 1.2em;
+}
+
+/* ---------- listen button + status ---------- */
+
+.tuner-listen-btn {
+  margin-top: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  border: none;
+  background: var(--nk-c2);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.8rem;
+  padding: 0.6rem 1.3rem;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(38, 83, 217, 0.45);
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.tuner-listen-btn svg { width: 18px; height: 18px; }
+
+.tuner-listen-btn:hover { background: var(--nk-c2h); transform: translateY(-2px); }
+.tuner-listen-btn:active { transform: translateY(0) scale(0.97); }
+
+.tuner-listen-btn.is-listening {
+  background: var(--nk-gold);
+  box-shadow: 0 10px 24px rgba(255, 122, 51, 0.45);
+}
+
+.tuner-status {
+  margin: 0.6rem 0 0;
+  font-size: 0.68rem;
+  color: var(--nk-cream);
+  min-height: 1.3em;
+  max-width: 260px;
+}
+
+.tuner-status.is-error { color: var(--nk-gold); font-weight: 600; }
+
+.tuner-mode-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 0.9rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  width: 100%;
+}
+
+/* ---------- calibration ---------- */
+
+.calib-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  font-size: 0.74rem;
+  font-weight: 500;
+  color: var(--nk-cream-strong);
+}
+
+.calib-field--detune { margin-top: 1rem; }
+
+.calib-value {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.calib-value input {
+  width: 4.5ch;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  padding: 0.25rem 0.4rem;
+  color: var(--nk-c4);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-align: right;
+  outline: none;
+}
+
+.calib-value input:focus { border-color: var(--nk-c1); box-shadow: 0 0 0 3px rgba(111, 194, 255, 0.15); }
+
+.calib-unit {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--nk-cream);
+}
+
+.calib-slider {
+  width: 100%;
+  margin-top: 0.4rem;
+  accent-color: var(--nk-c1);
+  cursor: pointer;
+}
+
+.calib-detune-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.calib-detune-row .calib-slider { flex: 1; margin-top: 0; }
+
+.calib-reset {
+  flex-shrink: 0;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--nk-cream-strong);
+  font-size: 0.66rem;
+  font-weight: 600;
+  padding: 0.3rem 0.65rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.calib-reset:hover, .calib-reset:focus-visible {
+  color: var(--nk-c1);
+  border-color: rgba(111, 194, 255, 0.4);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* ---------- reference tone ---------- */
+
+.tone-wave-control { justify-content: center; margin-bottom: 0.9rem; }
+
+.tone-hint {
+  margin: 0.9rem 0 0;
+  font-size: 0.68rem;
+  line-height: 1.5;
+  color: var(--nk-cream);
+  text-align: center;
+}

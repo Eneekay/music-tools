@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tuner — Music Tools</title>
+<meta name="description" content="An instrument tuner for guitar, bass, ukulele, violin and bouzouki, with tuning presets, microtuning calibration and microphone pitch detection.">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="../css/site.css?v=1" rel="stylesheet">
+<link href="css/tuner.css?v=1" rel="stylesheet">
+</head>
+<body>
+
+<div class="contour-bg" aria-hidden="true">
+  <svg class="contour-group contour-group--a" viewBox="0 0 2880 64" preserveAspectRatio="none">
+    <path class="contour-line" d="M0,14 C240,23 480,5 720,14 C960,23 1200,5 1440,14 C1680,23 1920,5 2160,14 C2400,23 2640,5 2880,14"></path>
+    <path class="contour-line" d="M0,23 C240,32 480,14 720,23 C960,32 1200,14 1440,23 C1680,32 1920,14 2160,23 C2400,32 2640,14 2880,23"></path>
+    <path class="contour-line" d="M0,32 C240,41 480,23 720,32 C960,41 1200,23 1440,32 C1680,41 1920,23 2160,32 C2400,41 2640,23 2880,32"></path>
+    <path class="contour-line" d="M0,41 C240,50 480,32 720,41 C960,50 1200,32 1440,41 C1680,50 1920,32 2160,41 C2400,50 2640,32 2880,41"></path>
+    <path class="contour-line" d="M0,50 C240,59 480,41 720,50 C960,59 1200,41 1440,50 C1680,59 1920,41 2160,50 C2400,59 2640,41 2880,50"></path>
+  </svg>
+  <svg class="contour-group contour-group--b" viewBox="0 0 2880 64" preserveAspectRatio="none">
+    <path class="contour-line" d="M0,14 C240,8 480,20 720,14 C960,8 1200,20 1440,14 C1680,8 1920,20 2160,14 C2400,8 2640,20 2880,14"></path>
+    <path class="contour-line" d="M0,23 C240,17 480,29 720,23 C960,17 1200,29 1440,23 C1680,17 1920,29 2160,23 C2400,17 2640,29 2880,23"></path>
+    <path class="contour-line" d="M0,32 C240,26 480,38 720,32 C960,26 1200,38 1440,32 C1680,26 1920,38 2160,32 C2400,26 2640,38 2880,32"></path>
+    <path class="contour-line" d="M0,41 C240,35 480,47 720,41 C960,35 1200,47 1440,41 C1680,35 1920,47 2160,41 C2400,35 2640,47 2880,41"></path>
+    <path class="contour-line" d="M0,50 C240,44 480,56 720,50 C960,44 1200,56 1440,50 C1680,44 1920,56 2160,50 C2400,44 2640,56 2880,50"></path>
+  </svg>
+  <svg class="contour-group contour-group--c" viewBox="0 0 2880 64" preserveAspectRatio="none">
+    <path class="contour-line" d="M0,14 C240,26 480,2 720,14 C960,26 1200,2 1440,14 C1680,26 1920,2 2160,14 C2400,26 2640,2 2880,14"></path>
+    <path class="contour-line" d="M0,23 C240,35 480,11 720,23 C960,35 1200,11 1440,23 C1680,35 1920,11 2160,23 C2400,35 2640,11 2880,23"></path>
+    <path class="contour-line" d="M0,32 C240,44 480,20 720,32 C960,44 1200,20 1440,32 C1680,44 1920,20 2160,32 C2400,44 2640,20 2880,32"></path>
+    <path class="contour-line" d="M0,41 C240,53 480,29 720,41 C960,53 1200,29 1440,41 C1680,53 1920,29 2160,41 C2400,53 2640,29 2880,41"></path>
+    <path class="contour-line" d="M0,50 C240,62 480,38 720,50 C960,62 1200,38 1440,50 C1680,62 1920,38 2160,50 C2400,62 2640,38 2880,50"></path>
+  </svg>
+</div>
+<canvas id="notes-canvas" aria-hidden="true"></canvas>
+<div class="dot-grid" aria-hidden="true"></div>
+<div class="blob blob-1" aria-hidden="true"></div>
+<div class="blob blob-2" aria-hidden="true"></div>
+<div class="blob blob-3" aria-hidden="true"></div>
+
+<div class="dashboard">
+
+  <header class="app-header">
+    <a class="back-link" href="../">&larr; Music Tools</a>
+    <h1 class="app-title">Tuner</h1>
+    <p class="app-sub">Guitar, bass, ukulele, violin &amp; bouzouki — tuning presets, microtuning and mic pitch detection</p>
+  </header>
+
+  <div class="dash-columns">
+
+    <div class="dash-col">
+      <section class="widget instrument-widget widget--filler glass">
+        <span class="widget-eyebrow">Instrument</span>
+        <div class="instrument-tabs" id="instrumentTabs">
+          <button type="button" class="instrument-tab is-active" data-instrument="guitar">Guitar</button>
+          <button type="button" class="instrument-tab" data-instrument="bass">Bass</button>
+          <button type="button" class="instrument-tab" data-instrument="ukulele">Ukulele</button>
+          <button type="button" class="instrument-tab" data-instrument="violin">Violin</button>
+          <button type="button" class="instrument-tab" data-instrument="bouzouki">Bouzouki</button>
+        </div>
+
+        <div class="instrument-stage" id="instrumentStage">
+
+          <svg class="instrument-art is-active" data-instrument="guitar" viewBox="0 0 160 260" aria-label="Guitar">
+            <path class="instrument-body" d="M50,108 C38,108 32,130 34,150 C36,168 46,178 58,182 C46,188 34,200 32,222 C30,246 50,256 80,256 C110,256 130,246 128,222 C126,200 114,188 102,182 C114,178 124,168 126,150 C128,130 122,108 110,108 C100,100 90,98 80,98 C70,98 60,100 50,108 Z"></path>
+            <line class="instrument-neck-edge" x1="64" y1="14" x2="64" y2="148"></line>
+            <line class="instrument-neck-edge" x1="96" y1="14" x2="96" y2="148"></line>
+            <line class="instrument-nut" x1="60" y1="14" x2="100" y2="14"></line>
+            <line class="instrument-bridge" x1="58" y1="148" x2="102" y2="148"></line>
+            <g class="tuner-strings" id="stringsGuitar" data-nut="14" data-bridge="148" data-x0="64" data-x1="96"></g>
+          </svg>
+
+          <svg class="instrument-art" data-instrument="bass" viewBox="0 0 160 260" aria-label="Bass guitar">
+            <path class="instrument-body" d="M55,178 C42,178 36,196 38,212 C40,226 48,234 58,238 C46,242 36,250 36,256 L124,256 C124,250 114,242 102,238 C112,234 120,226 122,212 C124,196 118,178 105,178 C96,172 88,170 80,170 C72,170 64,172 55,178 Z"></path>
+            <line class="instrument-neck-edge" x1="66" y1="14" x2="66" y2="190"></line>
+            <line class="instrument-neck-edge" x1="94" y1="14" x2="94" y2="190"></line>
+            <line class="instrument-nut" x1="62" y1="14" x2="98" y2="14"></line>
+            <line class="instrument-bridge" x1="60" y1="190" x2="100" y2="190"></line>
+            <g class="tuner-strings" id="stringsBass" data-nut="14" data-bridge="190" data-x0="66" data-x1="94"></g>
+          </svg>
+
+          <svg class="instrument-art" data-instrument="ukulele" viewBox="0 0 160 210" aria-label="Ukulele">
+            <path class="instrument-body" d="M58,96 C46,96 40,110 42,124 C44,136 52,144 60,148 C50,152 40,162 40,178 C40,194 58,202 80,202 C102,202 120,194 120,178 C120,162 110,152 100,148 C108,144 116,136 118,124 C120,110 114,96 102,96 C94,90 88,88 80,88 C72,88 66,90 58,96 Z"></path>
+            <line class="instrument-neck-edge" x1="66" y1="14" x2="66" y2="95"></line>
+            <line class="instrument-neck-edge" x1="94" y1="14" x2="94" y2="95"></line>
+            <line class="instrument-nut" x1="62" y1="14" x2="98" y2="14"></line>
+            <line class="instrument-bridge" x1="60" y1="95" x2="100" y2="95"></line>
+            <g class="tuner-strings" id="stringsUkulele" data-nut="14" data-bridge="95" data-x0="66" data-x1="94"></g>
+          </svg>
+
+          <svg class="instrument-art" data-instrument="violin" viewBox="0 0 160 250" aria-label="Violin">
+            <path class="instrument-body" d="M50,104 C40,104 34,112 36,124 L44,150 L36,160 C30,168 30,180 38,186 L46,196 L38,206 C30,214 30,226 38,234 C46,242 60,246 80,246 C100,246 114,242 122,234 C130,226 130,214 122,206 L114,196 L122,186 C130,180 130,168 124,160 L116,150 L124,124 C126,112 120,104 110,104 C98,98 88,96 80,96 C72,96 62,98 50,104 Z"></path>
+            <line class="instrument-neck-edge" x1="68" y1="14" x2="68" y2="108"></line>
+            <line class="instrument-neck-edge" x1="92" y1="14" x2="92" y2="108"></line>
+            <line class="instrument-nut" x1="64" y1="14" x2="96" y2="14"></line>
+            <line class="instrument-bridge" x1="62" y1="108" x2="98" y2="108"></line>
+            <g class="tuner-strings" id="stringsViolin" data-nut="14" data-bridge="108" data-x0="68" data-x1="92"></g>
+          </svg>
+
+          <svg class="instrument-art" data-instrument="bouzouki" viewBox="0 0 160 258" aria-label="Bouzouki">
+            <path class="instrument-body" d="M62,172 C48,172 40,184 40,200 C40,220 48,238 62,248 C70,253 90,253 98,248 C112,238 120,220 120,200 C120,184 112,172 98,172 C90,166 70,166 62,172 Z"></path>
+            <line class="instrument-neck-edge" x1="66" y1="14" x2="66" y2="172"></line>
+            <line class="instrument-neck-edge" x1="94" y1="14" x2="94" y2="172"></line>
+            <line class="instrument-nut" x1="62" y1="14" x2="98" y2="14"></line>
+            <line class="instrument-bridge" x1="60" y1="172" x2="100" y2="172"></line>
+            <g class="tuner-strings" id="stringsBouzouki" data-nut="14" data-bridge="172" data-x0="66" data-x1="94"></g>
+          </svg>
+
+        </div>
+
+        <div class="string-pills" id="stringPills"></div>
+
+        <div class="tuning-row">
+          <span class="seg-label">Tuning</span>
+          <select class="tuning-select" id="tuningSelect"></select>
+        </div>
+      </section>
+    </div>
+
+    <div class="dash-col">
+      <section class="widget tuner-widget widget--filler glass">
+        <span class="widget-eyebrow">Pitch</span>
+
+        <div class="tuner-gauge">
+          <div class="gauge-scale">
+            <span class="gauge-tick" style="--tick-angle:-45deg"></span>
+            <span class="gauge-tick" style="--tick-angle:-22.5deg"></span>
+            <span class="gauge-tick gauge-tick--center" style="--tick-angle:0deg"></span>
+            <span class="gauge-tick" style="--tick-angle:22.5deg"></span>
+            <span class="gauge-tick" style="--tick-angle:45deg"></span>
+          </div>
+          <div class="tuner-needle" id="tunerNeedle"></div>
+          <div class="tuner-pivot"></div>
+        </div>
+
+        <div class="tuner-readout">
+          <div class="tuner-note" id="tunerNote">–</div>
+          <div class="tuner-cents" id="tunerCents">&nbsp;</div>
+          <div class="tuner-freq" id="tunerFreq">&nbsp;</div>
+        </div>
+
+        <button type="button" class="tuner-listen-btn" id="listenBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="2" width="6" height="12" rx="3"></rect>
+            <path d="M5 11a7 7 0 0 0 14 0"></path>
+            <line x1="12" y1="18" x2="12" y2="22"></line>
+            <line x1="8" y1="22" x2="16" y2="22"></line>
+          </svg>
+          <span id="listenBtnLabel">Start Listening</span>
+        </button>
+
+        <p class="tuner-status" id="tunerStatus">Tap Start to tune by ear using your microphone.</p>
+
+        <div class="tuner-mode-row">
+          <span class="seg-label">Chromatic</span>
+          <label class="switch">
+            <input type="checkbox" id="chromaticToggle">
+            <span class="switch-track"><span class="switch-thumb"></span></span>
+          </label>
+        </div>
+      </section>
+    </div>
+
+    <div class="dash-col">
+      <section class="widget calibration-widget glass">
+        <span class="widget-eyebrow">Calibration</span>
+
+        <label class="calib-field">
+          <span>A4 Reference</span>
+          <span class="calib-value"><input type="number" id="a4Input" min="415" max="466" step="1" value="440" inputmode="numeric"><span class="calib-unit">Hz</span></span>
+        </label>
+        <input type="range" id="a4Slider" min="415" max="466" step="1" value="440" class="calib-slider" aria-label="A4 reference pitch">
+
+        <label class="calib-field calib-field--detune">
+          <span>Fine Detune</span>
+          <span class="calib-value"><input type="number" id="detuneInput" min="-50" max="50" step="1" value="0" inputmode="numeric"><span class="calib-unit">&cent;</span></span>
+        </label>
+        <div class="calib-detune-row">
+          <input type="range" id="detuneSlider" min="-50" max="50" step="1" value="0" class="calib-slider" aria-label="Fine detune in cents">
+          <button type="button" class="calib-reset" id="detuneReset" aria-label="Reset detune to zero">Reset</button>
+        </div>
+      </section>
+
+      <section class="widget tone-widget widget--filler glass">
+        <span class="widget-eyebrow">Reference Tone</span>
+        <div class="seg-control tone-wave-control" id="waveControl">
+          <button type="button" data-value="sine" class="is-active">Sine</button>
+          <button type="button" data-value="triangle">Triangle</button>
+          <button type="button" data-value="sawtooth">Saw</button>
+        </div>
+        <div class="volume-row">
+          <span>Volume</span>
+          <input type="range" id="toneVolumeSlider" min="0" max="1" step="0.01" value="0.7" aria-label="Reference tone volume">
+        </div>
+        <p class="tone-hint">Click any string on the diagram to hear its reference pitch.</p>
+      </section>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="kbd-hint" id="kbdHint" aria-hidden="true">
+  <div class="kbd-hint-inner">
+    <div class="kbd-hint-row"><kbd class="kbd-hint-key kbd-hint-key--wide">Space</kbd><span class="kbd-hint-text">Start / Stop mic</span></div>
+    <div class="kbd-hint-row"><span class="kbd-hint-combo"><kbd class="kbd-hint-key">1</kbd><span class="kbd-hint-dash">&ndash;</span><kbd class="kbd-hint-key">5</kbd></span><span class="kbd-hint-text">Instrument</span></div>
+    <div class="kbd-hint-row"><kbd class="kbd-hint-key">C</kbd><span class="kbd-hint-text">Chromatic mode</span></div>
+    <div class="kbd-hint-row"><span class="kbd-hint-combo"><kbd class="kbd-hint-key">&uarr;</kbd><kbd class="kbd-hint-key">&darr;</kbd></span><span class="kbd-hint-text">Fine detune</span></div>
+  </div>
+</div>
+
+<script src="../js/background.js?v=1"></script>
+<script src="js/tuner.js?v=1"></script>
+</body>
+</html>
