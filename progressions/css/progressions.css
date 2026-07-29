@@ -1,0 +1,339 @@
+/* Chord Progression Randomizer — widget styles specific to this tool. Shared
+   chrome (background layers, glass, dashboard/widget layout, floating
+   keyboard hint) lives in ../../css/site.css. */
+
+/* ---------- key widget ---------- */
+
+.key-widget { align-items: center; }
+
+.key-controls {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+  gap: clamp(1rem, 2.5vw, 1.75rem);
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.builder-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem;
+  max-width: 320px;
+}
+
+.builder-chip {
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--nk-cream-strong);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.74rem;
+  padding: 0.4rem 0.7rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.builder-chip:hover, .builder-chip:focus-visible {
+  border-color: rgba(111, 194, 255, 0.4);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.builder-chip.is-active {
+  background: var(--nk-c2);
+  border-color: var(--nk-c2);
+  color: #fff;
+}
+
+/* ---------- tags widget ---------- */
+
+.tags-widget { align-items: center; text-align: center; }
+
+.builder-row {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.builder-row + .builder-row { margin-top: 1rem; }
+
+.seg-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tag-clear {
+  border: none;
+  background: none;
+  color: var(--nk-c1);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.62rem;
+  text-transform: none;
+  letter-spacing: normal;
+  cursor: pointer;
+  padding: 0;
+  opacity: 0.75;
+}
+
+.tag-clear:hover, .tag-clear:focus-visible { opacity: 1; text-decoration: underline; }
+
+.tag-chips { max-width: 420px; }
+
+.tag-chips .builder-chip.is-active {
+  background: var(--nk-gold);
+  border-color: var(--nk-gold);
+  color: var(--nk-c0);
+}
+
+.tags-hint {
+  margin: 1rem 0 0;
+  font-size: 0.68rem;
+  line-height: 1.5;
+  color: var(--nk-cream);
+  max-width: 400px;
+}
+
+/* ---------- info widget ---------- */
+
+.info-widget { align-items: center; text-align: center; }
+
+.progression-name {
+  margin: 0.2rem 0 0.6rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  color: var(--nk-c4);
+}
+
+.progression-desc {
+  margin: 0 0 0.9rem;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: var(--nk-cream-strong);
+  max-width: 400px;
+}
+
+.progression-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem;
+  max-width: 400px;
+}
+
+.meta-tag {
+  border-radius: 999px;
+  padding: 0.25rem 0.65rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.meta-tag--vibe {
+  background: rgba(255, 122, 51, 0.16);
+  color: var(--nk-gold);
+  border: 1px solid rgba(255, 122, 51, 0.3);
+}
+
+.meta-tag--genre {
+  background: rgba(111, 194, 255, 0.14);
+  color: var(--nk-c1);
+  border: 1px solid rgba(111, 194, 255, 0.3);
+}
+
+/* ---------- practice widget ---------- */
+
+.practice-widget { align-items: center; }
+
+.practice-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.practice-actions--play { margin-top: 1.3rem; }
+
+.gen-btn {
+  border-radius: 999px;
+  border: none;
+  background: var(--nk-c2);
+  color: #fff;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.82rem;
+  padding: 0.6rem 1.4rem;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(38, 83, 217, 0.4);
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.gen-btn:hover { background: var(--nk-c2h); transform: translateY(-2px); }
+.gen-btn:active { transform: translateY(0) scale(0.97); }
+
+.gen-btn--ghost {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: none;
+  color: var(--nk-cream-strong);
+}
+
+.gen-btn--ghost:hover { background: rgba(255, 255, 255, 0.12); }
+
+.chord-strip {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  max-width: 900px;
+  margin: 1.4rem auto 0;
+  min-height: 84px;
+}
+
+.chord-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  min-width: 74px;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+
+.chord-chip:hover, .chord-chip:focus-visible {
+  border-color: rgba(111, 194, 255, 0.4);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.chord-chip.is-playing {
+  background: var(--nk-gold);
+  border-color: var(--nk-gold);
+  transform: translateY(-3px);
+}
+
+.chord-chip.is-playing .chord-chip-roman,
+.chord-chip.is-playing .chord-chip-name { color: var(--nk-c0); }
+
+.chord-chip-roman {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--nk-cream);
+  letter-spacing: 0.02em;
+}
+
+.chord-chip-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--nk-c4);
+}
+
+.chord-strip-empty {
+  width: 100%;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--nk-cream);
+  padding: 1.6rem 0;
+}
+
+.prog-play-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  border: none;
+  background: var(--nk-green);
+  color: var(--nk-c0);
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.65rem 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(74, 222, 128, 0.35);
+  transition: background-color 0.2s ease, transform 0.15s ease, opacity 0.2s ease;
+}
+
+.prog-play-btn svg { width: 17px; height: 17px; }
+
+.prog-play-btn:hover:not(:disabled) { transform: translateY(-2px); }
+.prog-play-btn:active:not(:disabled) { transform: translateY(0) scale(0.97); }
+.prog-play-btn:disabled { opacity: 0.55; cursor: default; }
+
+/* ---------- history widget ---------- */
+
+.history-widget { align-items: center; text-align: center; }
+
+.history-empty {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--nk-cream);
+}
+
+.history-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 700px;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.55rem 0.9rem;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.history-item:hover, .history-item:focus-visible {
+  border-color: rgba(111, 194, 255, 0.4);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.history-item-key {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--nk-c4);
+  white-space: nowrap;
+}
+
+.history-item-name {
+  flex: 1;
+  font-size: 0.76rem;
+  color: var(--nk-cream-strong);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.history-item-chords {
+  font-size: 0.7rem;
+  color: var(--nk-cream);
+  white-space: nowrap;
+}
