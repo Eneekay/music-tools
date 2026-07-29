@@ -7,6 +7,28 @@
   var ALL_PCS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
   var NATURAL_PCS = [0, 2, 4, 5, 7, 9, 11];
 
+  // Scale definitions for "Scale" note-pool mode, mirroring the Scale
+  // Finder's data and per-root flats/sharps spelling conventions (kept as
+  // a self-contained copy here, matching this codebase's per-tool
+  // convention of not sharing UI-adjacent state across tools).
+  var SCALES = [
+    { id: 'major', label: 'Major (Ionian)', intervals: [0, 2, 4, 5, 7, 9, 11], quality: 'major' },
+    { id: 'dorian', label: 'Dorian', intervals: [0, 2, 3, 5, 7, 9, 10], quality: 'minor' },
+    { id: 'phrygian', label: 'Phrygian', intervals: [0, 1, 3, 5, 7, 8, 10], quality: 'minor' },
+    { id: 'lydian', label: 'Lydian', intervals: [0, 2, 4, 6, 7, 9, 11], quality: 'major' },
+    { id: 'mixolydian', label: 'Mixolydian', intervals: [0, 2, 4, 5, 7, 9, 10], quality: 'major' },
+    { id: 'aeolian', label: 'Minor (Aeolian)', intervals: [0, 2, 3, 5, 7, 8, 10], quality: 'minor' },
+    { id: 'locrian', label: 'Locrian', intervals: [0, 1, 3, 5, 6, 8, 10], quality: 'minor' },
+    { id: 'majorPent', label: 'Major Pentatonic', intervals: [0, 2, 4, 7, 9], quality: 'major' },
+    { id: 'minorPent', label: 'Minor Pentatonic', intervals: [0, 3, 5, 7, 10], quality: 'minor' },
+    { id: 'blues', label: 'Blues', intervals: [0, 3, 5, 6, 7, 10], quality: 'minor' },
+    { id: 'harmonicMinor', label: 'Harmonic Minor', intervals: [0, 2, 3, 5, 7, 8, 11], quality: 'minor' },
+    { id: 'melodicMinor', label: 'Melodic Minor', intervals: [0, 2, 3, 5, 7, 9, 11], quality: 'minor' },
+    { id: 'chromatic', label: 'Chromatic', intervals: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], quality: 'major' }
+  ];
+
+  var MINOR_FLATS = [true, false, true, true, false, true, false, true, false, false, true, false];
+
   var FEEDBACK_DELAY_MS = 700;
   var PROMPT_TIMEOUT_MS = 8000;
 
@@ -29,6 +51,9 @@
     leftHanded: false,
     answerMode: 'tap',
     notePool: 'all',
+    scaleRoot: 0,
+    scaleRootFlats: false,
+    scaleId: 'major',
     metronomeSync: false,
     advanceBeats: 2
   };
@@ -115,6 +140,9 @@
   var metroBeatDotsEl = document.getElementById('metroBeatDots');
 
   var notePoolControl = document.getElementById('notePoolControl');
+  var scalePickerGroupEl = document.getElementById('scalePickerGroup');
+  var trainerRootPicker = document.getElementById('trainerRootPicker');
+  var trainerScaleSelect = document.getElementById('trainerScaleSelect');
   var metronomeSyncToggle = document.getElementById('metronomeSyncToggle');
   var advanceBeatsControl = document.getElementById('advanceBeatsControl');
 
@@ -155,7 +183,7 @@
     var openMidis = tuning.notes.map(function (n) { return MT.parseNoteName(n); });
     var numStrings = openMidis.length;
 
-    var FRET_W = 50, STR_H = 42, PAD_L = 30, PAD_R = 18, PAD_TOP = 20, PAD_BOTTOM = 42;
+    var FRET_W = 50, STR_H = 42, PAD_L = 40, PAD_R = 34, PAD_TOP = 20, PAD_BOTTOM = 42;
     var fc = state.fretCount;
     var width = PAD_L + fc * FRET_W + PAD_R;
     var height = PAD_TOP + (numStrings - 1) * STR_H + PAD_BOTTOM;
@@ -182,6 +210,17 @@
       line.setAttribute('x1', xMin); line.setAttribute('y1', yString(i));
       line.setAttribute('x2', xMax); line.setAttribute('y2', yString(i));
       fretboardSvg.appendChild(line);
+
+      // Open-string note, labeled at the nut end (left in normal
+      // orientation, right when left-handed, since xFret(0) tracks the nut).
+      var openPc = ((openMidis[i] % 12) + 12) % 12;
+      var strLabel = document.createElementNS(SVG_NS, 'text');
+      strLabel.setAttribute('class', 'string-label');
+      strLabel.setAttribute('x', String(xFret(0) + (state.leftHanded ? 12 : -12)));
+      strLabel.setAttribute('y', String(yString(i)));
+      strLabel.setAttribute('text-anchor', state.leftHanded ? 'start' : 'end');
+      strLabel.textContent = promptNameForPc(openPc);
+      fretboardSvg.appendChild(strLabel);
     }
 
     for (var f = 0; f <= fc; f++) {
@@ -278,17 +317,51 @@
       : '—';
   }
 
+  function getCurrentScale() {
+    for (var i = 0; i < SCALES.length; i++) if (SCALES[i].id === state.scaleId) return SCALES[i];
+    return SCALES[0];
+  }
+
+  function effectiveFlatsForScale(scale) {
+    if (scale.id === 'minorPent' || scale.id === 'blues') return true;
+    return scale.quality === 'minor' ? MINOR_FLATS[state.scaleRoot] : state.scaleRootFlats;
+  }
+
+  function scaleNotePool() {
+    var scale = getCurrentScale();
+    return scale.intervals.map(function (iv) { return (state.scaleRoot + iv) % 12; });
+  }
+
+  // Sharps by default (chromatic/naturals training); in Scale mode, spell
+  // each note the way the Scale Finder would - the root keeps whatever
+  // spelling was picked for it, every other tone follows the scale's own
+  // major/minor-key flats convention.
+  function promptNameForPc(pc) {
+    if (state.notePool === 'scale') {
+      var scale = getCurrentScale();
+      var flats = pc === state.scaleRoot ? state.scaleRootFlats : effectiveFlatsForScale(scale);
+      return MT.noteNameForPc(pc, flats);
+    }
+    return MT.noteNameForPc(pc, false);
+  }
+
+  function currentNotePool() {
+    if (state.notePool === 'scale') return scaleNotePool();
+    if (state.notePool === 'natural') return NATURAL_PCS;
+    return ALL_PCS;
+  }
+
   function nextPrompt() {
     if (!session.running) return;
     clearDotFeedback();
     promptNoteEl.classList.remove('is-correct', 'is-wrong');
 
-    var pool = state.notePool === 'natural' ? NATURAL_PCS : ALL_PCS;
+    var pool = currentNotePool();
     var pc;
     do { pc = pool[Math.floor(Math.random() * pool.length)]; } while (pc === session.lastPc && pool.length > 1);
     session.lastPc = pc;
     session.currentPromptPc = pc;
-    session.currentPromptName = MT.noteNameForPc(pc, false);
+    session.currentPromptName = promptNameForPc(pc);
     promptNoteEl.textContent = session.currentPromptName;
     session.promptStartTime = performance.now();
     session.awaitingAnswer = true;
@@ -635,8 +708,40 @@
   }
 
   wireSegControl(answerModeControlEl, function (value) { setAnswerMode(value); });
-  wireSegControl(notePoolControl, function (value) { state.notePool = value; });
+  wireSegControl(notePoolControl, function (value) {
+    state.notePool = value;
+    scalePickerGroupEl.classList.toggle('is-visible', value === 'scale');
+  });
   wireSegControl(advanceBeatsControl, function (value) { state.advanceBeats = parseInt(value, 10); });
+
+  function populateScaleSelect() {
+    trainerScaleSelect.innerHTML = '';
+    SCALES.forEach(function (s) {
+      var opt = document.createElement('option');
+      opt.value = s.id;
+      opt.textContent = s.label;
+      trainerScaleSelect.appendChild(opt);
+    });
+    trainerScaleSelect.value = state.scaleId;
+  }
+
+  function setScaleRoot(pc, flats) {
+    state.scaleRoot = pc;
+    state.scaleRootFlats = flats;
+    Array.prototype.forEach.call(trainerRootPicker.querySelectorAll('button'), function (b) {
+      b.classList.toggle('is-active', parseInt(b.getAttribute('data-pc'), 10) === pc);
+    });
+  }
+
+  trainerRootPicker.addEventListener('click', function (e) {
+    var btn = e.target.closest ? e.target.closest('button') : null;
+    if (!btn) return;
+    setScaleRoot(parseInt(btn.getAttribute('data-pc'), 10), btn.getAttribute('data-flats') === 'true');
+  });
+
+  trainerScaleSelect.addEventListener('change', function () {
+    state.scaleId = trainerScaleSelect.value;
+  });
 
   metronomeSyncToggle.addEventListener('change', function () {
     state.metronomeSync = metronomeSyncToggle.checked;
@@ -676,6 +781,7 @@
      ========================================================================= */
 
   populateTuningSelect();
+  populateScaleSelect();
   renderFretboard();
   renderMetroBeatDots();
   renderStats();

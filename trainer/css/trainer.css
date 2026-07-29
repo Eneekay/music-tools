@@ -183,6 +183,14 @@
   text-anchor: middle;
 }
 
+.string-label {
+  fill: var(--nk-c1);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  dominant-baseline: middle;
+}
+
 .target-dot {
   fill: rgba(255, 255, 255, 0.14);
   stroke: rgba(255, 255, 255, 0.28);
@@ -367,6 +375,51 @@
 .display-row + .display-row { margin-top: 0.9rem; }
 
 .display-row .seg-control { flex-shrink: 0; }
+
+.scale-picker-group {
+  display: none;
+  width: 100%;
+  flex-direction: column;
+  gap: 0.9rem;
+  margin-top: 0.9rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.scale-picker-group.is-visible { display: flex; }
+
+.scale-picker-group.is-visible + .display-row { margin-top: 0.9rem; }
+
+.root-picker {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.3rem;
+}
+
+.root-picker button {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--nk-cream-strong);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.68rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.root-picker button:hover, .root-picker button:focus-visible {
+  border-color: rgba(111, 194, 255, 0.4);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.root-picker button.is-active {
+  background: var(--nk-gold);
+  border-color: var(--nk-gold);
+  color: var(--nk-c0);
+}
 
 .settings-hint {
   margin: 1rem 0 0;
