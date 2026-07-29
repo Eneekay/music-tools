@@ -1,0 +1,258 @@
+/* Scale Finder — widget styles specific to this tool. Shared chrome
+   (background layers, glass, dashboard/widget layout, floating keyboard
+   hint) lives in ../../css/site.css. */
+
+/* ---------- fretboard widget ---------- */
+
+.fretboard-widget { align-items: center; }
+
+.scale-controls {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+  gap: clamp(1rem, 2.5vw, 1.75rem);
+  margin-bottom: 1.2rem;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.control-group--root { max-width: 320px; }
+
+/* ---------- instrument tabs (same visual language as the tuner) ---------- */
+
+.instrument-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: center;
+}
+
+.instrument-tab {
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--nk-cream-strong);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.76rem;
+  padding: 0.4rem 0.65rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.instrument-tab:hover, .instrument-tab:focus-visible {
+  border-color: rgba(111, 194, 255, 0.4);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.instrument-tab.is-active {
+  background: var(--nk-c2);
+  border-color: var(--nk-c2);
+  color: #fff;
+}
+
+.tuning-select,
+.scale-select {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  padding: 0.4rem 0.6rem;
+  color: var(--nk-c4);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.8rem;
+  outline: none;
+  cursor: pointer;
+}
+
+.tuning-select:focus, .scale-select:focus {
+  border-color: var(--nk-c1);
+  box-shadow: 0 0 0 3px rgba(111, 194, 255, 0.15);
+}
+
+/* ---------- root note picker ---------- */
+
+.root-picker {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.3rem;
+}
+
+.root-picker button {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--nk-cream-strong);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.root-picker button:hover, .root-picker button:focus-visible {
+  border-color: rgba(111, 194, 255, 0.4);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.root-picker button.is-active {
+  background: var(--nk-gold);
+  border-color: var(--nk-gold);
+  color: var(--nk-c0);
+}
+
+/* ---------- fretboard diagram ---------- */
+
+.fretboard-wrap {
+  width: 100%;
+  overflow-x: auto;
+  padding: 0.4rem 0.2rem 0.6rem;
+}
+
+.fretboard-svg {
+  display: block;
+  width: 100%;
+  min-width: 560px;
+  height: auto;
+}
+
+.fret-wire {
+  stroke: rgba(255, 255, 255, 0.18);
+  stroke-width: 1.5;
+}
+
+.fret-nut {
+  stroke: rgba(255, 255, 255, 0.4);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.fret-string {
+  stroke: rgba(255, 255, 255, 0.28);
+  stroke-width: 1.2;
+}
+
+.fret-marker {
+  fill: rgba(255, 255, 255, 0.1);
+}
+
+.fret-number {
+  fill: var(--nk-cream);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  text-anchor: middle;
+}
+
+.note-dot {
+  fill: var(--nk-c1);
+  stroke: rgba(16, 20, 31, 0.5);
+  stroke-width: 1;
+  cursor: pointer;
+  transition: fill 0.15s ease, transform 0.1s ease;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.note-dot:hover { transform: scale(1.12); }
+
+.note-dot.is-root {
+  fill: var(--nk-gold);
+}
+
+.note-dot.is-triggered { fill: var(--nk-green); }
+
+.note-label {
+  fill: var(--nk-c0);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+/* ---------- display widget ---------- */
+
+.display-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  width: 100%;
+}
+
+.display-row + .display-row { margin-top: 0.9rem; }
+
+.display-row .seg-control { flex-shrink: 0; }
+
+/* ---------- scale info widget ---------- */
+
+.scale-info-widget { align-items: center; text-align: center; }
+
+.scale-info-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.3rem, 2.4vw, 1.7rem);
+  color: var(--nk-c4);
+  text-shadow: 0 0 30px rgba(111, 194, 255, 0.25);
+}
+
+.scale-info-notes {
+  margin-top: 0.5rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  color: var(--nk-c1);
+}
+
+.scale-info-formula {
+  margin-top: 0.4rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--nk-cream);
+}
+
+.scale-info-parent {
+  margin-top: 0.5rem;
+  font-size: 0.68rem;
+  color: var(--nk-cream);
+  min-height: 1.3em;
+}
+
+.scale-play-btn {
+  margin-top: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  border: none;
+  background: var(--nk-c2);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.8rem;
+  padding: 0.6rem 1.3rem;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(38, 83, 217, 0.45);
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.scale-play-btn svg { width: 16px; height: 16px; }
+
+.scale-play-btn:hover { background: var(--nk-c2h); transform: translateY(-2px); }
+.scale-play-btn:active { transform: translateY(0) scale(0.97); }
+
+.scale-play-btn.is-playing {
+  background: var(--nk-gold);
+  box-shadow: 0 10px 24px rgba(255, 122, 51, 0.45);
+}
