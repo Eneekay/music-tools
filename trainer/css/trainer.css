@@ -1,0 +1,464 @@
+/* Fretboard Trainer — widget styles specific to this tool. Shared chrome
+   (background layers, glass, dashboard/widget layout, floating keyboard
+   hint) lives in ../../css/site.css. */
+
+/* ---------- practice widget ---------- */
+
+.trainer-widget { align-items: center; }
+
+.trainer-controls {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+  gap: clamp(1rem, 2.5vw, 1.75rem);
+  margin-bottom: 1.2rem;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* ---------- instrument tabs (same visual language across the site) ---------- */
+
+.instrument-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: center;
+}
+
+.instrument-tab {
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--nk-cream-strong);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.76rem;
+  padding: 0.4rem 0.65rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.instrument-tab:hover, .instrument-tab:focus-visible {
+  border-color: rgba(111, 194, 255, 0.4);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.instrument-tab.is-active {
+  background: var(--nk-c2);
+  border-color: var(--nk-c2);
+  color: #fff;
+}
+
+.tuning-select {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  padding: 0.4rem 0.6rem;
+  color: var(--nk-c4);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.8rem;
+  outline: none;
+  cursor: pointer;
+}
+
+.tuning-select:focus { border-color: var(--nk-c1); box-shadow: 0 0 0 3px rgba(111, 194, 255, 0.15); }
+
+/* ---------- prompt stage ---------- */
+
+.prompt-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0.4rem 0 1.1rem;
+}
+
+.prompt-note {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(3.4rem, 8vw, 5.2rem);
+  line-height: 1;
+  color: var(--nk-c4);
+  text-shadow: 0 0 40px rgba(111, 194, 255, 0.28);
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.prompt-note.is-correct { color: var(--nk-green); transform: scale(1.06); }
+.prompt-note.is-wrong { color: var(--nk-gold); transform: scale(0.96); }
+
+.prompt-status {
+  margin: 0.5rem 0 0;
+  font-size: 0.8rem;
+  color: var(--nk-cream);
+  min-height: 1.3em;
+}
+
+.trainer-session-btn {
+  margin-top: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  border: none;
+  background: var(--nk-c2);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.65rem 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(38, 83, 217, 0.45);
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.trainer-session-btn svg { width: 17px; height: 17px; }
+
+.trainer-session-btn:hover { background: var(--nk-c2h); transform: translateY(-2px); }
+.trainer-session-btn:active { transform: translateY(0) scale(0.97); }
+
+.trainer-session-btn.is-running {
+  background: var(--nk-gold);
+  box-shadow: 0 10px 24px rgba(255, 122, 51, 0.45);
+}
+
+.trainer-session-btn.is-running svg { display: none; }
+
+.mic-status {
+  margin: 0.7rem 0 0;
+  font-size: 0.68rem;
+  color: var(--nk-cream);
+  min-height: 1.2em;
+}
+
+.mic-status.is-error { color: var(--nk-gold); font-weight: 600; }
+.mic-status.is-live { color: var(--nk-c1); font-weight: 600; }
+
+/* ---------- fretboard diagram ---------- */
+
+.fretboard-wrap {
+  width: 100%;
+  overflow-x: auto;
+  padding: 0.4rem 0.2rem 0.6rem;
+}
+
+.fretboard-svg {
+  display: block;
+  width: 100%;
+  min-width: 640px;
+  height: auto;
+}
+
+.fret-wire {
+  stroke: rgba(255, 255, 255, 0.18);
+  stroke-width: 1.5;
+}
+
+.fret-nut {
+  stroke: rgba(255, 255, 255, 0.4);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.fret-string {
+  stroke: rgba(255, 255, 255, 0.28);
+  stroke-width: 1.2;
+}
+
+.fret-marker {
+  fill: rgba(255, 255, 255, 0.1);
+}
+
+.fret-number {
+  fill: var(--nk-cream);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  text-anchor: middle;
+}
+
+.target-dot {
+  fill: rgba(255, 255, 255, 0.14);
+  stroke: rgba(255, 255, 255, 0.28);
+  stroke-width: 1;
+  cursor: pointer;
+  transition: fill 0.12s ease, stroke 0.12s ease, transform 0.1s ease;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.target-dot:hover { fill: rgba(111, 194, 255, 0.35); transform: scale(1.15); }
+
+.target-dot.is-correct {
+  fill: var(--nk-green);
+  stroke: var(--nk-green);
+}
+
+.target-dot.is-wrong {
+  fill: var(--nk-gold);
+  stroke: var(--nk-gold);
+}
+
+.target-dot.is-reveal {
+  fill: rgba(74, 222, 128, 0.4);
+  stroke: var(--nk-green);
+}
+
+.trainer-widget.is-mic-mode .target-dot { cursor: default; }
+
+/* ---------- embedded mini metronome ---------- */
+
+.mini-metro-widget { align-items: center; text-align: center; }
+
+.mini-metro-transport {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.mini-metro-play {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: none;
+  background: var(--nk-c2);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(38, 83, 217, 0.45);
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.mini-metro-play svg { width: 22px; height: 22px; }
+.mini-metro-play .icon-stop { display: none; }
+
+.mini-metro-play:hover { background: var(--nk-c2h); transform: translateY(-2px); }
+.mini-metro-play:active { transform: translateY(0) scale(0.96); }
+
+.mini-metro-play.is-playing {
+  background: var(--nk-gold);
+  box-shadow: 0 10px 24px rgba(255, 122, 51, 0.45);
+}
+
+.mini-metro-play.is-playing .icon-play { display: none; }
+.mini-metro-play.is-playing .icon-stop { display: block; }
+
+.mini-bpm-block { flex: 1 1 auto; max-width: 200px; }
+
+.mini-bpm-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.mini-bpm-step {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--nk-c4);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.mini-bpm-step:hover, .mini-bpm-step:focus-visible {
+  color: var(--nk-c1);
+  border-color: rgba(111, 194, 255, 0.4);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.mini-bpm-readout {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  min-width: 78px;
+  justify-content: center;
+}
+
+.mini-bpm-input {
+  width: 3ch;
+  background: none;
+  border: none;
+  color: var(--nk-c4);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  outline: none;
+  -moz-appearance: textfield;
+}
+
+.mini-bpm-input::-webkit-outer-spin-button,
+.mini-bpm-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+.mini-bpm-unit {
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--nk-cream);
+}
+
+.mini-bpm-slider {
+  width: 100%;
+  margin-top: 0.5rem;
+  accent-color: var(--nk-c1);
+  cursor: pointer;
+}
+
+.mini-beat-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.45rem;
+  margin-top: 1.1rem;
+  min-height: 15px;
+}
+
+.mini-beat-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: background-color 0.1s ease, box-shadow 0.1s ease, transform 0.1s ease;
+}
+
+.mini-beat-dot.is-accent-slot { border-color: rgba(255, 122, 51, 0.45); }
+
+.mini-beat-dot.is-active {
+  background: var(--nk-c1);
+  box-shadow: 0 0 10px rgba(111, 194, 255, 0.7);
+  transform: scale(1.15);
+}
+
+.mini-beat-dot.is-active.is-accent-slot {
+  background: var(--nk-gold);
+  box-shadow: 0 0 12px rgba(255, 122, 51, 0.75);
+}
+
+/* ---------- session settings ---------- */
+
+.settings-widget { align-items: center; }
+
+.display-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  width: 100%;
+}
+
+.display-row + .display-row { margin-top: 0.9rem; }
+
+.display-row .seg-control { flex-shrink: 0; }
+
+.settings-hint {
+  margin: 1rem 0 0;
+  font-size: 0.66rem;
+  line-height: 1.5;
+  color: var(--nk-cream);
+  text-align: center;
+}
+
+/* ---------- session stats ---------- */
+
+.stats-widget { align-items: center; text-align: center; }
+
+.stats-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.7rem;
+}
+
+.stat-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.6rem 0.4rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-value {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.2rem, 2.2vw, 1.5rem);
+  color: var(--nk-c4);
+}
+
+.stat-label {
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--nk-cream);
+}
+
+.stats-total {
+  margin-top: 0.8rem;
+  font-size: 0.7rem;
+  color: var(--nk-cream);
+}
+
+.weak-notes {
+  width: 100%;
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.weak-notes-label {
+  display: block;
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--nk-gold);
+  margin-bottom: 0.5rem;
+}
+
+.weak-notes-list {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--nk-cream-strong);
+  min-height: 1.3em;
+}
+
+.stats-reset-btn {
+  margin-top: 1.1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--nk-cream-strong);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.45rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.stats-reset-btn:hover, .stats-reset-btn:focus-visible {
+  color: var(--nk-c1);
+  border-color: rgba(111, 194, 255, 0.4);
+  background: rgba(255, 255, 255, 0.12);
+}

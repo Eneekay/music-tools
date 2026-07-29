@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fretboard Trainer — Music Tools</title>
+<meta name="description" content="Flash-card fretboard trainer for guitar, bass, ukulele, violin and bouzouki — tap or play the note by ear, with a built-in metronome and session stats.">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="../css/site.css?v=1" rel="stylesheet">
+<link href="css/trainer.css?v=1" rel="stylesheet">
+</head>
+<body>
+
+<div class="contour-bg" aria-hidden="true">
+  <svg class="contour-group contour-group--a" viewBox="0 0 2880 64" preserveAspectRatio="none">
+    <path class="contour-line" d="M0,14 C240,23 480,5 720,14 C960,23 1200,5 1440,14 C1680,23 1920,5 2160,14 C2400,23 2640,5 2880,14"></path>
+    <path class="contour-line" d="M0,23 C240,32 480,14 720,23 C960,32 1200,14 1440,23 C1680,32 1920,14 2160,23 C2400,32 2640,14 2880,23"></path>
+    <path class="contour-line" d="M0,32 C240,41 480,23 720,32 C960,41 1200,23 1440,32 C1680,41 1920,23 2160,32 C2400,41 2640,23 2880,32"></path>
+    <path class="contour-line" d="M0,41 C240,50 480,32 720,41 C960,50 1200,32 1440,41 C1680,50 1920,32 2160,41 C2400,50 2640,32 2880,41"></path>
+    <path class="contour-line" d="M0,50 C240,59 480,41 720,50 C960,59 1200,41 1440,50 C1680,59 1920,41 2160,50 C2400,59 2640,41 2880,50"></path>
+  </svg>
+  <svg class="contour-group contour-group--b" viewBox="0 0 2880 64" preserveAspectRatio="none">
+    <path class="contour-line" d="M0,14 C240,8 480,20 720,14 C960,8 1200,20 1440,14 C1680,8 1920,20 2160,14 C2400,8 2640,20 2880,14"></path>
+    <path class="contour-line" d="M0,23 C240,17 480,29 720,23 C960,17 1200,29 1440,23 C1680,17 1920,29 2160,23 C2400,17 2640,29 2880,23"></path>
+    <path class="contour-line" d="M0,32 C240,26 480,38 720,32 C960,26 1200,38 1440,32 C1680,26 1920,38 2160,32 C2400,26 2640,38 2880,32"></path>
+    <path class="contour-line" d="M0,41 C240,35 480,47 720,41 C960,35 1200,47 1440,41 C1680,35 1920,47 2160,41 C2400,35 2640,47 2880,41"></path>
+    <path class="contour-line" d="M0,50 C240,44 480,56 720,50 C960,44 1200,56 1440,50 C1680,44 1920,56 2160,50 C2400,44 2640,56 2880,50"></path>
+  </svg>
+  <svg class="contour-group contour-group--c" viewBox="0 0 2880 64" preserveAspectRatio="none">
+    <path class="contour-line" d="M0,14 C240,26 480,2 720,14 C960,26 1200,2 1440,14 C1680,26 1920,2 2160,14 C2400,26 2640,2 2880,14"></path>
+    <path class="contour-line" d="M0,23 C240,35 480,11 720,23 C960,35 1200,11 1440,23 C1680,35 1920,11 2160,23 C2400,35 2640,11 2880,23"></path>
+    <path class="contour-line" d="M0,32 C240,44 480,20 720,32 C960,44 1200,20 1440,32 C1680,44 1920,20 2160,32 C2400,44 2640,20 2880,32"></path>
+    <path class="contour-line" d="M0,41 C240,53 480,29 720,41 C960,53 1200,29 1440,41 C1680,53 1920,29 2160,41 C2400,53 2640,29 2880,41"></path>
+    <path class="contour-line" d="M0,50 C240,62 480,38 720,50 C960,62 1200,38 1440,50 C1680,62 1920,38 2160,50 C2400,62 2640,38 2880,50"></path>
+  </svg>
+</div>
+<canvas id="notes-canvas" aria-hidden="true"></canvas>
+<div class="dot-grid" aria-hidden="true"></div>
+<div class="blob blob-1" aria-hidden="true"></div>
+<div class="blob blob-2" aria-hidden="true"></div>
+<div class="blob blob-3" aria-hidden="true"></div>
+
+<div class="dashboard">
+
+  <header class="app-header">
+    <a class="back-link" href="../">&larr; Music Tools</a>
+    <h1 class="app-title">Fretboard Trainer</h1>
+    <p class="app-sub">Flash a note, find it on the neck — by tapping or by ear, tracked across the whole fretboard</p>
+  </header>
+
+  <section class="widget trainer-widget glass">
+    <span class="widget-eyebrow">Practice</span>
+
+    <div class="trainer-controls">
+      <div class="control-group">
+        <span class="seg-label">Instrument</span>
+        <div class="instrument-tabs" id="instrumentTabs">
+          <button type="button" class="instrument-tab is-active" data-instrument="guitar">Guitar</button>
+          <button type="button" class="instrument-tab" data-instrument="bass">Bass</button>
+          <button type="button" class="instrument-tab" data-instrument="ukulele">Ukulele</button>
+          <button type="button" class="instrument-tab" data-instrument="violin">Violin</button>
+          <button type="button" class="instrument-tab" data-instrument="bouzouki">Bouzouki</button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <span class="seg-label">Tuning</span>
+        <select class="tuning-select" id="tuningSelect"></select>
+      </div>
+
+      <div class="control-group">
+        <span class="seg-label">Frets</span>
+        <div class="seg-control" id="fretCountControl">
+          <button type="button" data-value="12">12</button>
+          <button type="button" data-value="15" class="is-active">15</button>
+          <button type="button" data-value="24">24</button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <span class="seg-label">Answer with</span>
+        <div class="seg-control" id="answerModeControl">
+          <button type="button" data-value="tap" class="is-active">Tap</button>
+          <button type="button" data-value="mic">Mic</button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <span class="seg-label">Left-handed</span>
+        <label class="switch">
+          <input type="checkbox" id="leftHandedToggle">
+          <span class="switch-track"><span class="switch-thumb"></span></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="prompt-stage">
+      <div class="prompt-note" id="promptNote">&ndash;</div>
+      <p class="prompt-status" id="promptStatus">Press Start to begin a session.</p>
+      <button type="button" class="trainer-session-btn" id="sessionBtn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5z"></path></svg>
+        <span id="sessionBtnLabel">Start Session</span>
+      </button>
+      <p class="mic-status" id="micStatus"></p>
+    </div>
+
+    <div class="fretboard-wrap">
+      <svg class="fretboard-svg" id="fretboardSvg" preserveAspectRatio="xMinYMin meet"></svg>
+    </div>
+  </section>
+
+  <div class="dash-columns">
+
+    <div class="dash-col">
+      <section class="widget mini-metro-widget widget--filler glass">
+        <span class="widget-eyebrow">Metronome</span>
+
+        <div class="mini-metro-transport">
+          <button type="button" class="mini-metro-play" id="metroPlayBtn" aria-label="Start metronome" aria-pressed="false">
+            <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5z"></path></svg>
+            <svg class="icon-stop" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"></rect></svg>
+          </button>
+          <div class="mini-bpm-block">
+            <div class="mini-bpm-row">
+              <button type="button" class="mini-bpm-step" id="metroBpmDown" aria-label="Decrease tempo">&ndash;</button>
+              <div class="mini-bpm-readout">
+                <input type="number" id="metroBpmInput" class="mini-bpm-input" min="30" max="260" step="1" value="90" inputmode="numeric" aria-label="Beats per minute">
+                <span class="mini-bpm-unit">BPM</span>
+              </div>
+              <button type="button" class="mini-bpm-step" id="metroBpmUp" aria-label="Increase tempo">+</button>
+            </div>
+            <input type="range" id="metroBpmSlider" class="mini-bpm-slider" min="30" max="260" step="1" value="90" aria-label="Tempo slider">
+          </div>
+        </div>
+
+        <div class="mini-beat-dots" id="metroBeatDots"></div>
+      </section>
+    </div>
+
+    <div class="dash-col">
+      <section class="widget settings-widget widget--filler glass">
+        <span class="widget-eyebrow">Session Settings</span>
+
+        <div class="display-row">
+          <span class="seg-label">Note pool</span>
+          <div class="seg-control" id="notePoolControl">
+            <button type="button" data-value="all" class="is-active">All 12</button>
+            <button type="button" data-value="natural">Naturals</button>
+          </div>
+        </div>
+
+        <div class="display-row display-row--switch">
+          <span class="seg-label">Sync to metronome</span>
+          <label class="switch">
+            <input type="checkbox" id="metronomeSyncToggle">
+            <span class="switch-track"><span class="switch-thumb"></span></span>
+          </label>
+        </div>
+
+        <div class="display-row">
+          <span class="seg-label">Advance every</span>
+          <div class="seg-control" id="advanceBeatsControl">
+            <button type="button" data-value="1">1 beat</button>
+            <button type="button" data-value="2" class="is-active">2 beats</button>
+            <button type="button" data-value="4">4 beats</button>
+          </div>
+        </div>
+
+        <p class="settings-hint">When sync is on, the metronome starts with your session and each unanswered prompt is scored a miss at the next beat boundary.</p>
+      </section>
+    </div>
+
+    <div class="dash-col">
+      <section class="widget stats-widget widget--filler glass">
+        <span class="widget-eyebrow">Session Stats</span>
+
+        <div class="stats-grid">
+          <div class="stat-cell">
+            <span class="stat-value" id="statAccuracy">&ndash;</span>
+            <span class="stat-label">Accuracy</span>
+          </div>
+          <div class="stat-cell">
+            <span class="stat-value" id="statAvgTime">&ndash;</span>
+            <span class="stat-label">Avg. time</span>
+          </div>
+          <div class="stat-cell">
+            <span class="stat-value" id="statStreak">0</span>
+            <span class="stat-label">Streak</span>
+          </div>
+          <div class="stat-cell">
+            <span class="stat-value" id="statBest">0</span>
+            <span class="stat-label">Best streak</span>
+          </div>
+        </div>
+
+        <div class="stats-total" id="statTotal">0 answered</div>
+
+        <div class="weak-notes">
+          <span class="weak-notes-label">Needs work</span>
+          <div class="weak-notes-list" id="weakNotesList">&mdash;</div>
+        </div>
+
+        <button type="button" class="stats-reset-btn" id="resetStatsBtn">Reset Stats</button>
+      </section>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="kbd-hint" id="kbdHint" aria-hidden="true">
+  <div class="kbd-hint-inner">
+    <div class="kbd-hint-row"><kbd class="kbd-hint-key kbd-hint-key--wide">Space</kbd><span class="kbd-hint-text">Start / stop session</span></div>
+    <div class="kbd-hint-row"><span class="kbd-hint-combo"><kbd class="kbd-hint-key">1</kbd><span class="kbd-hint-dash">&ndash;</span><kbd class="kbd-hint-key">5</kbd></span><span class="kbd-hint-text">Instrument</span></div>
+    <div class="kbd-hint-row"><kbd class="kbd-hint-key">M</kbd><span class="kbd-hint-text">Tap / Mic mode</span></div>
+  </div>
+</div>
+
+<script src="../js/background.js?v=1"></script>
+<script src="../js/theory.js?v=1"></script>
+<script src="../js/pitch.js?v=1"></script>
+<script src="js/trainer.js?v=1"></script>
+</body>
+</html>
