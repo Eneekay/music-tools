@@ -175,7 +175,7 @@
     var chordSet = {};
     (scale.chordTones || []).forEach(function (iv) { chordSet[(state.root + iv) % 12] = true; });
 
-    var FRET_W = 56, STR_H = 42, PAD_L = 34, PAD_R = 20, PAD_TOP = 20, PAD_BOTTOM = 42;
+    var FRET_W = 56, STR_H = 42, PAD_L = 58, PAD_R = 52, PAD_TOP = 20, PAD_BOTTOM = 42;
     var fc = state.fretCount;
     var width = PAD_L + fc * FRET_W + PAD_R;
     var height = PAD_TOP + (numStrings - 1) * STR_H + PAD_BOTTOM;
@@ -204,6 +204,19 @@
       line.setAttribute('x1', xMin); line.setAttribute('y1', yString(i));
       line.setAttribute('x2', xMax); line.setAttribute('y2', yString(i));
       fretboardSvg.appendChild(line);
+
+      // Open-string note, labeled clear of the nut (left in normal
+      // orientation, right when left-handed) - matches the Fretboard
+      // Trainer's fretboard, spelled using the same scale-aware convention
+      // as every other note on this diagram.
+      var openPc = ((openMidis[i] % 12) + 12) % 12;
+      var strLabel = document.createElementNS(SVG_NS, 'text');
+      strLabel.setAttribute('class', 'string-label');
+      strLabel.setAttribute('x', String(xFret(0) + (state.leftHanded ? 24 : -24)));
+      strLabel.setAttribute('y', String(yString(i)));
+      strLabel.setAttribute('text-anchor', state.leftHanded ? 'start' : 'end');
+      strLabel.textContent = MT.noteNameForPc(openPc, spellingFlatsFor(openPc, scale));
+      fretboardSvg.appendChild(strLabel);
     }
 
     for (var f = 0; f <= fc; f++) {
@@ -215,7 +228,7 @@
       fretboardSvg.appendChild(fw);
     }
 
-    [3, 5, 7, 9, 12, 15, 17, 19, 21].forEach(function (mf) {
+    [3, 5, 7, 9, 12, 15, 17, 19, 21, 24].forEach(function (mf) {
       if (mf > fc) return;
       var cx = xForFretSpace(mf);
       var baseY = yString(numStrings - 1) + 18;
