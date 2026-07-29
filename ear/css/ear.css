@@ -1,0 +1,328 @@
+/* Interval Ear Trainer — widget styles specific to this tool. Shared chrome
+   (background layers, glass, dashboard/widget layout, floating keyboard
+   hint, piano key base styles) lives in ../../css/site.css. */
+
+/* ---------- instrument widget ---------- */
+
+.instrument-widget { align-items: center; }
+
+.ear-controls {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+  gap: clamp(1rem, 2.5vw, 1.75rem);
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.control-group--root { max-width: 320px; }
+
+.instrument-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: center;
+}
+
+.instrument-tab {
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--nk-cream-strong);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.76rem;
+  padding: 0.4rem 0.65rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.instrument-tab:hover, .instrument-tab:focus-visible {
+  border-color: rgba(111, 194, 255, 0.4);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.instrument-tab.is-active {
+  background: var(--nk-c2);
+  border-color: var(--nk-c2);
+  color: #fff;
+}
+
+/* ---------- mode widget ---------- */
+
+.mode-widget { align-items: center; text-align: center; }
+
+.mode-control { justify-content: center; }
+
+.mode-hint {
+  margin: 0.9rem 0 0;
+  font-size: 0.7rem;
+  line-height: 1.5;
+  color: var(--nk-cream);
+  max-width: 320px;
+}
+
+/* ---------- scale widget ---------- */
+
+.scale-widget { align-items: center; }
+
+.root-picker {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.3rem;
+}
+
+.root-picker button {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--nk-cream-strong);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.root-picker button:hover, .root-picker button:focus-visible {
+  border-color: rgba(111, 194, 255, 0.4);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.root-picker button.is-active {
+  background: var(--nk-gold);
+  border-color: var(--nk-gold);
+  color: var(--nk-c0);
+}
+
+.scale-select {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  padding: 0.4rem 0.6rem;
+  color: var(--nk-c4);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.8rem;
+  outline: none;
+  cursor: pointer;
+}
+
+.scale-select:focus { border-color: var(--nk-c1); box-shadow: 0 0 0 3px rgba(111, 194, 255, 0.15); }
+
+.scale-hint {
+  margin: 0.8rem 0 0;
+  font-size: 0.68rem;
+  line-height: 1.5;
+  color: var(--nk-cream);
+  text-align: center;
+  min-height: 1.2em;
+}
+
+.scale-widget.is-disabled .root-picker,
+.scale-widget.is-disabled .scale-select { opacity: 0.32; pointer-events: none; }
+
+/* ---------- practice widget ---------- */
+
+.practice-widget { align-items: center; }
+
+.prompt-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0.2rem 0 1.1rem;
+}
+
+.prompt-status {
+  margin: 0 0 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--nk-c4);
+  min-height: 1.4em;
+  max-width: 480px;
+}
+
+.prompt-status.is-correct { color: var(--nk-green); }
+.prompt-status.is-wrong { color: var(--nk-gold); }
+
+.ear-play-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  border: none;
+  background: var(--nk-c2);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.65rem 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(38, 83, 217, 0.45);
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.ear-play-btn svg { width: 17px; height: 17px; }
+
+.ear-play-btn:hover { background: var(--nk-c2h); transform: translateY(-2px); }
+.ear-play-btn:active { transform: translateY(0) scale(0.97); }
+
+/* ---------- answer grid ---------- */
+
+.answer-grid {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.answer-btn {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--nk-cream-strong);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.78rem;
+  padding: 0.55rem 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.answer-btn:hover:not(:disabled), .answer-btn:focus-visible:not(:disabled) {
+  border-color: rgba(111, 194, 255, 0.4);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.answer-btn:disabled { cursor: default; opacity: 0.55; }
+
+.answer-btn.is-correct { background: var(--nk-green); border-color: var(--nk-green); color: var(--nk-c0); opacity: 1; }
+.answer-btn.is-wrong { background: var(--nk-gold); border-color: var(--nk-gold); color: var(--nk-c0); opacity: 1; }
+.answer-btn.is-reveal { border-color: var(--nk-green); color: var(--nk-green); opacity: 1; }
+
+/* ---------- piano feedback ---------- */
+
+.piano-feedback {
+  width: 100%;
+  margin-top: 1.4rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.piano-feedback-label {
+  font-size: 0.66rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--nk-gold);
+}
+
+.piano-feedback .piano-keyboard-svg { max-width: 480px; }
+
+.piano-key.is-reference { fill: var(--nk-c1) !important; }
+.piano-key.is-target { fill: var(--nk-gold) !important; }
+
+/* ---------- stats widget ---------- */
+
+.stats-widget { align-items: center; text-align: center; }
+
+.stats-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.7rem;
+  max-width: 560px;
+}
+
+.stat-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.6rem 0.4rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-value {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.2rem, 2.2vw, 1.5rem);
+  color: var(--nk-c4);
+}
+
+.stat-label {
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--nk-cream);
+}
+
+.stats-total {
+  margin-top: 0.8rem;
+  font-size: 0.7rem;
+  color: var(--nk-cream);
+}
+
+.weak-notes {
+  width: 100%;
+  max-width: 560px;
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.weak-notes-label {
+  display: block;
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--nk-gold);
+  margin-bottom: 0.5rem;
+}
+
+.weak-notes-list {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--nk-cream-strong);
+  min-height: 1.3em;
+}
+
+.stats-reset-btn {
+  margin-top: 1.1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--nk-cream-strong);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.45rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.stats-reset-btn:hover, .stats-reset-btn:focus-visible {
+  color: var(--nk-c1);
+  border-color: rgba(111, 194, 255, 0.4);
+  background: rgba(255, 255, 255, 0.12);
+}

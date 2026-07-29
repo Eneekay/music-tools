@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interval Ear Trainer — Music Tools</title>
+<meta name="description" content="Build relative pitch by ear: guess the interval between two notes, name the note against a reference (Pro), or name any note cold (God Mode). Guitar, bass, ukulele, violin, bouzouki and piano.">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="../css/site.css?v=1" rel="stylesheet">
+<link href="css/ear.css?v=1" rel="stylesheet">
+</head>
+<body>
+
+<div class="contour-bg" aria-hidden="true">
+  <svg class="contour-group contour-group--a" viewBox="0 0 2880 64" preserveAspectRatio="none">
+    <path class="contour-line" d="M0,14 C240,23 480,5 720,14 C960,23 1200,5 1440,14 C1680,23 1920,5 2160,14 C2400,23 2640,5 2880,14"></path>
+    <path class="contour-line" d="M0,23 C240,32 480,14 720,23 C960,32 1200,14 1440,23 C1680,32 1920,14 2160,23 C2400,32 2640,14 2880,23"></path>
+    <path class="contour-line" d="M0,32 C240,41 480,23 720,32 C960,41 1200,23 1440,32 C1680,41 1920,23 2160,32 C2400,41 2640,23 2880,32"></path>
+    <path class="contour-line" d="M0,41 C240,50 480,32 720,41 C960,50 1200,32 1440,41 C1680,50 1920,32 2160,41 C2400,50 2640,32 2880,41"></path>
+    <path class="contour-line" d="M0,50 C240,59 480,41 720,50 C960,59 1200,41 1440,50 C1680,59 1920,41 2160,50 C2400,59 2640,41 2880,50"></path>
+  </svg>
+  <svg class="contour-group contour-group--b" viewBox="0 0 2880 64" preserveAspectRatio="none">
+    <path class="contour-line" d="M0,14 C240,8 480,20 720,14 C960,8 1200,20 1440,14 C1680,8 1920,20 2160,14 C2400,8 2640,20 2880,14"></path>
+    <path class="contour-line" d="M0,23 C240,17 480,29 720,23 C960,17 1200,29 1440,23 C1680,17 1920,29 2160,23 C2400,17 2640,29 2880,23"></path>
+    <path class="contour-line" d="M0,32 C240,26 480,38 720,32 C960,26 1200,38 1440,32 C1680,26 1920,38 2160,32 C2400,26 2640,38 2880,32"></path>
+    <path class="contour-line" d="M0,41 C240,35 480,47 720,41 C960,35 1200,47 1440,41 C1680,35 1920,47 2160,41 C2400,35 2640,47 2880,41"></path>
+    <path class="contour-line" d="M0,50 C240,44 480,56 720,50 C960,44 1200,56 1440,50 C1680,44 1920,56 2160,50 C2400,44 2640,56 2880,50"></path>
+  </svg>
+  <svg class="contour-group contour-group--c" viewBox="0 0 2880 64" preserveAspectRatio="none">
+    <path class="contour-line" d="M0,14 C240,26 480,2 720,14 C960,26 1200,2 1440,14 C1680,26 1920,2 2160,14 C2400,26 2640,2 2880,14"></path>
+    <path class="contour-line" d="M0,23 C240,35 480,11 720,23 C960,35 1200,11 1440,23 C1680,35 1920,11 2160,23 C2400,35 2640,11 2880,23"></path>
+    <path class="contour-line" d="M0,32 C240,44 480,20 720,32 C960,44 1200,20 1440,32 C1680,44 1920,20 2160,32 C2400,44 2640,20 2880,32"></path>
+    <path class="contour-line" d="M0,41 C240,53 480,29 720,41 C960,53 1200,29 1440,41 C1680,53 1920,29 2160,41 C2400,53 2640,29 2880,41"></path>
+    <path class="contour-line" d="M0,50 C240,62 480,38 720,50 C960,62 1200,38 1440,50 C1680,62 1920,38 2160,50 C2400,62 2640,38 2880,50"></path>
+  </svg>
+</div>
+<canvas id="notes-canvas" aria-hidden="true"></canvas>
+<div class="dot-grid" aria-hidden="true"></div>
+<div class="blob blob-1" aria-hidden="true"></div>
+<div class="blob blob-2" aria-hidden="true"></div>
+<div class="blob blob-3" aria-hidden="true"></div>
+
+<div class="dashboard">
+
+  <header class="app-header">
+    <a class="back-link" href="../">&larr; Music Tools</a>
+    <h1 class="app-title">Interval Ear Trainer</h1>
+    <p class="app-sub">Two notes play &mdash; guess the interval, name the note, or go in cold. Builds relative pitch.</p>
+  </header>
+
+  <section class="widget instrument-widget glass">
+    <span class="widget-eyebrow">Instrument</span>
+    <div class="ear-controls">
+      <div class="control-group">
+        <span class="seg-label">Instrument</span>
+        <div class="instrument-tabs" id="instrumentTabs">
+          <button type="button" class="instrument-tab is-active" data-instrument="guitar">Guitar</button>
+          <button type="button" class="instrument-tab" data-instrument="bass">Bass</button>
+          <button type="button" class="instrument-tab" data-instrument="ukulele">Ukulele</button>
+          <button type="button" class="instrument-tab" data-instrument="violin">Violin</button>
+          <button type="button" class="instrument-tab" data-instrument="bouzouki">Bouzouki</button>
+          <button type="button" class="instrument-tab" data-instrument="piano">Piano</button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <span class="seg-label">Tone</span>
+        <div class="seg-control" id="waveControl">
+          <button type="button" data-value="sine">Sine</button>
+          <button type="button" data-value="triangle" class="is-active">Triangle</button>
+          <button type="button" data-value="sawtooth">Saw</button>
+          <button type="button" data-value="realistic">Realistic</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="dash-columns">
+
+    <div class="dash-col">
+      <section class="widget mode-widget widget--filler glass">
+        <span class="widget-eyebrow">Mode</span>
+        <div class="seg-control mode-control" id="modeControl">
+          <button type="button" data-value="normal" class="is-active">Normal</button>
+          <button type="button" data-value="pro">Pro</button>
+          <button type="button" data-value="god">God Mode</button>
+        </div>
+        <p class="mode-hint" id="modeHint">Two notes play, always ascending &mdash; name the interval between them.</p>
+      </section>
+    </div>
+
+    <div class="dash-col">
+      <section class="widget scale-widget widget--filler glass">
+        <span class="widget-eyebrow">Scale</span>
+        <div class="control-group control-group--root" id="scaleRootGroup">
+          <span class="seg-label">Root</span>
+          <div class="root-picker" id="rootPicker">
+            <button type="button" data-pc="0" data-flats="false" class="is-active">C</button>
+            <button type="button" data-pc="1" data-flats="true">D&#9837;</button>
+            <button type="button" data-pc="2" data-flats="false">D</button>
+            <button type="button" data-pc="3" data-flats="true">E&#9837;</button>
+            <button type="button" data-pc="4" data-flats="false">E</button>
+            <button type="button" data-pc="5" data-flats="true">F</button>
+            <button type="button" data-pc="6" data-flats="false">F&#9839;</button>
+            <button type="button" data-pc="7" data-flats="false">G</button>
+            <button type="button" data-pc="8" data-flats="true">A&#9837;</button>
+            <button type="button" data-pc="9" data-flats="false">A</button>
+            <button type="button" data-pc="10" data-flats="true">B&#9837;</button>
+            <button type="button" data-pc="11" data-flats="false">B</button>
+          </div>
+        </div>
+        <div class="control-group">
+          <span class="seg-label">Scale</span>
+          <select class="scale-select" id="scaleSelect"></select>
+        </div>
+        <p class="scale-hint" id="scaleHint"></p>
+      </section>
+    </div>
+
+  </div>
+
+  <section class="widget practice-widget glass">
+    <span class="widget-eyebrow">Practice</span>
+
+    <div class="prompt-stage">
+      <p class="prompt-status" id="promptStatus">Press Play to hear the first question.</p>
+      <button type="button" class="ear-play-btn" id="playBtn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5z"></path></svg>
+        <span id="playBtnLabel">Play</span>
+      </button>
+    </div>
+
+    <div class="answer-grid" id="answerGrid"></div>
+
+    <div class="piano-feedback" id="pianoFeedback" hidden>
+      <span class="piano-feedback-label">That question, on the keyboard:</span>
+      <svg class="piano-keyboard-svg" id="feedbackPianoSvg"></svg>
+    </div>
+  </section>
+
+  <section class="widget stats-widget glass">
+    <span class="widget-eyebrow">Stats</span>
+
+    <div class="stats-grid">
+      <div class="stat-cell">
+        <span class="stat-value" id="statAccuracy">&ndash;</span>
+        <span class="stat-label">Accuracy</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-value" id="statAvgTime">&ndash;</span>
+        <span class="stat-label">Avg. time</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-value" id="statStreak">0</span>
+        <span class="stat-label">Streak</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-value" id="statBest">0</span>
+        <span class="stat-label">Best streak</span>
+      </div>
+    </div>
+
+    <div class="stats-total" id="statTotal">0 answered</div>
+
+    <div class="weak-notes">
+      <span class="weak-notes-label">Needs work</span>
+      <div class="weak-notes-list" id="weakNotesList">&mdash;</div>
+    </div>
+
+    <button type="button" class="stats-reset-btn" id="resetStatsBtn">Reset Stats</button>
+  </section>
+
+</div>
+
+<div class="kbd-hint" id="kbdHint" aria-hidden="true">
+  <div class="kbd-hint-inner">
+    <div class="kbd-hint-row"><kbd class="kbd-hint-key kbd-hint-key--wide">Space</kbd><span class="kbd-hint-text">Play / Replay</span></div>
+    <div class="kbd-hint-row"><span class="kbd-hint-combo"><kbd class="kbd-hint-key">1</kbd><span class="kbd-hint-dash">&ndash;</span><kbd class="kbd-hint-key">6</kbd></span><span class="kbd-hint-text">Instrument</span></div>
+  </div>
+</div>
+
+<script src="../js/background.js?v=1"></script>
+<script src="../js/theory.js?v=1"></script>
+<script src="../js/tones.js?v=1"></script>
+<script src="../js/piano.js?v=1"></script>
+<script src="js/ear.js?v=1"></script>
+</body>
+</html>
