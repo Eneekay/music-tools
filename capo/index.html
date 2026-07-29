@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Capo Calculator — Music Tools</title>
+<meta name="description" content="Pick the open-chord shapes you know and the key you want to play in — find out which fret to capo.">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="../css/site.css?v=1" rel="stylesheet">
+<link href="css/capo.css?v=1" rel="stylesheet">
+</head>
+<body>
+
+<div class="contour-bg" aria-hidden="true">
+  <svg class="contour-group contour-group--a" viewBox="0 0 2880 64" preserveAspectRatio="none">
+    <path class="contour-line" d="M0,14 C240,23 480,5 720,14 C960,23 1200,5 1440,14 C1680,23 1920,5 2160,14 C2400,23 2640,5 2880,14"></path>
+    <path class="contour-line" d="M0,23 C240,32 480,14 720,23 C960,32 1200,14 1440,23 C1680,32 1920,14 2160,23 C2400,32 2640,14 2880,23"></path>
+    <path class="contour-line" d="M0,32 C240,41 480,23 720,32 C960,41 1200,23 1440,32 C1680,41 1920,23 2160,32 C2400,41 2640,23 2880,32"></path>
+    <path class="contour-line" d="M0,41 C240,50 480,32 720,41 C960,50 1200,32 1440,41 C1680,50 1920,32 2160,41 C2400,50 2640,32 2880,41"></path>
+    <path class="contour-line" d="M0,50 C240,59 480,41 720,50 C960,59 1200,41 1440,50 C1680,59 1920,41 2160,50 C2400,59 2640,41 2880,50"></path>
+  </svg>
+  <svg class="contour-group contour-group--b" viewBox="0 0 2880 64" preserveAspectRatio="none">
+    <path class="contour-line" d="M0,14 C240,8 480,20 720,14 C960,8 1200,20 1440,14 C1680,8 1920,20 2160,14 C2400,8 2640,20 2880,14"></path>
+    <path class="contour-line" d="M0,23 C240,17 480,29 720,23 C960,17 1200,29 1440,23 C1680,17 1920,29 2160,23 C2400,17 2640,29 2880,23"></path>
+    <path class="contour-line" d="M0,32 C240,26 480,38 720,32 C960,26 1200,38 1440,32 C1680,26 1920,38 2160,32 C2400,26 2640,38 2880,32"></path>
+    <path class="contour-line" d="M0,41 C240,35 480,47 720,41 C960,35 1200,47 1440,41 C1680,35 1920,47 2160,41 C2400,35 2640,47 2880,41"></path>
+    <path class="contour-line" d="M0,50 C240,44 480,56 720,50 C960,44 1200,56 1440,50 C1680,44 1920,56 2160,50 C2400,44 2640,56 2880,50"></path>
+  </svg>
+  <svg class="contour-group contour-group--c" viewBox="0 0 2880 64" preserveAspectRatio="none">
+    <path class="contour-line" d="M0,14 C240,26 480,2 720,14 C960,26 1200,2 1440,14 C1680,26 1920,2 2160,14 C2400,26 2640,2 2880,14"></path>
+    <path class="contour-line" d="M0,23 C240,35 480,11 720,23 C960,35 1200,11 1440,23 C1680,35 1920,11 2160,23 C2400,35 2640,11 2880,23"></path>
+    <path class="contour-line" d="M0,32 C240,44 480,20 720,32 C960,44 1200,20 1440,32 C1680,44 1920,20 2160,32 C2400,44 2640,20 2880,32"></path>
+    <path class="contour-line" d="M0,41 C240,53 480,29 720,41 C960,53 1200,29 1440,41 C1680,53 1920,29 2160,41 C2400,53 2640,29 2880,41"></path>
+    <path class="contour-line" d="M0,50 C240,62 480,38 720,50 C960,62 1200,38 1440,50 C1680,62 1920,38 2160,50 C2400,62 2640,38 2880,50"></path>
+  </svg>
+</div>
+<canvas id="notes-canvas" aria-hidden="true"></canvas>
+<div class="dot-grid" aria-hidden="true"></div>
+<div class="blob blob-1" aria-hidden="true"></div>
+<div class="blob blob-2" aria-hidden="true"></div>
+<div class="blob blob-3" aria-hidden="true"></div>
+
+<div class="dashboard">
+
+  <header class="app-header">
+    <a class="back-link" href="../">&larr; Music Tools</a>
+    <h1 class="app-title">Capo Calculator</h1>
+    <p class="app-sub">Pick the open-chord shapes you know and the key you want to play in — find out which fret to capo</p>
+  </header>
+
+  <section class="widget capo-widget glass">
+    <span class="widget-eyebrow">Setup</span>
+
+    <div class="capo-controls">
+      <div class="control-group">
+        <span class="seg-label">Instrument</span>
+        <div class="instrument-tabs" id="instrumentTabs">
+          <button type="button" class="instrument-tab is-active" data-instrument="guitar">Guitar</button>
+          <button type="button" class="instrument-tab" data-instrument="ukulele">Ukulele</button>
+        </div>
+      </div>
+
+      <div class="control-group control-group--root">
+        <span class="seg-label">Target Key</span>
+        <div class="root-picker" id="keyRootPicker">
+          <button type="button" data-pc="0" data-flats="false">C</button>
+          <button type="button" data-pc="1" data-flats="true">D&#9837;</button>
+          <button type="button" data-pc="2" data-flats="false">D</button>
+          <button type="button" data-pc="3" data-flats="true">E&#9837;</button>
+          <button type="button" data-pc="4" data-flats="false">E</button>
+          <button type="button" data-pc="5" data-flats="true">F</button>
+          <button type="button" data-pc="6" data-flats="false">F&#9839;</button>
+          <button type="button" data-pc="7" data-flats="false">G</button>
+          <button type="button" data-pc="8" data-flats="true">A&#9837;</button>
+          <button type="button" data-pc="9" data-flats="false">A</button>
+          <button type="button" data-pc="10" data-flats="true">B&#9837;</button>
+          <button type="button" data-pc="11" data-flats="false">B</button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <span class="seg-label">Major / Minor</span>
+        <div class="seg-control" id="keyQualityControl">
+          <button type="button" data-value="major" class="is-active">Major</button>
+          <button type="button" data-value="minor">Minor</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="capo-hint">Pick the open shapes you're comfortable playing, choose the key you want to sound in, and each matching shape's capo fret is shown below — sorted so the easiest option comes first.</p>
+
+    <div class="shape-picker">
+      <div class="shape-group">
+        <span class="shape-group-label">Major Shapes</span>
+        <div class="shape-chips" id="majorShapeChips"></div>
+      </div>
+      <div class="shape-group">
+        <span class="shape-group-label">Minor Shapes</span>
+        <div class="shape-chips" id="minorShapeChips"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="widget results-widget glass">
+    <span class="widget-eyebrow">Capo Options</span>
+    <div class="result-row" id="resultRow"></div>
+  </section>
+
+</div>
+
+<div class="kbd-hint" id="kbdHint" aria-hidden="true">
+  <div class="kbd-hint-inner">
+    <div class="kbd-hint-row"><span class="kbd-hint-combo"><kbd class="kbd-hint-key">&larr;</kbd><kbd class="kbd-hint-key">&rarr;</kbd></span><span class="kbd-hint-text">Target key</span></div>
+    <div class="kbd-hint-row"><kbd class="kbd-hint-key">1</kbd><span class="kbd-hint-text">Guitar</span></div>
+    <div class="kbd-hint-row"><kbd class="kbd-hint-key">3</kbd><span class="kbd-hint-text">Ukulele</span></div>
+  </div>
+</div>
+
+<script src="../js/background.js?v=1"></script>
+<script src="../js/theory.js?v=1"></script>
+<script src="../js/tones.js?v=1"></script>
+<script src="js/capo.js?v=1"></script>
+</body>
+</html>
