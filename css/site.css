@@ -330,7 +330,7 @@ body {
   justify-content: center;
 }
 
-@media (max-width: 1050px), (max-height: 760px) {
+@media (max-width: 1050px) {
   .dash-columns { flex-direction: column; }
   .widget { width: 100%; }
   .widget--filler { flex: 0 0 auto; }
