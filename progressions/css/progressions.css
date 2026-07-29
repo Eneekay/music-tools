@@ -273,10 +273,18 @@
 }
 
 .prog-play-btn svg { width: 17px; height: 17px; }
+.prog-play-btn .icon-stop { display: none; }
 
 .prog-play-btn:hover:not(:disabled) { transform: translateY(-2px); }
 .prog-play-btn:active:not(:disabled) { transform: translateY(0) scale(0.97); }
 .prog-play-btn:disabled { opacity: 0.55; cursor: default; }
+
+.prog-play-btn.is-playing {
+  background: var(--nk-gold);
+  box-shadow: 0 10px 24px rgba(255, 122, 51, 0.35);
+}
+.prog-play-btn.is-playing .icon-play { display: none; }
+.prog-play-btn.is-playing .icon-stop { display: inline-block; }
 
 /* ---------- history widget ---------- */
 

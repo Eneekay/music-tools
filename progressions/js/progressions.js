@@ -605,14 +605,14 @@
     setTimeout(function () { chip.classList.remove('is-playing'); }, ms);
   }
 
-  function playAll() {
-    if (!state.current || state.isPlaying) return;
-    ensureAudioContext();
-    if (audioCtx.state === 'suspended') audioCtx.resume();
+  var loopTimer = null;
 
-    state.isPlaying = true;
-    playAllBtn.disabled = true;
-    playAllLabelEl.textContent = 'Playing…';
+  // Loops until stopPlaying() is called: each pass re-reads state.current /
+  // state.tempo / state.keyPc fresh, so switching progressions, key or
+  // tempo mid-loop takes effect seamlessly on the next pass rather than
+  // requiring a stop/restart.
+  function scheduleLoopPass() {
+    if (!state.isPlaying || !state.current) { stopPlaying(); return; }
 
     var beatDur = 60 / state.tempo * 2; // two beats per chord
     var startTime = audioCtx.currentTime + 0.05;
@@ -622,15 +622,33 @@
       var t = startTime + idx * beatDur;
       playChordTones(chordMidiTones(chord), t, beatDur * 0.92);
       var delayMs = Math.max(0, (t - audioCtx.currentTime) * 1000);
-      setTimeout(function () { flashChip(idx, beatDur * 1000 * 0.92); }, delayMs);
+      setTimeout(function () { if (state.isPlaying) flashChip(idx, beatDur * 1000 * 0.92); }, delayMs);
     });
 
-    var totalMs = chords.length * beatDur * 1000 + 150;
-    setTimeout(function () {
-      state.isPlaying = false;
-      playAllBtn.disabled = false;
-      playAllLabelEl.textContent = 'Play Progression';
-    }, totalMs);
+    var totalMs = chords.length * beatDur * 1000;
+    loopTimer = setTimeout(scheduleLoopPass, totalMs);
+  }
+
+  function startPlaying() {
+    if (!state.current || state.isPlaying) return;
+    ensureAudioContext();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+
+    state.isPlaying = true;
+    playAllBtn.classList.add('is-playing');
+    playAllLabelEl.textContent = 'Stop';
+    scheduleLoopPass();
+  }
+
+  function stopPlaying() {
+    state.isPlaying = false;
+    if (loopTimer) { clearTimeout(loopTimer); loopTimer = null; }
+    playAllBtn.classList.remove('is-playing');
+    playAllLabelEl.textContent = 'Play Progression';
+  }
+
+  function togglePlaying() {
+    if (state.isPlaying) stopPlaying(); else startPlaying();
   }
 
   /* =========================================================================
@@ -677,7 +695,7 @@
 
   generateBtn.addEventListener('click', function () { generate(false); });
   regenerateBtn.addEventListener('click', function () { generate(true); });
-  playAllBtn.addEventListener('click', playAll);
+  playAllBtn.addEventListener('click', togglePlaying);
 
   function isTypingTarget(el) {
     return el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable);
@@ -687,7 +705,7 @@
     if (isTypingTarget(e.target)) return;
     if (e.code === 'Space') {
       e.preventDefault();
-      if (!playAllBtn.disabled) playAllBtn.click();
+      playAllBtn.click();
     } else if (e.key === 'g' || e.key === 'G') {
       regenerateBtn.click();
     }
