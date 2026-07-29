@@ -128,6 +128,18 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.14);
 }
 
+/* backdrop-filter over animated position:fixed background layers is a
+   well-known source of scroll jank on mobile GPUs (Firefox Android's
+   compositor handles it far worse than desktop) - swap to a plain opaque
+   panel on coarse-pointer/no-hover (i.e. touchscreen) devices instead. */
+@media (hover: none) and (pointer: coarse) {
+  .glass {
+    background: rgba(24, 29, 45, 0.86);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
 /* ---------- toggle switch ---------- */
 
 .switch { display: inline-flex; cursor: pointer; }

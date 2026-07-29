@@ -2,6 +2,12 @@
   'use strict';
 
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Pointer-follow parallax is a hover-driven effect with no real touch
+  // equivalent - on a touchscreen, "finger position" IS the scroll gesture,
+  // so a touchmove-driven parallax loop recomputes blurred, fixed-position
+  // blob transforms on every scroll frame, which is a common cause of janky
+  // scrolling on mobile GPUs. Only run it on devices that can actually hover.
+  var canHover = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
   /* =========================================================================
      Background: blob parallax + drifting music-note canvas
@@ -19,9 +25,6 @@
     pointerTarget.y = (p.clientY - window.innerHeight / 2);
   }
 
-  window.addEventListener('mousemove', onPointerMove, { passive: true });
-  window.addEventListener('touchmove', onPointerMove, { passive: true });
-
   function animateBlobs() {
     pointer.x += (pointerTarget.x - pointer.x) * 0.06;
     pointer.y += (pointerTarget.y - pointer.y) * 0.06;
@@ -32,7 +35,10 @@
     requestAnimationFrame(animateBlobs);
   }
 
-  if (!reduceMotion) requestAnimationFrame(animateBlobs);
+  if (canHover && !reduceMotion) {
+    window.addEventListener('mousemove', onPointerMove, { passive: true });
+    requestAnimationFrame(animateBlobs);
+  }
 
   (function notesCanvas() {
     var canvas = document.getElementById('notes-canvas');
