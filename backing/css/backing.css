@@ -1,0 +1,379 @@
+/* Backing Track Generator — widget styles specific to this tool. Shared
+   chrome (background layers, glass, dashboard/widget layout, floating
+   keyboard hint) lives in ../../css/site.css. */
+
+/* ---------- transport widget ---------- */
+
+.transport-widget { align-items: center; }
+
+.transport-row {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+  gap: clamp(1rem, 2.5vw, 1.75rem);
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.transport-play-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  border: none;
+  background: var(--nk-green);
+  color: var(--nk-c0);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 0.7rem 1.6rem;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(74, 222, 128, 0.35);
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.transport-play-btn svg { width: 18px; height: 18px; }
+.transport-play-btn .icon-stop { display: none; }
+
+.transport-play-btn:hover { transform: translateY(-2px); }
+.transport-play-btn:active { transform: translateY(0) scale(0.97); }
+
+.transport-play-btn.is-playing {
+  background: var(--nk-gold);
+  box-shadow: 0 10px 24px rgba(255, 122, 51, 0.35);
+}
+.transport-play-btn.is-playing .icon-play { display: none; }
+.transport-play-btn.is-playing .icon-stop { display: inline-block; }
+
+.bpm-control {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bpm-step {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--nk-cream-strong);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.bpm-step:hover, .bpm-step:focus-visible {
+  border-color: rgba(111, 194, 255, 0.4);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+#bpmInput {
+  width: 56px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  padding: 0.35rem 0.4rem;
+  color: var(--nk-c4);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-align: center;
+  outline: none;
+}
+
+#bpmInput:focus { border-color: var(--nk-c1); box-shadow: 0 0 0 3px rgba(111, 194, 255, 0.15); }
+
+.bpm-unit {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--nk-cream);
+  letter-spacing: 0.04em;
+}
+
+.bpm-slider, .volume-slider {
+  width: 130px;
+  margin-top: 0.5rem;
+  accent-color: var(--nk-c1);
+}
+
+/* ---------- backing preset list ---------- */
+
+.backing-presets-widget { align-items: center; }
+
+.backing-preset-list {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.preset-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.6rem 1.1rem;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.preset-btn:hover, .preset-btn:focus-visible {
+  border-color: rgba(111, 194, 255, 0.4);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.preset-btn.is-active {
+  border-color: var(--nk-gold);
+  background: rgba(255, 122, 51, 0.12);
+}
+
+.preset-btn-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--nk-c4);
+}
+
+.preset-btn-meta {
+  font-size: 0.66rem;
+  color: var(--nk-cream);
+  white-space: nowrap;
+}
+
+/* ---------- drums / chords widgets ---------- */
+
+.drums-widget { align-items: center; text-align: center; }
+.chords-widget { align-items: center; text-align: center; }
+
+.layer-select {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  padding: 0.4rem 0.6rem;
+  color: var(--nk-c4);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.8rem;
+  outline: none;
+  cursor: pointer;
+  max-width: 220px;
+}
+
+.layer-select:focus { border-color: var(--nk-c1); box-shadow: 0 0 0 3px rgba(111, 194, 255, 0.15); }
+
+.ghost-btn {
+  margin-top: 0.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--nk-cream-strong);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.76rem;
+  padding: 0.45rem 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.ghost-btn:hover, .ghost-btn:focus-visible {
+  border-color: rgba(111, 194, 255, 0.4);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.layer-name {
+  margin: 1rem 0 0.3rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--nk-c4);
+}
+
+.layer-desc {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--nk-cream-strong);
+  max-width: 320px;
+}
+
+.layer-blurb {
+  margin: 0.5rem 0 0;
+  font-size: 0.68rem;
+  line-height: 1.5;
+  color: var(--nk-cream);
+  max-width: 320px;
+}
+
+.builder-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.builder-row + .builder-row { margin-top: 0.8rem; }
+
+.builder-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem;
+  max-width: 320px;
+}
+
+.builder-chip {
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--nk-cream-strong);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.74rem;
+  padding: 0.4rem 0.7rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.builder-chip:hover, .builder-chip:focus-visible {
+  border-color: rgba(111, 194, 255, 0.4);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.builder-chip.is-active {
+  background: var(--nk-c2);
+  border-color: var(--nk-c2);
+  color: #fff;
+}
+
+.chords-widget .control-group { margin-top: 0.8rem; }
+
+/* ---------- chord strip (shared shape with riff strip) ---------- */
+
+.chord-strip, .riff-strip {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  max-width: 640px;
+  margin: 1rem auto 0;
+  min-height: 56px;
+}
+
+.chord-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 0.45rem 0.8rem;
+  cursor: pointer;
+  min-width: 58px;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+
+.chord-chip:hover, .chord-chip:focus-visible {
+  border-color: rgba(111, 194, 255, 0.4);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.chord-chip.is-playing {
+  background: var(--nk-gold);
+  border-color: var(--nk-gold);
+  transform: translateY(-2px);
+}
+
+.chord-chip.is-playing .chord-chip-roman,
+.chord-chip.is-playing .chord-chip-name { color: var(--nk-c0); }
+
+.chord-chip-roman {
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: var(--nk-cream);
+}
+
+.chord-chip-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--nk-c4);
+}
+
+.riff-chip {
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--nk-c4);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 0.45rem 0.75rem;
+  cursor: pointer;
+  min-width: 42px;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+
+.riff-chip:hover, .riff-chip:focus-visible {
+  border-color: rgba(111, 194, 255, 0.4);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.riff-chip.is-playing {
+  background: var(--nk-c1);
+  border-color: var(--nk-c1);
+  color: var(--nk-c0);
+  transform: translateY(-2px);
+}
+
+.chord-strip-empty {
+  width: 100%;
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--nk-cream);
+  padding: 1rem 0;
+}
+
+/* ---------- riff widget ---------- */
+
+.riff-widget { align-items: center; }
+
+.capo-hint {
+  margin: 0 0 1.1rem;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--nk-cream);
+  text-align: center;
+  max-width: 620px;
+}
+
+.riff-controls {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+  gap: clamp(1rem, 2.5vw, 1.75rem);
+}
+
+.action-btns {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.action-btns .ghost-btn { margin-top: 0; }
