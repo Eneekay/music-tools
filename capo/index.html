@@ -50,58 +50,59 @@
     <p class="app-sub">Pick the open-chord shapes you know and the key you want to play in — find out which fret to capo</p>
   </header>
 
-  <section class="widget capo-widget glass">
-    <span class="widget-eyebrow">Setup</span>
-
-    <div class="capo-controls">
-      <div class="control-group">
-        <span class="seg-label">Instrument</span>
-        <div class="instrument-tabs" id="instrumentTabs">
-          <button type="button" class="instrument-tab is-active" data-instrument="guitar">Guitar</button>
-          <button type="button" class="instrument-tab" data-instrument="ukulele">Ukulele</button>
-        </div>
-      </div>
-
-      <div class="control-group control-group--root">
-        <span class="seg-label">Target Key</span>
-        <div class="root-picker" id="keyRootPicker">
-          <button type="button" data-pc="0" data-flats="false">C</button>
-          <button type="button" data-pc="1" data-flats="true">D&#9837;</button>
-          <button type="button" data-pc="2" data-flats="false">D</button>
-          <button type="button" data-pc="3" data-flats="true">E&#9837;</button>
-          <button type="button" data-pc="4" data-flats="false">E</button>
-          <button type="button" data-pc="5" data-flats="true">F</button>
-          <button type="button" data-pc="6" data-flats="false">F&#9839;</button>
-          <button type="button" data-pc="7" data-flats="false">G</button>
-          <button type="button" data-pc="8" data-flats="true">A&#9837;</button>
-          <button type="button" data-pc="9" data-flats="false">A</button>
-          <button type="button" data-pc="10" data-flats="true">B&#9837;</button>
-          <button type="button" data-pc="11" data-flats="false">B</button>
-        </div>
-      </div>
-
-      <div class="control-group">
-        <span class="seg-label">Major / Minor</span>
-        <div class="seg-control" id="keyQualityControl">
-          <button type="button" data-value="major" class="is-active">Major</button>
-          <button type="button" data-value="minor">Minor</button>
-        </div>
-      </div>
-    </div>
-
-    <p class="capo-hint">Pick the open shapes you're comfortable playing, choose the key you want to sound in, and each matching shape's capo fret is shown below — sorted so the easiest option comes first.</p>
-
-    <div class="shape-picker">
-      <div class="shape-group">
-        <span class="shape-group-label">Major Shapes</span>
-        <div class="shape-chips" id="majorShapeChips"></div>
-      </div>
-      <div class="shape-group">
-        <span class="shape-group-label">Minor Shapes</span>
-        <div class="shape-chips" id="minorShapeChips"></div>
-      </div>
+  <section class="widget instrument-widget glass">
+    <span class="widget-eyebrow">Instrument</span>
+    <div class="instrument-tabs" id="instrumentTabs">
+      <button type="button" class="instrument-tab is-active" data-instrument="guitar">Guitar</button>
+      <button type="button" class="instrument-tab" data-instrument="ukulele">Ukulele</button>
     </div>
   </section>
+
+  <div class="dash-columns">
+
+    <div class="dash-col">
+      <section class="widget key-widget widget--filler glass">
+        <span class="widget-eyebrow">Target Key</span>
+
+        <div class="builder-row">
+          <span class="seg-label">Note</span>
+          <div class="builder-chips" id="keyNoteChips"></div>
+        </div>
+
+        <div class="builder-row">
+          <span class="seg-label">Accidental</span>
+          <div class="builder-chips" id="keyAccidentalChips"></div>
+        </div>
+
+        <div class="builder-row">
+          <span class="seg-label">Major / Minor</span>
+          <div class="seg-control" id="keyQualityControl">
+            <button type="button" data-value="major" class="is-active">Major</button>
+            <button type="button" data-value="minor">Minor</button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="dash-col">
+      <section class="widget shapes-widget widget--filler glass">
+        <span class="widget-eyebrow">Shapes</span>
+        <p class="capo-hint">Pick the open shapes you're comfortable playing &mdash; matching shapes are shown sorted so the easiest capo fret comes first.</p>
+
+        <div class="shape-picker">
+          <div class="shape-group">
+            <span class="shape-group-label">Major Shapes</span>
+            <div class="shape-chips" id="majorShapeChips"></div>
+          </div>
+          <div class="shape-group">
+            <span class="shape-group-label">Minor Shapes</span>
+            <div class="shape-chips" id="minorShapeChips"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+  </div>
 
   <section class="widget results-widget glass">
     <span class="widget-eyebrow">Capo Options</span>

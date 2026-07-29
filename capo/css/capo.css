@@ -2,28 +2,11 @@
    (background layers, glass, dashboard/widget layout, floating keyboard
    hint) lives in ../../css/site.css. */
 
-/* ---------- setup widget ---------- */
+/* ---------- instrument / key / shapes widgets ---------- */
 
-.capo-widget { align-items: center; }
-
-.capo-controls {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-end;
-  gap: clamp(1rem, 2.5vw, 1.75rem);
-  margin-bottom: 1.1rem;
-}
-
-.control-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.control-group--root { max-width: 320px; }
+.instrument-widget { align-items: center; }
+.key-widget { align-items: center; }
+.shapes-widget { align-items: center; }
 
 .instrument-tabs {
   display: flex;
@@ -56,43 +39,53 @@
   color: #fff;
 }
 
-/* ---------- root picker ---------- */
+/* ---------- key builder (note / accidental) ---------- */
 
-.root-picker {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 0.3rem;
+.builder-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
 }
 
-.root-picker button {
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.06);
+.builder-row + .builder-row { margin-top: 1rem; }
+
+.builder-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem;
+  max-width: 320px;
+}
+
+.builder-chip {
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
   color: var(--nk-cream-strong);
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
-  font-size: 0.72rem;
+  font-size: 0.74rem;
+  padding: 0.4rem 0.7rem;
   cursor: pointer;
   transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
-.root-picker button:hover, .root-picker button:focus-visible {
+.builder-chip:hover, .builder-chip:focus-visible {
   border-color: rgba(111, 194, 255, 0.4);
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.1);
 }
 
-.root-picker button.is-active {
-  background: var(--nk-gold);
-  border-color: var(--nk-gold);
-  color: var(--nk-c0);
+.builder-chip.is-active {
+  background: var(--nk-c2);
+  border-color: var(--nk-c2);
+  color: #fff;
 }
 
 /* ---------- hint ---------- */
 
 .capo-hint {
-  margin: 0.2rem 0 1.2rem;
+  margin: 0 0 1.2rem;
   font-size: 0.72rem;
   line-height: 1.5;
   color: var(--nk-cream);

@@ -31,6 +31,27 @@
   ];
 
   /* =========================================================================
+     Target-key builder — note letter + accidental, mirroring the Chord
+     Chart Generator's builder for a consistent interaction pattern.
+     ========================================================================= */
+
+  var LETTER_SEMITONE = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
+  var KEY_LETTERS = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+  var KEY_ACCIDENTALS = [
+    { label: '♮', value: '' },
+    { label: '♭', value: 'b' },
+    { label: '♯', value: '#' }
+  ];
+  // Conventional spelling per pitch class, used when cycling the target key
+  // with the arrow keys (there's no single "correct" letter+accidental for
+  // a pitch class, so pick the everyday default rather than guess).
+  var PC_SPELLING = [
+    { letter: 'C', acc: '' }, { letter: 'D', acc: 'b' }, { letter: 'D', acc: '' }, { letter: 'E', acc: 'b' },
+    { letter: 'E', acc: '' }, { letter: 'F', acc: '' }, { letter: 'F', acc: '#' }, { letter: 'G', acc: '' },
+    { letter: 'A', acc: 'b' }, { letter: 'A', acc: '' }, { letter: 'B', acc: 'b' }, { letter: 'B', acc: '' }
+  ];
+
+  /* =========================================================================
      Fingering search (position 0 only) — copy of the Chord Chart
      Generator's algorithm, trimmed to a single open-position window.
      ========================================================================= */
@@ -244,6 +265,8 @@
 
   var state = {
     instrument: 'guitar',
+    keyLetter: 'F',
+    keyAccidental: '',
     targetRoot: 5,
     targetRootFlats: false,
     targetQuality: 'major',
@@ -256,7 +279,8 @@
      ========================================================================= */
 
   var instrumentTabsEl = document.getElementById('instrumentTabs');
-  var keyRootPickerEl = document.getElementById('keyRootPicker');
+  var keyNoteChipsEl = document.getElementById('keyNoteChips');
+  var keyAccidentalChipsEl = document.getElementById('keyAccidentalChips');
   var keyQualityControlEl = document.getElementById('keyQualityControl');
   var majorShapeChipsEl = document.getElementById('majorShapeChips');
   var minorShapeChipsEl = document.getElementById('minorShapeChips');
@@ -498,20 +522,53 @@
     renderResults();
   }
 
-  function setTargetRoot(pc, flats) {
+  function applyKeyBuilder() {
+    var pc = (((LETTER_SEMITONE[state.keyLetter] + (state.keyAccidental === '#' ? 1 : state.keyAccidental === 'b' ? -1 : 0)) % 12) + 12) % 12;
     state.targetRoot = pc;
-    state.targetRootFlats = flats;
-    Array.prototype.forEach.call(keyRootPickerEl.querySelectorAll('button'), function (b) {
-      b.classList.toggle('is-active', parseInt(b.getAttribute('data-pc'), 10) === pc);
-    });
+    state.targetRootFlats = state.keyAccidental === 'b';
     renderResults();
   }
 
-  keyRootPickerEl.addEventListener('click', function (e) {
-    var btn = e.target.closest ? e.target.closest('button') : null;
-    if (!btn) return;
-    setTargetRoot(parseInt(btn.getAttribute('data-pc'), 10), btn.getAttribute('data-flats') === 'true');
-  });
+  function renderKeyNoteChips() {
+    keyNoteChipsEl.innerHTML = '';
+    KEY_LETTERS.forEach(function (letter) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'builder-chip' + (state.keyLetter === letter ? ' is-active' : '');
+      btn.textContent = letter;
+      btn.addEventListener('click', function () {
+        state.keyLetter = letter;
+        renderKeyNoteChips();
+        applyKeyBuilder();
+      });
+      keyNoteChipsEl.appendChild(btn);
+    });
+  }
+
+  function renderKeyAccidentalChips() {
+    keyAccidentalChipsEl.innerHTML = '';
+    KEY_ACCIDENTALS.forEach(function (acc) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'builder-chip' + (state.keyAccidental === acc.value ? ' is-active' : '');
+      btn.textContent = acc.label;
+      btn.addEventListener('click', function () {
+        state.keyAccidental = acc.value;
+        renderKeyAccidentalChips();
+        applyKeyBuilder();
+      });
+      keyAccidentalChipsEl.appendChild(btn);
+    });
+  }
+
+  function setTargetRootFromPc(pc) {
+    var spelling = PC_SPELLING[((pc % 12) + 12) % 12];
+    state.keyLetter = spelling.letter;
+    state.keyAccidental = spelling.acc;
+    renderKeyNoteChips();
+    renderKeyAccidentalChips();
+    applyKeyBuilder();
+  }
 
   function wireSegControl(el, onChange) {
     var buttons = Array.prototype.slice.call(el.querySelectorAll('button'));
@@ -542,8 +599,7 @@
 
   function cycleTargetRoot(dir) {
     var newPc = ((state.targetRoot + dir) % 12 + 12) % 12;
-    var btn = keyRootPickerEl.querySelector('button[data-pc="' + newPc + '"]');
-    setTargetRoot(newPc, btn.getAttribute('data-flats') === 'true');
+    setTargetRootFromPc(newPc);
   }
 
   window.addEventListener('keydown', function (e) {
@@ -561,6 +617,7 @@
      ========================================================================= */
 
   renderShapeChips();
-  setTargetRoot(5, true); // default: F major - a friendly, non-trivial demo
-  renderResults();
+  renderKeyNoteChips();
+  renderKeyAccidentalChips();
+  applyKeyBuilder(); // default: F major - a friendly, non-trivial demo, also renders results
 })();
