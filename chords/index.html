@@ -50,9 +50,8 @@
     <p class="app-sub">Type a chord name, get fingering diagrams — a quick reference or embeddable widget</p>
   </header>
 
-  <section class="widget chord-widget glass">
-    <span class="widget-eyebrow">Chord</span>
-
+  <section class="widget instrument-widget glass">
+    <span class="widget-eyebrow">Instrument</span>
     <div class="chord-controls">
       <div class="control-group">
         <span class="seg-label">Instrument</span>
@@ -78,41 +77,55 @@
         </label>
       </div>
     </div>
-
-    <div class="chord-input-row">
-      <input type="text" id="chordInput" class="chord-text-input" placeholder="e.g. Cmaj7" autocomplete="off" spellcheck="false" value="C">
-    </div>
-    <p class="chord-hint">Type any chord name &mdash; e.g. Cmaj7, F#m, Bbsus4, D/F# &mdash; or pick one below, or build one with the selector.</p>
-
-    <div class="quick-picks" id="quickPicks"></div>
-
-    <div class="chord-info" id="chordInfo"></div>
-    <p class="chord-error" id="chordError"></p>
-
-    <div class="builder-section">
-      <span class="builder-label">Or Build a Chord</span>
-
-      <div class="builder-row">
-        <span class="seg-label">Note</span>
-        <div class="builder-chips" id="builderRoot"></div>
-      </div>
-
-      <div class="builder-row">
-        <span class="seg-label">Accidental</span>
-        <div class="builder-chips" id="builderAccidental"></div>
-      </div>
-
-      <div class="builder-row">
-        <span class="seg-label">Quality</span>
-        <div class="builder-chips" id="builderFamily"></div>
-      </div>
-
-      <div class="builder-row">
-        <span class="seg-label">Extension</span>
-        <div class="builder-chips" id="builderExtension"></div>
-      </div>
-    </div>
   </section>
+
+  <div class="dash-columns">
+
+    <div class="dash-col">
+      <section class="widget enter-chord-widget widget--filler glass">
+        <span class="widget-eyebrow">Enter a Chord</span>
+
+        <div class="chord-input-row">
+          <input type="text" id="chordInput" class="chord-text-input" placeholder="e.g. Cmaj7" autocomplete="off" spellcheck="false" value="C">
+        </div>
+        <p class="chord-hint">Type any chord name &mdash; e.g. Cmaj7, F#m, Bbsus4, D/F# &mdash; or pick one below.</p>
+
+        <div class="quick-picks" id="quickPicks"></div>
+
+        <div class="chord-info" id="chordInfo"></div>
+        <p class="chord-error" id="chordError"></p>
+      </section>
+    </div>
+
+    <div class="dash-col">
+      <section class="widget build-chord-widget widget--filler glass">
+        <span class="widget-eyebrow">Build a Chord</span>
+
+        <div class="builder-section">
+          <div class="builder-row">
+            <span class="seg-label">Note</span>
+            <div class="builder-chips" id="builderRoot"></div>
+          </div>
+
+          <div class="builder-row">
+            <span class="seg-label">Accidental</span>
+            <div class="builder-chips" id="builderAccidental"></div>
+          </div>
+
+          <div class="builder-row">
+            <span class="seg-label">Quality</span>
+            <div class="builder-chips" id="builderFamily"></div>
+          </div>
+
+          <div class="builder-row">
+            <span class="seg-label">Extension</span>
+            <div class="builder-chips" id="builderExtension"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+  </div>
 
   <section class="widget diagrams-widget glass">
     <span class="widget-eyebrow">Diagrams</span>

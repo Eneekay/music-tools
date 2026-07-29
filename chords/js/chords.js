@@ -153,6 +153,98 @@
     return opts;
   }
 
+  // A barre is always the finger closest to the nut in the shape - it lies
+  // flat across the LOWEST fret used, and other fingers press HIGHER frets
+  // on top of it for whichever strings need them (those strings still sound
+  // the higher note, since fretting closer to the bridge overrides the
+  // barre underneath). So detecting a barre means finding the widest
+  // contiguous run of strings at the shape's minimum fret, where the only
+  // illegal gap is an OPEN string (a barre would mute it); muted strings
+  // and strings fretted higher are both fine pass-throughs.
+  function detectBarre(fretPattern) {
+    var minFret = null;
+    fretPattern.forEach(function (fe) { if (fe.fret > 0 && (minFret === null || fe.fret < minFret)) minFret = fe.fret; });
+    if (minFret === null) return null;
+
+    var anchors = [];
+    fretPattern.forEach(function (fe, i) { if (fe.fret === minFret) anchors.push(i); });
+    if (anchors.length < 2) return null;
+
+    var spans = [];
+    var run = [anchors[0]];
+    for (var k = 1; k < anchors.length; k++) {
+      var blockedByOpen = false;
+      for (var s = anchors[k - 1] + 1; s < anchors[k]; s++) {
+        if (fretPattern[s].fret === 0) { blockedByOpen = true; break; }
+      }
+      if (blockedByOpen) { spans.push(run); run = [anchors[k]]; }
+      else { run.push(anchors[k]); }
+    }
+    spans.push(run);
+
+    var best = null;
+    spans.forEach(function (r) {
+      if (r.length < 2) return;
+      var lo = r[0], hi = r[r.length - 1];
+      if (!best || (hi - lo) > (best.hi - best.lo)) best = { lo: lo, hi: hi, fret: minFret };
+    });
+    return best;
+  }
+
+  // Groups adjacent same-fret strings into the finger that plausibly covers
+  // them - muted strings are a legal gap (the finger just rests across an
+  // unplayed string), open strings are not. Used both standalone (for
+  // fingers pressing on top of a barre) and to power the barre detection
+  // above via the shared adjacency rule.
+  function groupContiguousSameFret(fretPattern) {
+    var byFret = {};
+    fretPattern.forEach(function (fe, i) { if (fe.fret > 0) (byFret[fe.fret] = byFret[fe.fret] || []).push(i); });
+    var groups = [];
+    Object.keys(byFret).forEach(function (fretStr) {
+      var fret = parseInt(fretStr, 10);
+      var indices = byFret[fretStr];
+      var run = [indices[0]];
+      function flush() { groups.push({ fret: fret, strings: run.slice() }); }
+      for (var k = 1; k < indices.length; k++) {
+        var blocked = false;
+        for (var s = indices[k - 1] + 1; s < indices[k]; s++) {
+          if (fretPattern[s].fret !== -1) { blocked = true; break; }
+        }
+        if (blocked) { flush(); run = [indices[k]]; }
+        else { run.push(indices[k]); }
+      }
+      flush();
+    });
+    return groups;
+  }
+
+  // Every finger group - the barre (if any) plus whatever else is grouped
+  // on top of / around it - counts as "one finger". Powers both the
+  // playability penalty below and barre-bar/finger-number rendering.
+  function computeFingerGroups(fretPattern) {
+    var barre = detectBarre(fretPattern);
+    var barreCovered = {};
+    if (barre) {
+      for (var i = barre.lo; i <= barre.hi; i++) {
+        if (fretPattern[i].fret === barre.fret) barreCovered[i] = true;
+      }
+    }
+    var reduced = fretPattern.map(function (fe, i) { return barreCovered[i] ? { fret: -1 } : fe; });
+    var groups = groupContiguousSameFret(reduced);
+    if (barre) {
+      groups.unshift({
+        fret: barre.fret,
+        strings: Object.keys(barreCovered).map(Number).sort(function (a, b) { return a - b; }),
+        isBarre: true, spanLo: barre.lo, spanHi: barre.hi
+      });
+    }
+    return groups;
+  }
+
+  function estimateFingerCount(fretPattern) {
+    return computeFingerGroups(fretPattern).length;
+  }
+
   function scoreCandidate(fretPattern, openMidis, weightedTones, requiredBassPc) {
     var playedCount = 0, mutedCount = 0;
     var presentPcs = {};
@@ -178,11 +270,19 @@
     var span = frettedFrets.length ? (Math.max.apply(null, frettedFrets) - Math.min.apply(null, frettedFrets)) : 0;
     var lowestFretted = frettedFrets.length ? Math.min.apply(null, frettedFrets) : 0;
 
+    // A human has 4 fretting fingers; a shape that needs more (because its
+    // fretted notes can't be grouped under a barre) isn't actually
+    // playable, even if every note is musically correct - penalize each
+    // finger beyond 4 heavily so the search prefers a real barre (or a
+    // genuinely simpler voicing) over an unplayable stretch.
+    var fingerCount = estimateFingerCount(fretPattern);
+    var fingerPenalty = Math.max(0, fingerCount - 4) * 4;
+
     // Position dominates: a classic open-position shape that mutes one
     // string should always beat a fully-fretted shape stuck up at fret 8+
     // for no musical reason - low, familiar positions are what "quick
     // reference" chord charts are expected to show first.
-    return mutedCount * 1.5 + missingWeight * 2.5 + (bassOk ? 0 : 6) + span * 1.0 + lowestFretted * 1.2;
+    return mutedCount * 1.5 + missingWeight * 2.5 + (bassOk ? 0 : 6) + span * 1.0 + lowestFretted * 1.2 + fingerPenalty;
   }
 
   function bestForPosition(openMidis, position, weightedTones, requiredPcsSet, requiredBassPc) {
@@ -227,16 +327,25 @@
     return found.slice(0, 3);
   }
 
+  // Only draw a barre bar (the visual decoration) across at least this many
+  // strings - a 2-3 string span is ambiguous enough that showing separate
+  // finger dots reads more honestly. The bar spans the barre's full reach
+  // (spanLo..spanHi), not just the strings sounding at its own fret, since
+  // that's the finger's actual physical extent.
+  var MIN_BARRE_STRINGS = 4;
+
+  function findBarreGroups(fretPattern) {
+    return computeFingerGroups(fretPattern)
+      .filter(function (g) { return g.isBarre && (g.spanHi - g.spanLo + 1) >= MIN_BARRE_STRINGS; })
+      .map(function (g) { return { fret: g.fret, strings: [g.spanLo, g.spanHi] }; });
+  }
+
   function assignFingers(fretPattern) {
-    var fretted = [];
-    fretPattern.forEach(function (fe, i) { if (fe.fret > 0) fretted.push({ string: i, fret: fe.fret }); });
-    fretted.sort(function (a, b) { return a.fret - b.fret || a.string - b.string; });
-    var fingerForFret = {};
-    var next = 1;
+    var groups = computeFingerGroups(fretPattern);
+    groups.sort(function (a, b) { return a.fret - b.fret || a.strings[0] - b.strings[0]; });
     var byString = {};
-    fretted.forEach(function (fe) {
-      if (!fingerForFret[fe.fret]) { fingerForFret[fe.fret] = next; next++; }
-      byString[fe.string] = fingerForFret[fe.fret];
+    groups.forEach(function (g, idx) {
+      g.strings.forEach(function (s) { byString[s] = idx + 1; });
     });
     return byString;
   }
@@ -461,13 +570,9 @@
     });
 
     // barre bars behind shared-fret dots
-    var byFret = {};
-    shape.fretPattern.forEach(function (fe, i) { if (fe.fret > 0) { (byFret[fe.fret] = byFret[fe.fret] || []).push(i); } });
-    Object.keys(byFret).forEach(function (fret) {
-      var strings = byFret[fret];
-      if (strings.length < 2) return;
-      var xs = strings.map(stringX);
-      var y = rowY(fret - pos) + GRID_H / 2;
+    findBarreGroups(shape.fretPattern).forEach(function (g) {
+      var xs = g.strings.map(stringX);
+      var y = rowY(g.fret - pos) + GRID_H / 2;
       var bar = document.createElementNS(SVG_NS, 'line');
       bar.setAttribute('class', 'chordbox-barre');
       bar.setAttribute('x1', Math.min.apply(null, xs)); bar.setAttribute('y1', y);
