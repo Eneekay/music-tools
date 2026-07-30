@@ -221,6 +221,12 @@
     return best;
   }
 
+  // A same-fret run only reads as a single finger if it's wide enough to
+  // actually need a barre (see MIN_BARRE_STRINGS below, shared with the
+  // visual bar threshold) - a 2-3 string run is exactly the situation a
+  // real player fingers individually (e.g. the D-G-B strings of an open A
+  // chord get fingers 1-2-3, not one finger barred across three strings),
+  // so those split into one group per string instead of merging.
   function groupContiguousSameFret(fretPattern) {
     var byFret = {};
     fretPattern.forEach(function (fe, i) { if (fe.fret > 0) (byFret[fe.fret] = byFret[fe.fret] || []).push(i); });
@@ -229,7 +235,13 @@
       var fret = parseInt(fretStr, 10);
       var indices = byFret[fretStr];
       var run = [indices[0]];
-      function flush() { groups.push({ fret: fret, strings: run.slice() }); }
+      function flush() {
+        if (run.length >= MIN_BARRE_STRINGS) {
+          groups.push({ fret: fret, strings: run.slice() });
+        } else {
+          run.forEach(function (idx) { groups.push({ fret: fret, strings: [idx] }); });
+        }
+      }
       for (var k = 1; k < indices.length; k++) {
         var blocked = false;
         for (var s = indices[k - 1] + 1; s < indices[k]; s++) {
@@ -243,12 +255,34 @@
     return groups;
   }
 
+  // Every finger group - the barre (if any) plus whatever else is grouped
+  // on top of / around it - counts as "one finger".
+  //
+  // A detected barre only counts as one finger in one of two situations:
+  //  - it's a genuine "reach across" (some string inside the span is
+  //    fretted HIGHER, e.g. open D's G and high-E strings both at fret 2
+  //    with B at fret 3 between them) - that always takes one finger
+  //    flattened underneath, no matter how few strings it actually
+  //    touches, because there's no alternative technique for it;
+  //  - or it's a solid, gap-free block of same-fret strings wide enough to
+  //    actually need barring (MIN_BARRE_STRINGS). A solid block NARROWER
+  //    than that (e.g. the D-G-B strings of open A, all fret 2 with
+  //    nothing fretted differently between them) is exactly the case a
+  //    real player fingers individually, so it's left uncovered here and
+  //    groupContiguousSameFret gives each string its own finger instead.
   function computeFingerGroups(fretPattern) {
     var barre = detectBarre(fretPattern);
     var barreCovered = {};
     if (barre) {
       for (var i = barre.lo; i <= barre.hi; i++) {
         if (fretPattern[i].fret === barre.fret) barreCovered[i] = true;
+      }
+      var touchedCount = Object.keys(barreCovered).length;
+      var spanWidth = barre.hi - barre.lo + 1;
+      var isReachAcross = touchedCount < spanWidth;
+      if (!isReachAcross && spanWidth < MIN_BARRE_STRINGS) {
+        barre = null;
+        barreCovered = {};
       }
     }
     var reduced = fretPattern.map(function (fe, i) { return barreCovered[i] ? { fret: -1 } : fe; });
