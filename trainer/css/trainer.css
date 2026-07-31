@@ -87,7 +87,6 @@
   font-size: clamp(3.4rem, 8vw, 5.2rem);
   line-height: 1;
   color: var(--nk-c4);
-  text-shadow: 0 0 40px rgba(var(--nk-c1-rgb), 0.28);
   transition: color 0.15s ease, transform 0.15s ease;
 }
 
@@ -114,18 +113,18 @@
   font-size: 0.85rem;
   padding: 0.65rem 1.5rem;
   cursor: pointer;
-  box-shadow: 0 10px 24px rgba(38, 83, 217, 0.45);
+  box-shadow: var(--nk-elevation-1);
   transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
 }
 
 .trainer-session-btn svg { width: 17px; height: 17px; }
 
-.trainer-session-btn:hover { background: var(--nk-c2h); transform: translateY(-2px); }
+.trainer-session-btn:hover { background: var(--nk-c2h); transform: translateY(-2px); box-shadow: var(--nk-elevation-4); }
 .trainer-session-btn:active { transform: translateY(0) scale(0.97); }
 
 .trainer-session-btn.is-running {
   background: var(--nk-gold);
-  box-shadow: 0 10px 24px rgba(var(--nk-gold-rgb), 0.45);
+  box-shadow: 0 2px 8px rgba(var(--nk-gold-rgb), 0.4);
 }
 
 .trainer-session-btn.is-running svg { display: none; }
@@ -244,19 +243,19 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 10px 24px rgba(38, 83, 217, 0.45);
+  box-shadow: var(--nk-elevation-1);
   transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
 }
 
 .mini-metro-play svg { width: 22px; height: 22px; }
 .mini-metro-play .icon-stop { display: none; }
 
-.mini-metro-play:hover { background: var(--nk-c2h); transform: translateY(-2px); }
+.mini-metro-play:hover { background: var(--nk-c2h); transform: translateY(-2px); box-shadow: var(--nk-elevation-4); }
 .mini-metro-play:active { transform: translateY(0) scale(0.96); }
 
 .mini-metro-play.is-playing {
   background: var(--nk-gold);
-  box-shadow: 0 10px 24px rgba(var(--nk-gold-rgb), 0.45);
+  box-shadow: 0 2px 8px rgba(var(--nk-gold-rgb), 0.4);
 }
 
 .mini-metro-play.is-playing .icon-play { display: none; }
@@ -351,13 +350,13 @@
 
 .mini-beat-dot.is-active {
   background: var(--nk-c1);
-  box-shadow: 0 0 10px rgba(var(--nk-c1-rgb), 0.7);
+  box-shadow: 0 0 4px rgba(var(--nk-c1-rgb), 0.6);
   transform: scale(1.15);
 }
 
 .mini-beat-dot.is-active.is-accent-slot {
   background: var(--nk-gold);
-  box-shadow: 0 0 12px rgba(var(--nk-gold-rgb), 0.75);
+  box-shadow: 0 0 4px rgba(var(--nk-gold-rgb), 0.6);
 }
 
 /* ---------- session settings ---------- */

@@ -337,13 +337,13 @@
   font-size: 0.74rem;
   padding: 0.45rem 1rem;
   cursor: pointer;
-  box-shadow: 0 8px 18px rgba(38, 83, 217, 0.4);
+  box-shadow: var(--nk-elevation-1);
   transition: background-color 0.2s ease, transform 0.15s ease;
 }
 
 .diagram-play-btn svg { width: 13px; height: 13px; }
 
-.diagram-play-btn:hover { background: var(--nk-c2h); transform: translateY(-1px); }
+.diagram-play-btn:hover { background: var(--nk-c2h); transform: translateY(-1px); box-shadow: var(--nk-elevation-4); }
 .diagram-play-btn:active { transform: translateY(0) scale(0.96); }
 
 .diagram-empty {

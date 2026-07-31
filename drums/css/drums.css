@@ -35,19 +35,19 @@
   font-size: 0.9rem;
   padding: 0.7rem 1.6rem;
   cursor: pointer;
-  box-shadow: 0 10px 24px rgba(74, 222, 128, 0.35);
+  box-shadow: var(--nk-elevation-1);
   transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
 }
 
 .transport-play-btn svg { width: 18px; height: 18px; }
 .transport-play-btn .icon-stop { display: none; }
 
-.transport-play-btn:hover { transform: translateY(-2px); }
+.transport-play-btn:hover { transform: translateY(-2px); box-shadow: var(--nk-elevation-4); }
 .transport-play-btn:active { transform: translateY(0) scale(0.97); }
 
 .transport-play-btn.is-playing {
   background: var(--nk-gold);
-  box-shadow: 0 10px 24px rgba(var(--nk-gold-rgb), 0.35);
+  box-shadow: 0 2px 8px rgba(var(--nk-gold-rgb), 0.4);
 }
 .transport-play-btn.is-playing .icon-play { display: none; }
 .transport-play-btn.is-playing .icon-stop { display: inline-block; }

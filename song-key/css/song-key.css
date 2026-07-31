@@ -14,7 +14,6 @@
   font-size: clamp(2.4rem, 5vw, 3.2rem);
   line-height: 1;
   color: var(--nk-c4);
-  text-shadow: 0 0 40px rgba(var(--nk-c1-rgb), 0.28);
 }
 
 .sk-listen-btn {
@@ -30,18 +29,18 @@
   font-size: 0.8rem;
   padding: 0.6rem 1.3rem;
   cursor: pointer;
-  box-shadow: 0 10px 24px rgba(38, 83, 217, 0.45);
+  box-shadow: var(--nk-elevation-1);
   transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
 }
 
 .sk-listen-btn svg { width: 18px; height: 18px; }
 
-.sk-listen-btn:hover { background: var(--nk-c2h); transform: translateY(-2px); }
+.sk-listen-btn:hover { background: var(--nk-c2h); transform: translateY(-2px); box-shadow: var(--nk-elevation-4); }
 .sk-listen-btn:active { transform: translateY(0) scale(0.97); }
 
 .sk-listen-btn.is-listening {
   background: var(--nk-gold);
-  box-shadow: 0 10px 24px rgba(var(--nk-gold-rgb), 0.45);
+  box-shadow: 0 2px 8px rgba(var(--nk-gold-rgb), 0.4);
 }
 
 .sk-status {

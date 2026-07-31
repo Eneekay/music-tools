@@ -179,11 +179,11 @@
   font-size: 0.82rem;
   padding: 0.6rem 1.4rem;
   cursor: pointer;
-  box-shadow: 0 10px 24px rgba(38, 83, 217, 0.4);
+  box-shadow: var(--nk-elevation-1);
   transition: background-color 0.2s ease, transform 0.15s ease;
 }
 
-.gen-btn:hover { background: var(--nk-c2h); transform: translateY(-2px); }
+.gen-btn:hover { background: var(--nk-c2h); transform: translateY(-2px); box-shadow: var(--nk-elevation-4); }
 .gen-btn:active { transform: translateY(0) scale(0.97); }
 
 .gen-btn--ghost {
@@ -268,20 +268,20 @@
   font-size: 0.85rem;
   padding: 0.65rem 1.5rem;
   cursor: pointer;
-  box-shadow: 0 10px 24px rgba(74, 222, 128, 0.35);
+  box-shadow: var(--nk-elevation-1);
   transition: background-color 0.2s ease, transform 0.15s ease, opacity 0.2s ease;
 }
 
 .prog-play-btn svg { width: 17px; height: 17px; }
 .prog-play-btn .icon-stop { display: none; }
 
-.prog-play-btn:hover:not(:disabled) { transform: translateY(-2px); }
+.prog-play-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: var(--nk-elevation-4); }
 .prog-play-btn:active:not(:disabled) { transform: translateY(0) scale(0.97); }
 .prog-play-btn:disabled { opacity: 0.55; cursor: default; }
 
 .prog-play-btn.is-playing {
   background: var(--nk-gold);
-  box-shadow: 0 10px 24px rgba(var(--nk-gold-rgb), 0.35);
+  box-shadow: 0 2px 8px rgba(var(--nk-gold-rgb), 0.4);
 }
 .prog-play-btn.is-playing .icon-play { display: none; }
 .prog-play-btn.is-playing .icon-stop { display: inline-block; }

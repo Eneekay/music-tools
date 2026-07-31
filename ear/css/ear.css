@@ -167,13 +167,13 @@
   font-size: 0.85rem;
   padding: 0.65rem 1.5rem;
   cursor: pointer;
-  box-shadow: 0 10px 24px rgba(38, 83, 217, 0.45);
+  box-shadow: var(--nk-elevation-1);
   transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
 }
 
 .ear-play-btn svg { width: 17px; height: 17px; }
 
-.ear-play-btn:hover { background: var(--nk-c2h); transform: translateY(-2px); }
+.ear-play-btn:hover { background: var(--nk-c2h); transform: translateY(-2px); box-shadow: var(--nk-elevation-4); }
 .ear-play-btn:active { transform: translateY(0) scale(0.97); }
 
 /* ---------- answer grid ---------- */

@@ -124,13 +124,13 @@
   font-size: 0.82rem;
   padding: 0.6rem 1.35rem;
   cursor: pointer;
-  box-shadow: 0 10px 24px rgba(38, 83, 217, 0.45);
+  box-shadow: var(--nk-elevation-1);
   transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
 }
 
 .sb-action-btn svg { width: 16px; height: 16px; }
 
-.sb-action-btn:hover { background: var(--nk-c2h); transform: translateY(-2px); }
+.sb-action-btn:hover { background: var(--nk-c2h); transform: translateY(-2px); box-shadow: var(--nk-elevation-4); }
 .sb-action-btn:active { transform: translateY(0) scale(0.97); }
 
 .sb-action-btn--ghost {
@@ -236,7 +236,7 @@
   height: 20px;
   border-radius: 3px;
   background: var(--nk-c4);
-  box-shadow: 0 0 10px rgba(247, 246, 241, 0.7);
+  box-shadow: 0 0 4px rgba(var(--nk-c4-rgb), 0.6);
   transform: translateX(-50%);
   transition: left 0.2s ease;
 }

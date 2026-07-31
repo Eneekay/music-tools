@@ -1,6 +1,6 @@
 /* Music Tools — homepage-only styles: the instrument filter bar and the
-   small instrument tag badges on each tool card. Shared chrome (background
-   layers, glass, widget, tool-grid/tool-card) lives in site.css. */
+   small instrument tag badges on each tool card. Shared chrome (surfaces,
+   widget, tool-grid/tool-card) lives in site.css. */
 
 .filter-widget { align-items: center; }
 
@@ -23,7 +23,7 @@
 .instrument-filter-chips button {
   border-radius: var(--nk-shape-sm);
   border: 1px solid var(--nk-outline-variant);
-  background: var(--nk-surface-container-low);
+  background: var(--nk-surface);
   color: var(--nk-cream-strong);
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
@@ -35,7 +35,7 @@
 
 .instrument-filter-chips button:hover, .instrument-filter-chips button:focus-visible {
   border-color: rgba(var(--nk-c1-rgb), 0.4);
-  background: var(--nk-surface-container-high);
+  background: var(--nk-surface-high);
 }
 
 .instrument-filter-chips button.is-active {

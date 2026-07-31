@@ -21,7 +21,6 @@
   font-size: clamp(2.8rem, 5.6vw, 3.8rem);
   line-height: 1;
   color: var(--nk-c4);
-  text-shadow: 0 0 40px rgba(var(--nk-c1-rgb), 0.28);
   transition: color 0.2s ease;
 }
 
@@ -50,18 +49,18 @@
   font-size: 0.8rem;
   padding: 0.6rem 1.3rem;
   cursor: pointer;
-  box-shadow: 0 10px 24px rgba(38, 83, 217, 0.45);
+  box-shadow: var(--nk-elevation-1);
   transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
 }
 
 .vt-listen-btn svg { width: 18px; height: 18px; }
 
-.vt-listen-btn:hover { background: var(--nk-c2h); transform: translateY(-2px); }
+.vt-listen-btn:hover { background: var(--nk-c2h); transform: translateY(-2px); box-shadow: var(--nk-elevation-4); }
 .vt-listen-btn:active { transform: translateY(0) scale(0.97); }
 
 .vt-listen-btn.is-listening {
   background: var(--nk-gold);
-  box-shadow: 0 10px 24px rgba(var(--nk-gold-rgb), 0.45);
+  box-shadow: 0 2px 8px rgba(var(--nk-gold-rgb), 0.4);
 }
 
 .vt-status {

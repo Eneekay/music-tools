@@ -48,11 +48,10 @@
   bottom: 14px;
   width: 4px;
   height: 168px;
-  background: linear-gradient(to top, var(--nk-c1), rgba(var(--nk-c1-rgb), 0.15));
+  background: var(--nk-c1);
   border-radius: 3px;
   transform-origin: bottom center;
   transform: translateX(-50%) rotate(0deg);
-  box-shadow: 0 0 14px rgba(var(--nk-c1-rgb), 0.55);
   transition: transform 0.4s cubic-bezier(0.34, 1.2, 0.4, 1);
 }
 
@@ -67,7 +66,6 @@
   border-radius: 50%;
   background: var(--nk-gold);
   transform: translate(-50%, -50%);
-  box-shadow: 0 0 10px rgba(var(--nk-gold-rgb), 0.65);
   transition: top 0.3s ease;
 }
 
@@ -80,7 +78,6 @@
   border-radius: 50%;
   background: var(--nk-c4);
   transform: translateX(-50%);
-  box-shadow: 0 0 8px rgba(247, 246, 241, 0.5);
 }
 
 .metro-transport {
@@ -101,19 +98,19 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 10px 24px rgba(38, 83, 217, 0.45);
+  box-shadow: var(--nk-elevation-1);
   transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
 }
 
 .metro-play svg { width: 26px; height: 26px; }
 .metro-play .icon-stop { display: none; }
 
-.metro-play:hover { background: var(--nk-c2h); transform: translateY(-2px); }
+.metro-play:hover { background: var(--nk-c2h); transform: translateY(-2px); box-shadow: var(--nk-elevation-4); }
 .metro-play:active { transform: translateY(0) scale(0.96); }
 
 .metro-play.is-playing {
   background: var(--nk-gold);
-  box-shadow: 0 10px 24px rgba(var(--nk-gold-rgb), 0.45);
+  box-shadow: 0 2px 8px rgba(var(--nk-gold-rgb), 0.4);
 }
 
 .metro-play.is-playing .icon-play { display: none; }
@@ -234,13 +231,13 @@
 
 .beat-dot.is-active {
   background: var(--nk-c1);
-  box-shadow: 0 0 10px rgba(var(--nk-c1-rgb), 0.7);
+  box-shadow: 0 0 4px rgba(var(--nk-c1-rgb), 0.6);
   transform: scale(1.15);
 }
 
 .beat-dot.is-active.is-accent-slot {
   background: var(--nk-gold);
-  box-shadow: 0 0 12px rgba(var(--nk-gold-rgb), 0.75);
+  box-shadow: 0 0 4px rgba(var(--nk-gold-rgb), 0.6);
 }
 
 .beat-number {
@@ -250,7 +247,6 @@
   line-height: 1;
   font-variant-numeric: tabular-nums;
   color: var(--nk-c4);
-  text-shadow: 0 0 40px rgba(var(--nk-c1-rgb), 0.28);
 }
 
 .beat-number.is-pulse { animation: beatPulse 0.18s ease; }
@@ -457,12 +453,12 @@
 
 #polyRowA .poly-dot.is-active {
   background: var(--nk-c1);
-  box-shadow: 0 0 8px rgba(var(--nk-c1-rgb), 0.7);
+  box-shadow: 0 0 4px rgba(var(--nk-c1-rgb), 0.6);
 }
 
 #polyRowB .poly-dot.is-active {
   background: var(--nk-gold);
-  box-shadow: 0 0 8px rgba(var(--nk-gold-rgb), 0.7);
+  box-shadow: 0 0 4px rgba(var(--nk-gold-rgb), 0.6);
 }
 
 /* ---------- sounds ---------- */
