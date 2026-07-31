@@ -38,7 +38,7 @@
 }
 
 .metro-tick--center {
-  background: rgba(111, 194, 255, 0.5);
+  background: rgba(var(--nk-c1-rgb), 0.5);
   height: 18px;
 }
 
@@ -48,11 +48,11 @@
   bottom: 14px;
   width: 4px;
   height: 168px;
-  background: linear-gradient(to top, var(--nk-c1), rgba(111, 194, 255, 0.15));
+  background: linear-gradient(to top, var(--nk-c1), rgba(var(--nk-c1-rgb), 0.15));
   border-radius: 3px;
   transform-origin: bottom center;
   transform: translateX(-50%) rotate(0deg);
-  box-shadow: 0 0 14px rgba(111, 194, 255, 0.55);
+  box-shadow: 0 0 14px rgba(var(--nk-c1-rgb), 0.55);
   transition: transform 0.4s cubic-bezier(0.34, 1.2, 0.4, 1);
 }
 
@@ -134,11 +134,11 @@
 
 .metro-tap:hover, .metro-tap:focus-visible {
   color: var(--nk-c1);
-  border-color: rgba(111, 194, 255, 0.4);
+  border-color: rgba(var(--nk-c1-rgb), 0.4);
   background: rgba(255, 232, 244, 0.12);
 }
 
-.metro-tap.is-tapped { color: var(--nk-c1); border-color: rgba(111, 194, 255, 0.5); }
+.metro-tap.is-tapped { color: var(--nk-c1); border-color: rgba(var(--nk-c1-rgb), 0.5); }
 
 .bpm-block { width: 100%; margin-top: 0.9rem; }
 
@@ -164,7 +164,7 @@
 
 .bpm-step:hover, .bpm-step:focus-visible {
   color: var(--nk-c1);
-  border-color: rgba(111, 194, 255, 0.4);
+  border-color: rgba(var(--nk-c1-rgb), 0.4);
   background: rgba(255, 232, 244, 0.12);
 }
 
@@ -234,7 +234,7 @@
 
 .beat-dot.is-active {
   background: var(--nk-c1);
-  box-shadow: 0 0 10px rgba(111, 194, 255, 0.7);
+  box-shadow: 0 0 10px rgba(var(--nk-c1-rgb), 0.7);
   transform: scale(1.15);
 }
 
@@ -250,7 +250,7 @@
   line-height: 1;
   font-variant-numeric: tabular-nums;
   color: var(--nk-c4);
-  text-shadow: 0 0 40px rgba(111, 194, 255, 0.28);
+  text-shadow: 0 0 40px rgba(var(--nk-c1-rgb), 0.28);
 }
 
 .beat-number.is-pulse { animation: beatPulse 0.18s ease; }
@@ -295,7 +295,7 @@
 }
 
 .rhythm-preset:hover, .rhythm-preset:focus-visible {
-  border-color: rgba(111, 194, 255, 0.4);
+  border-color: rgba(var(--nk-c1-rgb), 0.4);
   background: rgba(255, 232, 244, 0.1);
 }
 
@@ -345,7 +345,7 @@
 
 .rhythm-field input:focus, .rhythm-field select:focus {
   border-color: var(--nk-c1);
-  box-shadow: 0 0 0 3px rgba(111, 194, 255, 0.15);
+  box-shadow: 0 0 0 3px rgba(var(--nk-c1-rgb), 0.15);
 }
 
 .rhythm-slash {
@@ -381,7 +381,7 @@
 
 .bars-input:disabled { opacity: 0.35; }
 
-.bars-input:focus { border-color: var(--nk-c1); box-shadow: 0 0 0 3px rgba(111, 194, 255, 0.15); }
+.bars-input:focus { border-color: var(--nk-c1); box-shadow: 0 0 0 3px rgba(var(--nk-c1-rgb), 0.15); }
 
 /* ---------- polyrhythm ---------- */
 
@@ -411,7 +411,7 @@
 }
 
 .poly-ratio input:disabled { opacity: 0.35; }
-.poly-ratio input:focus { border-color: var(--nk-c1); box-shadow: 0 0 0 3px rgba(111, 194, 255, 0.15); }
+.poly-ratio input:focus { border-color: var(--nk-c1); box-shadow: 0 0 0 3px rgba(var(--nk-c1-rgb), 0.15); }
 
 .poly-colon {
   font-family: 'Space Grotesk', sans-serif;
@@ -457,7 +457,7 @@
 
 #polyRowA .poly-dot.is-active {
   background: var(--nk-c1);
-  box-shadow: 0 0 8px rgba(111, 194, 255, 0.7);
+  box-shadow: 0 0 8px rgba(var(--nk-c1-rgb), 0.7);
 }
 
 #polyRowB .poly-dot.is-active {
@@ -491,14 +491,14 @@
 }
 
 .sound-swatch:hover, .sound-swatch:focus-visible {
-  border-color: rgba(111, 194, 255, 0.4);
+  border-color: rgba(var(--nk-c1-rgb), 0.4);
   background: rgba(255, 232, 244, 0.12);
   color: var(--nk-c1);
 }
 
 .sound-swatch svg { width: 14px; height: 14px; flex-shrink: 0; }
 
-.sound-swatch.is-triggered { background: rgba(111, 194, 255, 0.22); border-color: rgba(111, 194, 255, 0.5); }
+.sound-swatch.is-triggered { background: rgba(var(--nk-c1-rgb), 0.22); border-color: rgba(var(--nk-c1-rgb), 0.5); }
 
 .sound-assign {
   display: flex;
@@ -549,4 +549,4 @@
   cursor: pointer;
 }
 
-.sound-assign-row select:focus { border-color: var(--nk-c1); box-shadow: 0 0 0 3px rgba(111, 194, 255, 0.15); }
+.sound-assign-row select:focus { border-color: var(--nk-c1); box-shadow: 0 0 0 3px rgba(var(--nk-c1-rgb), 0.15); }

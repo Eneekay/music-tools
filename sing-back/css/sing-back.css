@@ -39,7 +39,7 @@
 }
 
 .root-picker button:hover, .root-picker button:focus-visible {
-  border-color: rgba(111, 194, 255, 0.4);
+  border-color: rgba(var(--nk-c1-rgb), 0.4);
   background: rgba(255, 232, 244, 0.12);
 }
 
@@ -160,7 +160,7 @@
 
 .sb-listen-btn svg { width: 16px; height: 16px; }
 
-.sb-listen-btn:hover { border-color: rgba(111, 194, 255, 0.4); background: rgba(255, 232, 244, 0.12); }
+.sb-listen-btn:hover { border-color: rgba(var(--nk-c1-rgb), 0.4); background: rgba(255, 232, 244, 0.12); }
 
 .sb-listen-btn.is-listening {
   background: var(--nk-gold);
@@ -346,6 +346,6 @@
 
 .stats-reset-btn:hover, .stats-reset-btn:focus-visible {
   color: var(--nk-c1);
-  border-color: rgba(111, 194, 255, 0.4);
+  border-color: rgba(var(--nk-c1-rgb), 0.4);
   background: rgba(255, 232, 244, 0.12);
 }

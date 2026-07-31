@@ -14,11 +14,40 @@
   --nk-cream-strong: #D8C9D6;
   --nk-on-accent: #14111A;
   --nk-c0-rgb: 10, 10, 12;
+  --nk-c1-rgb: 255, 143, 194;
   --nk-c4-rgb: 243, 238, 242;
   --nk-gold-rgb: 255, 15, 102;
   --nk-green: #4ADE80;
   --nk-green-rgb: 74, 222, 128;
-  --nk-shadow-pill: 0 10px 28px rgba(0, 0, 0, 0.6);
+
+  /* ---- Material Design 3 tokens ----
+     Tonal surface ramp, outline roles, elevation and shape scales, and
+     motion easing, all mapped onto the existing pink/magenta palette so
+     every shared component reads as one coherent M3 dark theme instead of
+     the old glassmorphism. */
+  --nk-surface-container-lowest: #060506;
+  --nk-surface-container-low: #14101A;
+  --nk-surface-container: #1B1620;
+  --nk-surface-container-high: #241D2A;
+  --nk-surface-container-highest: #2E2534;
+
+  --nk-outline: rgba(var(--nk-c4-rgb), 0.24);
+  --nk-outline-variant: rgba(var(--nk-c4-rgb), 0.12);
+
+  --nk-elevation-1: 0 1px 2px rgba(0, 0, 0, 0.55), 0 1px 3px 1px rgba(0, 0, 0, 0.35);
+  --nk-elevation-2: 0 1px 2px rgba(0, 0, 0, 0.55), 0 2px 6px 2px rgba(0, 0, 0, 0.35);
+  --nk-elevation-3: 0 1px 3px rgba(0, 0, 0, 0.6), 0 4px 8px 3px rgba(0, 0, 0, 0.35);
+  --nk-elevation-4: 0 2px 3px rgba(0, 0, 0, 0.6), 0 6px 10px 4px rgba(0, 0, 0, 0.35);
+
+  --nk-shape-xs: 4px;
+  --nk-shape-sm: 8px;
+  --nk-shape-md: 12px;
+  --nk-shape-lg: 16px;
+  --nk-shape-xl: 28px;
+  --nk-shape-full: 999px;
+
+  --nk-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --nk-easing-emphasized: cubic-bezier(0.3, 0, 0.1, 1);
 }
 
 * { box-sizing: border-box; }
@@ -127,25 +156,13 @@ body {
   .contour-group { animation: none; }
 }
 
-/* ---------- frosted glass ---------- */
+/* ---------- Material surface container ----------
+   Formerly a frosted/blurred glass panel; now a solid M3 tonal surface
+   (no backdrop-filter) with a hairline outline-variant border. */
 
 .glass {
-  background: rgba(255, 232, 244, 0.07);
-  backdrop-filter: blur(22px) saturate(150%);
-  -webkit-backdrop-filter: blur(22px) saturate(150%);
-  border: 1px solid rgba(255, 232, 244, 0.14);
-}
-
-/* backdrop-filter over animated position:fixed background layers is a
-   well-known source of scroll jank on mobile GPUs (Firefox Android's
-   compositor handles it far worse than desktop) - swap to a plain opaque
-   panel on coarse-pointer/no-hover (i.e. touchscreen) devices instead. */
-@media (hover: none) and (pointer: coarse) {
-  .glass {
-    background: rgba(24, 29, 45, 0.86);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
+  background: var(--nk-surface-container);
+  border: 1px solid var(--nk-outline-variant);
 }
 
 /* ---------- toggle switch ---------- */
@@ -156,11 +173,11 @@ body {
 .switch-track {
   width: 40px;
   height: 22px;
-  border-radius: 999px;
-  background: rgba(255, 232, 244, 0.14);
-  border: 1px solid rgba(255, 232, 244, 0.18);
+  border-radius: var(--nk-shape-full);
+  background: var(--nk-surface-container-high);
+  border: 1px solid var(--nk-outline);
   position: relative;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  transition: background-color 0.2s var(--nk-easing-standard), border-color 0.2s var(--nk-easing-standard);
 }
 
 .switch-thumb {
@@ -171,7 +188,7 @@ body {
   height: 16px;
   border-radius: 50%;
   background: var(--nk-c4);
-  transition: transform 0.2s ease;
+  transition: transform 0.2s var(--nk-easing-standard);
 }
 
 .switch input:checked + .switch-track {
@@ -197,9 +214,9 @@ body {
 
 .seg-control {
   display: inline-flex;
-  border-radius: 999px;
-  background: rgba(255, 232, 244, 0.06);
-  border: 1px solid rgba(255, 232, 244, 0.14);
+  border-radius: var(--nk-shape-full);
+  background: var(--nk-surface-container-low);
+  border: 1px solid var(--nk-outline-variant);
   padding: 3px;
   gap: 2px;
 }
@@ -211,16 +228,16 @@ body {
   font-size: 0.72rem;
   font-weight: 600;
   padding: 0.32rem 0.7rem;
-  border-radius: 999px;
+  border-radius: var(--nk-shape-full);
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition: background-color 0.15s var(--nk-easing-standard), color 0.15s var(--nk-easing-standard);
 }
 
 .seg-control button:hover { color: var(--nk-c1); }
 
 .seg-control button.is-active {
   background: var(--nk-c2);
-  color: #fff;
+  color: var(--nk-on-accent);
 }
 
 .seg-control.is-disabled {
@@ -236,7 +253,7 @@ body {
   gap: 0.7rem;
   margin-top: 0.9rem;
   padding-top: 0.8rem;
-  border-top: 1px solid rgba(255, 232, 244, 0.08);
+  border-top: 1px solid var(--nk-outline-variant);
 }
 
 .volume-row span {
@@ -292,7 +309,7 @@ body {
   font-weight: 700;
   font-size: clamp(1.6rem, 3.2vw, 2.4rem);
   color: var(--nk-c4);
-  text-shadow: 0 0 40px rgba(111, 194, 255, 0.28);
+  text-shadow: 0 0 40px rgba(var(--nk-c1-rgb), 0.28);
 }
 
 .app-sub {
@@ -317,17 +334,18 @@ body {
 }
 
 .widget {
-  border-radius: 22px;
+  border-radius: var(--nk-shape-md);
   padding: clamp(0.9rem, 1.6vw, 1.35rem);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 232, 244, 0.08);
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: var(--nk-elevation-1);
+  transition: border-color 0.2s var(--nk-easing-standard), box-shadow 0.2s var(--nk-easing-standard);
 }
 
 .widget:hover {
-  border-color: rgba(111, 194, 255, 0.25);
+  border-color: rgba(var(--nk-c1-rgb), 0.3);
+  box-shadow: var(--nk-elevation-2);
 }
 
 /* a widget carrying this modifier absorbs the extra height once its column
@@ -364,7 +382,7 @@ body {
 }
 
 .tool-card {
-  border-radius: 22px;
+  border-radius: var(--nk-shape-md);
   padding: clamp(1.2rem, 2vw, 1.75rem);
   display: flex;
   flex-direction: column;
@@ -372,25 +390,25 @@ body {
   gap: 0.6rem;
   text-decoration: none;
   color: inherit;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 232, 244, 0.08);
-  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: var(--nk-elevation-1);
+  transition: transform 0.2s var(--nk-easing-standard), border-color 0.2s var(--nk-easing-standard), box-shadow 0.2s var(--nk-easing-standard);
 }
 
 .tool-card:hover, .tool-card:focus-visible {
-  transform: translateY(-5px);
-  border-color: rgba(111, 194, 255, 0.35);
-  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 232, 244, 0.1);
+  transform: translateY(-4px);
+  border-color: rgba(var(--nk-c1-rgb), 0.4);
+  box-shadow: var(--nk-elevation-4);
 }
 
 .tool-card-icon {
   width: 46px;
   height: 46px;
   flex-shrink: 0;
-  border-radius: 14px;
+  border-radius: var(--nk-shape-sm);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(111, 194, 255, 0.14);
+  background: rgba(var(--nk-c1-rgb), 0.14);
   color: var(--nk-c1);
 }
 
@@ -417,8 +435,8 @@ body {
 
 .tool-card-soon:hover, .tool-card-soon:focus-visible {
   transform: none;
-  border-color: rgba(255, 232, 244, 0.14);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 232, 244, 0.08);
+  border-color: var(--nk-outline-variant);
+  box-shadow: var(--nk-elevation-1);
 }
 
 .tool-card-soon .tool-card-icon {
@@ -460,8 +478,8 @@ body {
   gap: 0.4rem;
   padding: 0.7rem 0.9rem;
   background: var(--nk-c4);
-  border-radius: 12px;
-  box-shadow: var(--nk-shadow-pill);
+  border-radius: var(--nk-shape-md);
+  box-shadow: var(--nk-elevation-3);
 }
 
 @keyframes kbdHintBounce {
@@ -497,7 +515,7 @@ body {
   padding: 0 0.35rem;
   flex-shrink: 0;
   border: 1px solid rgba(var(--nk-c0-rgb), 0.2);
-  border-radius: 5px;
+  border-radius: var(--nk-shape-xs);
   background: var(--nk-c3);
   color: var(--nk-c0);
   font-family: 'Space Grotesk', sans-serif;
@@ -539,7 +557,7 @@ body {
   stroke-width: 1;
 }
 
-.piano-key--white:hover { fill: rgba(111, 194, 255, 0.35); }
+.piano-key--white:hover { fill: rgba(var(--nk-c1-rgb), 0.35); }
 
 .piano-key--black {
   fill: var(--nk-c0);

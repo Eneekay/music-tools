@@ -44,7 +44,7 @@
 }
 
 .builder-chip:hover, .builder-chip:focus-visible {
-  border-color: rgba(111, 194, 255, 0.4);
+  border-color: rgba(var(--nk-c1-rgb), 0.4);
   background: rgba(255, 232, 244, 0.1);
 }
 
@@ -150,9 +150,9 @@
 }
 
 .meta-tag--genre {
-  background: rgba(111, 194, 255, 0.14);
+  background: rgba(var(--nk-c1-rgb), 0.14);
   color: var(--nk-c1);
-  border: 1px solid rgba(111, 194, 255, 0.3);
+  border: 1px solid rgba(var(--nk-c1-rgb), 0.3);
 }
 
 /* ---------- practice widget ---------- */
@@ -221,7 +221,7 @@
 }
 
 .chord-chip:hover, .chord-chip:focus-visible {
-  border-color: rgba(111, 194, 255, 0.4);
+  border-color: rgba(var(--nk-c1-rgb), 0.4);
   background: rgba(255, 232, 244, 0.12);
 }
 
@@ -319,7 +319,7 @@
 }
 
 .history-item:hover, .history-item:focus-visible {
-  border-color: rgba(111, 194, 255, 0.4);
+  border-color: rgba(var(--nk-c1-rgb), 0.4);
   background: rgba(255, 232, 244, 0.1);
 }
 

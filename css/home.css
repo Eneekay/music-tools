@@ -21,27 +21,27 @@
 }
 
 .instrument-filter-chips button {
-  border-radius: 10px;
-  border: 1px solid rgba(255, 232, 244, 0.14);
-  background: rgba(255, 232, 244, 0.05);
+  border-radius: var(--nk-shape-sm);
+  border: 1px solid var(--nk-outline-variant);
+  background: var(--nk-surface-container-low);
   color: var(--nk-cream-strong);
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
   font-size: 0.76rem;
   padding: 0.4rem 0.8rem;
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  transition: background-color 0.15s var(--nk-easing-standard), border-color 0.15s var(--nk-easing-standard), color 0.15s var(--nk-easing-standard);
 }
 
 .instrument-filter-chips button:hover, .instrument-filter-chips button:focus-visible {
-  border-color: rgba(111, 194, 255, 0.4);
-  background: rgba(255, 232, 244, 0.1);
+  border-color: rgba(var(--nk-c1-rgb), 0.4);
+  background: var(--nk-surface-container-high);
 }
 
 .instrument-filter-chips button.is-active {
   background: var(--nk-c2);
   border-color: var(--nk-c2);
-  color: #fff;
+  color: var(--nk-on-accent);
 }
 
 .filter-clear {
@@ -77,7 +77,7 @@
 }
 
 .card-tag {
-  border-radius: 999px;
+  border-radius: var(--nk-shape-full);
   padding: 0.2rem 0.55rem;
   font-size: 0.6rem;
   font-weight: 600;

@@ -45,7 +45,7 @@
 }
 
 .instrument-tab:hover, .instrument-tab:focus-visible {
-  border-color: rgba(111, 194, 255, 0.4);
+  border-color: rgba(var(--nk-c1-rgb), 0.4);
   background: rgba(255, 232, 244, 0.1);
 }
 
@@ -68,7 +68,7 @@
   cursor: pointer;
 }
 
-.tuning-select:focus { border-color: var(--nk-c1); box-shadow: 0 0 0 3px rgba(111, 194, 255, 0.15); }
+.tuning-select:focus { border-color: var(--nk-c1); box-shadow: 0 0 0 3px rgba(var(--nk-c1-rgb), 0.15); }
 
 /* ---------- chord text input ---------- */
 
@@ -93,7 +93,7 @@
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.chord-text-input:focus { border-color: var(--nk-c1); box-shadow: 0 0 0 4px rgba(111, 194, 255, 0.15); }
+.chord-text-input:focus { border-color: var(--nk-c1); box-shadow: 0 0 0 4px rgba(var(--nk-c1-rgb), 0.15); }
 
 .chord-text-input.is-invalid { border-color: var(--nk-gold); }
 
@@ -130,7 +130,7 @@
 }
 
 .quick-pick-btn:hover, .quick-pick-btn:focus-visible {
-  border-color: rgba(111, 194, 255, 0.4);
+  border-color: rgba(var(--nk-c1-rgb), 0.4);
   background: rgba(255, 232, 244, 0.12);
 }
 
@@ -212,7 +212,7 @@
 }
 
 .builder-chip:hover, .builder-chip:focus-visible {
-  border-color: rgba(111, 194, 255, 0.4);
+  border-color: rgba(var(--nk-c1-rgb), 0.4);
   background: rgba(255, 232, 244, 0.1);
 }
 

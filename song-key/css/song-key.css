@@ -14,7 +14,7 @@
   font-size: clamp(2.4rem, 5vw, 3.2rem);
   line-height: 1;
   color: var(--nk-c4);
-  text-shadow: 0 0 40px rgba(111, 194, 255, 0.28);
+  text-shadow: 0 0 40px rgba(var(--nk-c1-rgb), 0.28);
 }
 
 .sk-listen-btn {
@@ -105,7 +105,7 @@
 
 .range-reset-btn:hover, .range-reset-btn:focus-visible {
   color: var(--nk-c1);
-  border-color: rgba(111, 194, 255, 0.4);
+  border-color: rgba(var(--nk-c1-rgb), 0.4);
   background: rgba(255, 232, 244, 0.12);
 }
 
@@ -184,7 +184,7 @@
 .key-fit-bar {
   height: 100%;
   border-radius: 999px;
-  background: rgba(111, 194, 255, 0.35);
+  background: rgba(var(--nk-c1-rgb), 0.35);
   transition: width 0.2s ease;
 }
 
