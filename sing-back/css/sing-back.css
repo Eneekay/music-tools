@@ -1,0 +1,351 @@
+/* Sing-Back Ear Trainer — widget styles specific to this tool. Shared chrome
+   (background layers, glass, dashboard/widget layout, floating keyboard
+   hint) lives in ../../css/site.css. */
+
+/* ---------- starting note / options widgets ---------- */
+
+.starting-note-widget, .options-widget { align-items: center; text-align: center; }
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.control-group:last-of-type { margin-bottom: 0; }
+
+.control-group--root { max-width: 320px; }
+
+.root-picker {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.3rem;
+}
+
+.root-picker button {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--nk-cream-strong);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.root-picker button:hover, .root-picker button:focus-visible {
+  border-color: rgba(111, 194, 255, 0.4);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.root-picker button.is-active {
+  background: var(--nk-gold);
+  border-color: var(--nk-gold);
+  color: var(--nk-c0);
+}
+
+.starting-note-hint {
+  margin: 0.6rem 0 0;
+  font-size: 0.68rem;
+  line-height: 1.5;
+  color: var(--nk-cream);
+  max-width: 300px;
+}
+
+.options-hint {
+  margin: 0.6rem 0 0;
+  font-size: 0.68rem;
+  line-height: 1.5;
+  color: var(--nk-cream);
+  max-width: 300px;
+  min-height: 1.5em;
+}
+
+/* ---------- practice widget ---------- */
+
+.practice-widget { align-items: center; text-align: center; }
+
+.prompt-status {
+  margin: 0 0 0.9rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--nk-c4);
+  min-height: 1.4em;
+  max-width: 480px;
+}
+
+.prompt-status.is-correct { color: var(--nk-green); }
+
+.prompt-target {
+  margin-bottom: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.prompt-target-label {
+  font-size: 0.64rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--nk-gold);
+}
+
+.prompt-target-interval {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.3rem, 2.6vw, 1.7rem);
+  color: var(--nk-c4);
+}
+
+.practice-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.sb-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  border: none;
+  background: var(--nk-c2);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.82rem;
+  padding: 0.6rem 1.35rem;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(38, 83, 217, 0.45);
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.sb-action-btn svg { width: 16px; height: 16px; }
+
+.sb-action-btn:hover { background: var(--nk-c2h); transform: translateY(-2px); }
+.sb-action-btn:active { transform: translateY(0) scale(0.97); }
+
+.sb-action-btn--ghost {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: var(--nk-cream-strong);
+  box-shadow: none;
+}
+
+.sb-action-btn--ghost:hover { background: rgba(255, 255, 255, 0.12); }
+.sb-action-btn--ghost:disabled { opacity: 0.4; cursor: default; transform: none; }
+
+.sb-listen-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--nk-cream-strong);
+  font-weight: 600;
+  font-size: 0.82rem;
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.sb-listen-btn svg { width: 16px; height: 16px; }
+
+.sb-listen-btn:hover { border-color: rgba(111, 194, 255, 0.4); background: rgba(255, 255, 255, 0.12); }
+
+.sb-listen-btn.is-listening {
+  background: var(--nk-gold);
+  border-color: var(--nk-gold);
+  color: var(--nk-c0);
+}
+
+.sb-status {
+  margin: 0.8rem 0 0;
+  font-size: 0.68rem;
+  color: var(--nk-cream);
+  min-height: 1.3em;
+}
+
+.sb-status.is-error { color: var(--nk-gold); font-weight: 600; }
+
+/* ---------- live readout ---------- */
+
+.live-readout {
+  margin-top: 1rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.live-readout-label {
+  font-size: 0.68rem;
+  color: var(--nk-cream);
+}
+
+.live-readout-note {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--nk-c1);
+}
+
+/* ---------- feedback / cents meter ---------- */
+
+.feedback-block {
+  width: 100%;
+  max-width: 420px;
+  margin-top: 1.3rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cents-meter { width: 100%; }
+
+.cents-meter-track {
+  position: relative;
+  height: 14px;
+  border-radius: 999px;
+  overflow: hidden;
+  display: flex;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cents-meter-zone { flex: 1 1 0; }
+
+.cents-meter-zone--flat { background: rgba(255, 122, 51, 0.35); }
+.cents-meter-zone--center { flex: 0.5 1 0; background: rgba(74, 222, 128, 0.45); }
+.cents-meter-zone--sharp { background: rgba(255, 122, 51, 0.35); }
+
+.cents-meter-marker {
+  position: absolute;
+  top: -3px;
+  width: 4px;
+  height: 20px;
+  border-radius: 3px;
+  background: var(--nk-c4);
+  box-shadow: 0 0 10px rgba(247, 246, 241, 0.7);
+  transform: translateX(-50%);
+  transition: left 0.2s ease;
+}
+
+.cents-meter-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.35rem;
+  font-size: 0.62rem;
+  color: var(--nk-cream);
+}
+
+.feedback-grade {
+  margin: 0.9rem 0 0.2rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.3rem, 2.4vw, 1.6rem);
+}
+
+.feedback-grade.is-great { color: var(--nk-green); }
+.feedback-grade.is-good { color: var(--nk-c1); }
+.feedback-grade.is-off { color: var(--nk-gold); }
+
+.feedback-detail {
+  margin: 0;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--nk-cream);
+}
+
+/* ---------- stats widget (shared shape with Interval Ear Trainer) ---------- */
+
+.stats-widget { align-items: center; text-align: center; }
+
+.stats-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.7rem;
+  max-width: 560px;
+}
+
+.stat-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.6rem 0.4rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-value {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.2rem, 2.2vw, 1.5rem);
+  color: var(--nk-c4);
+}
+
+.stat-label {
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--nk-cream);
+}
+
+.weak-notes {
+  width: 100%;
+  max-width: 560px;
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.weak-notes-label {
+  display: block;
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--nk-gold);
+  margin-bottom: 0.5rem;
+}
+
+.weak-notes-list {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--nk-cream-strong);
+  min-height: 1.3em;
+}
+
+.stats-reset-btn {
+  margin-top: 1.1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--nk-cream-strong);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.45rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.stats-reset-btn:hover, .stats-reset-btn:focus-visible {
+  color: var(--nk-c1);
+  border-color: rgba(111, 194, 255, 0.4);
+  background: rgba(255, 255, 255, 0.12);
+}

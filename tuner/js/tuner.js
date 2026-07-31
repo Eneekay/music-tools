@@ -315,6 +315,8 @@
   var rafId = null;
   var currentMatch = null;
   var displayedCents = 0;
+  var lastMatchTime = 0;
+  var SILENCE_HOLD_MS = 3000;
 
   function setListenButtonState(listening) {
     listenBtn.classList.toggle('is-listening', listening);
@@ -358,6 +360,7 @@
     var freq = window.PitchDetect.autoCorrelate(pitchBuffer, audioCtx.sampleRate);
 
     if (freq === -1) {
+      if (currentMatch && performance.now() - lastMatchTime < SILENCE_HOLD_MS) return;
       currentMatch = null;
       updateStringHighlights(null);
       showIdleReadout();
@@ -371,11 +374,15 @@
       match = { name: nearest.name + nearest.octave, cents: cents, freq: freq, index: -1 };
     } else {
       var res = nearestInTargets(freq, state.currentTargets);
-      if (!res.target) { currentMatch = null; showIdleReadout(); return; }
+      if (!res.target) {
+        if (currentMatch && performance.now() - lastMatchTime < SILENCE_HOLD_MS) return;
+        currentMatch = null; showIdleReadout(); return;
+      }
       match = { name: res.target.name, cents: res.cents, freq: freq, index: state.currentTargets.indexOf(res.target) };
     }
 
     currentMatch = match;
+    lastMatchTime = performance.now();
     updateReadout(match);
     updateStringHighlights(match);
   }

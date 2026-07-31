@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sing-Back Ear Trainer — Music Tools</title>
+<meta name="description" content="A reference pitch plays, you sing the named interval back, and the microphone scores how close your pitch was in cents. Builds relative pitch and pitch-matching accuracy together.">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="../css/site.css?v=1" rel="stylesheet">
+<link href="css/sing-back.css?v=1" rel="stylesheet">
+</head>
+<body>
+
+<div class="contour-bg" aria-hidden="true">
+  <svg class="contour-group contour-group--a" viewBox="0 0 2880 64" preserveAspectRatio="none">
+    <path class="contour-line" d="M0,14 C240,23 480,5 720,14 C960,23 1200,5 1440,14 C1680,23 1920,5 2160,14 C2400,23 2640,5 2880,14"></path>
+    <path class="contour-line" d="M0,23 C240,32 480,14 720,23 C960,32 1200,14 1440,23 C1680,32 1920,14 2160,23 C2400,32 2640,14 2880,23"></path>
+    <path class="contour-line" d="M0,32 C240,41 480,23 720,32 C960,41 1200,23 1440,32 C1680,41 1920,23 2160,32 C2400,41 2640,23 2880,32"></path>
+    <path class="contour-line" d="M0,41 C240,50 480,32 720,41 C960,50 1200,32 1440,41 C1680,50 1920,32 2160,41 C2400,50 2640,32 2880,41"></path>
+    <path class="contour-line" d="M0,50 C240,59 480,41 720,50 C960,59 1200,41 1440,50 C1680,59 1920,41 2160,50 C2400,59 2640,41 2880,50"></path>
+  </svg>
+  <svg class="contour-group contour-group--b" viewBox="0 0 2880 64" preserveAspectRatio="none">
+    <path class="contour-line" d="M0,14 C240,8 480,20 720,14 C960,8 1200,20 1440,14 C1680,8 1920,20 2160,14 C2400,8 2640,20 2880,14"></path>
+    <path class="contour-line" d="M0,23 C240,17 480,29 720,23 C960,17 1200,29 1440,23 C1680,17 1920,29 2160,23 C2400,17 2640,29 2880,23"></path>
+    <path class="contour-line" d="M0,32 C240,26 480,38 720,32 C960,26 1200,38 1440,32 C1680,26 1920,38 2160,32 C2400,26 2640,38 2880,32"></path>
+    <path class="contour-line" d="M0,41 C240,35 480,47 720,41 C960,35 1200,47 1440,41 C1680,35 1920,47 2160,41 C2400,35 2640,47 2880,41"></path>
+    <path class="contour-line" d="M0,50 C240,44 480,56 720,50 C960,44 1200,56 1440,50 C1680,44 1920,56 2160,50 C2400,44 2640,56 2880,50"></path>
+  </svg>
+  <svg class="contour-group contour-group--c" viewBox="0 0 2880 64" preserveAspectRatio="none">
+    <path class="contour-line" d="M0,14 C240,26 480,2 720,14 C960,26 1200,2 1440,14 C1680,26 1920,2 2160,14 C2400,26 2640,2 2880,14"></path>
+    <path class="contour-line" d="M0,23 C240,35 480,11 720,23 C960,35 1200,11 1440,23 C1680,35 1920,11 2160,23 C2400,35 2640,11 2880,23"></path>
+    <path class="contour-line" d="M0,32 C240,44 480,20 720,32 C960,44 1200,20 1440,32 C1680,44 1920,20 2160,32 C2400,44 2640,20 2880,32"></path>
+    <path class="contour-line" d="M0,41 C240,53 480,29 720,41 C960,53 1200,29 1440,41 C1680,53 1920,29 2160,41 C2400,53 2640,29 2880,41"></path>
+    <path class="contour-line" d="M0,50 C240,62 480,38 720,50 C960,62 1200,38 1440,50 C1680,62 1920,38 2160,50 C2400,62 2640,38 2880,50"></path>
+  </svg>
+</div>
+<canvas id="notes-canvas" aria-hidden="true"></canvas>
+<div class="dot-grid" aria-hidden="true"></div>
+<div class="blob blob-1" aria-hidden="true"></div>
+<div class="blob blob-2" aria-hidden="true"></div>
+<div class="blob blob-3" aria-hidden="true"></div>
+
+<div class="dashboard">
+
+  <header class="app-header">
+    <a class="back-link" href="../">&larr; Music Tools</a>
+    <h1 class="app-title">Sing-Back Ear Trainer</h1>
+    <p class="app-sub">A reference pitch plays and names an interval &mdash; you sing it back, and the mic scores your accuracy in cents.</p>
+  </header>
+
+  <div class="dash-columns">
+
+    <div class="dash-col">
+      <section class="widget starting-note-widget widget--filler glass">
+        <span class="widget-eyebrow">Starting Note</span>
+        <div class="control-group control-group--root" id="scaleRootGroup">
+          <span class="seg-label">Root</span>
+          <div class="root-picker" id="rootPicker">
+            <button type="button" data-pc="0" data-flats="false" class="is-active">C</button>
+            <button type="button" data-pc="1" data-flats="true">D&#9837;</button>
+            <button type="button" data-pc="2" data-flats="false">D</button>
+            <button type="button" data-pc="3" data-flats="true">E&#9837;</button>
+            <button type="button" data-pc="4" data-flats="false">E</button>
+            <button type="button" data-pc="5" data-flats="true">F</button>
+            <button type="button" data-pc="6" data-flats="false">F&#9839;</button>
+            <button type="button" data-pc="7" data-flats="false">G</button>
+            <button type="button" data-pc="8" data-flats="true">A&#9837;</button>
+            <button type="button" data-pc="9" data-flats="false">A</button>
+            <button type="button" data-pc="10" data-flats="true">B&#9837;</button>
+            <button type="button" data-pc="11" data-flats="false">B</button>
+          </div>
+        </div>
+        <div class="control-group">
+          <span class="seg-label">Octave</span>
+          <div class="seg-control" id="octaveControl">
+            <button type="button" data-value="3">Low (3)</button>
+            <button type="button" data-value="4" class="is-active">Mid (4)</button>
+            <button type="button" data-value="5">High (5)</button>
+          </div>
+        </div>
+        <p class="starting-note-hint">Pick a reference octave that sits comfortably in your voice.</p>
+      </section>
+    </div>
+
+    <div class="dash-col">
+      <section class="widget options-widget widget--filler glass">
+        <span class="widget-eyebrow">Options</span>
+        <div class="control-group">
+          <span class="seg-label">Difficulty</span>
+          <div class="seg-control" id="difficultyControl">
+            <button type="button" data-value="easy">Easy</button>
+            <button type="button" data-value="medium" class="is-active">Medium</button>
+            <button type="button" data-value="hard">Hard</button>
+          </div>
+        </div>
+        <div class="control-group">
+          <span class="seg-label">Direction</span>
+          <div class="seg-control" id="directionControl">
+            <button type="button" data-value="ascending" class="is-active">Ascending only</button>
+            <button type="button" data-value="both">Ascending &amp; descending</button>
+          </div>
+        </div>
+        <p class="options-hint" id="difficultyHint"></p>
+      </section>
+    </div>
+
+  </div>
+
+  <section class="widget practice-widget glass">
+    <span class="widget-eyebrow">Practice</span>
+
+    <p class="prompt-status" id="promptStatus">Press New Prompt to hear a reference pitch and your target interval.</p>
+
+    <div class="prompt-target" id="promptTarget" hidden>
+      <span class="prompt-target-label">Sing:</span>
+      <span class="prompt-target-interval" id="promptTargetInterval"></span>
+    </div>
+
+    <div class="practice-actions">
+      <button type="button" class="sb-action-btn" id="promptBtn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5z"></path></svg>
+        <span id="promptBtnLabel">New Prompt</span>
+      </button>
+      <button type="button" class="sb-action-btn sb-action-btn--ghost" id="replayBtn" disabled>Replay Reference</button>
+      <button type="button" class="sb-listen-btn" id="listenBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="2" width="6" height="12" rx="3"></rect>
+          <path d="M5 11a7 7 0 0 0 14 0"></path>
+          <line x1="12" y1="18" x2="12" y2="22"></line>
+          <line x1="8" y1="22" x2="16" y2="22"></line>
+        </svg>
+        <span id="listenBtnLabel">Start Listening</span>
+      </button>
+    </div>
+
+    <p class="sb-status" id="sbStatus">Mic is off — tap Start Listening to sing your answers.</p>
+
+    <div class="live-readout" id="liveReadout" hidden>
+      <span class="live-readout-label">You're singing:</span>
+      <span class="live-readout-note" id="liveNote">–</span>
+    </div>
+
+    <div class="feedback-block" id="feedbackBlock" hidden>
+      <div class="cents-meter">
+        <div class="cents-meter-track">
+          <span class="cents-meter-zone cents-meter-zone--flat"></span>
+          <span class="cents-meter-zone cents-meter-zone--center"></span>
+          <span class="cents-meter-zone cents-meter-zone--sharp"></span>
+          <div class="cents-meter-marker" id="centsMarker"></div>
+        </div>
+        <div class="cents-meter-labels"><span>&minus;100&cent;</span><span>0</span><span>+100&cent;</span></div>
+      </div>
+      <p class="feedback-grade" id="feedbackGrade"></p>
+      <p class="feedback-detail" id="feedbackDetail"></p>
+    </div>
+  </section>
+
+  <section class="widget stats-widget glass">
+    <span class="widget-eyebrow">Stats</span>
+
+    <div class="stats-grid">
+      <div class="stat-cell">
+        <span class="stat-value" id="statAccuracy">&ndash;</span>
+        <span class="stat-label">Avg. accuracy</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-value" id="statStreak">0</span>
+        <span class="stat-label">Streak (80%+)</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-value" id="statBest">0</span>
+        <span class="stat-label">Best streak</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-value" id="statTotal">0</span>
+        <span class="stat-label">Attempts</span>
+      </div>
+    </div>
+
+    <div class="weak-notes">
+      <span class="weak-notes-label">Needs work</span>
+      <div class="weak-notes-list" id="weakIntervalsList">&mdash;</div>
+    </div>
+
+    <button type="button" class="stats-reset-btn" id="resetStatsBtn">Reset Stats</button>
+  </section>
+
+</div>
+
+<div class="kbd-hint" id="kbdHint" aria-hidden="true">
+  <div class="kbd-hint-inner">
+    <div class="kbd-hint-row"><kbd class="kbd-hint-key kbd-hint-key--wide">Space</kbd><span class="kbd-hint-text">New Prompt / Next</span></div>
+    <div class="kbd-hint-row"><kbd class="kbd-hint-key">L</kbd><span class="kbd-hint-text">Start / Stop mic</span></div>
+    <div class="kbd-hint-row"><span class="kbd-hint-combo"><kbd class="kbd-hint-key">1</kbd><span class="kbd-hint-dash">&ndash;</span><kbd class="kbd-hint-key">3</kbd></span><span class="kbd-hint-text">Difficulty</span></div>
+  </div>
+</div>
+
+<script src="../js/background.js?v=1"></script>
+<script src="../js/theory.js?v=1"></script>
+<script src="../js/pitch.js?v=1"></script>
+<script src="js/sing-back.js?v=1"></script>
+</body>
+</html>

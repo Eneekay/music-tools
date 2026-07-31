@@ -21,6 +21,12 @@
 
 * { box-sizing: border-box; }
 
+/* The HTML `hidden` attribute is only display:none in the UA stylesheet,
+   which any author rule setting `display` on that same element (e.g. a
+   widget using display:flex for its layout) silently overrides. Every tool
+   toggles panels via the `hidden` property, so this needs to win outright. */
+[hidden] { display: none !important; }
+
 html, body { height: 100%; }
 
 body {

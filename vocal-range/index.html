@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vocal Range Finder — Music Tools</title>
+<meta name="description" content="Find your singing range by ear: play reference pitches on a keyboard, hum or sing along, and let the microphone track your lowest and highest comfortable notes and classify your voice type.">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="../css/site.css?v=1" rel="stylesheet">
+<link href="css/vocal-range.css?v=1" rel="stylesheet">
+</head>
+<body>
+
+<div class="contour-bg" aria-hidden="true">
+  <svg class="contour-group contour-group--a" viewBox="0 0 2880 64" preserveAspectRatio="none">
+    <path class="contour-line" d="M0,14 C240,23 480,5 720,14 C960,23 1200,5 1440,14 C1680,23 1920,5 2160,14 C2400,23 2640,5 2880,14"></path>
+    <path class="contour-line" d="M0,23 C240,32 480,14 720,23 C960,32 1200,14 1440,23 C1680,32 1920,14 2160,23 C2400,32 2640,14 2880,23"></path>
+    <path class="contour-line" d="M0,32 C240,41 480,23 720,32 C960,41 1200,23 1440,32 C1680,41 1920,23 2160,32 C2400,41 2640,23 2880,32"></path>
+    <path class="contour-line" d="M0,41 C240,50 480,32 720,41 C960,50 1200,32 1440,41 C1680,50 1920,32 2160,41 C2400,50 2640,32 2880,41"></path>
+    <path class="contour-line" d="M0,50 C240,59 480,41 720,50 C960,59 1200,41 1440,50 C1680,59 1920,41 2160,50 C2400,59 2640,41 2880,50"></path>
+  </svg>
+  <svg class="contour-group contour-group--b" viewBox="0 0 2880 64" preserveAspectRatio="none">
+    <path class="contour-line" d="M0,14 C240,8 480,20 720,14 C960,8 1200,20 1440,14 C1680,8 1920,20 2160,14 C2400,8 2640,20 2880,14"></path>
+    <path class="contour-line" d="M0,23 C240,17 480,29 720,23 C960,17 1200,29 1440,23 C1680,17 1920,29 2160,23 C2400,17 2640,29 2880,23"></path>
+    <path class="contour-line" d="M0,32 C240,26 480,38 720,32 C960,26 1200,38 1440,32 C1680,26 1920,38 2160,32 C2400,26 2640,38 2880,32"></path>
+    <path class="contour-line" d="M0,41 C240,35 480,47 720,41 C960,35 1200,47 1440,41 C1680,35 1920,47 2160,41 C2400,35 2640,47 2880,41"></path>
+    <path class="contour-line" d="M0,50 C240,44 480,56 720,50 C960,44 1200,56 1440,50 C1680,44 1920,56 2160,50 C2400,44 2640,56 2880,50"></path>
+  </svg>
+  <svg class="contour-group contour-group--c" viewBox="0 0 2880 64" preserveAspectRatio="none">
+    <path class="contour-line" d="M0,14 C240,26 480,2 720,14 C960,26 1200,2 1440,14 C1680,26 1920,2 2160,14 C2400,26 2640,2 2880,14"></path>
+    <path class="contour-line" d="M0,23 C240,35 480,11 720,23 C960,35 1200,11 1440,23 C1680,35 1920,11 2160,23 C2400,35 2640,11 2880,23"></path>
+    <path class="contour-line" d="M0,32 C240,44 480,20 720,32 C960,44 1200,20 1440,32 C1680,44 1920,20 2160,32 C2400,44 2640,20 2880,32"></path>
+    <path class="contour-line" d="M0,41 C240,53 480,29 720,41 C960,53 1200,29 1440,41 C1680,53 1920,29 2160,41 C2400,53 2640,29 2880,41"></path>
+    <path class="contour-line" d="M0,50 C240,62 480,38 720,50 C960,62 1200,38 1440,50 C1680,62 1920,38 2160,50 C2400,62 2640,38 2880,50"></path>
+  </svg>
+</div>
+<canvas id="notes-canvas" aria-hidden="true"></canvas>
+<div class="dot-grid" aria-hidden="true"></div>
+<div class="blob blob-1" aria-hidden="true"></div>
+<div class="blob blob-2" aria-hidden="true"></div>
+<div class="blob blob-3" aria-hidden="true"></div>
+
+<div class="dashboard">
+
+  <header class="app-header">
+    <a class="back-link" href="../">&larr; Music Tools</a>
+    <h1 class="app-title">Vocal Range Finder</h1>
+    <p class="app-sub">Play a reference pitch, hum or sing along, and let the mic find your lowest and highest comfortable notes.</p>
+  </header>
+
+  <section class="widget find-range-widget glass">
+    <span class="widget-eyebrow">Find Your Range</span>
+
+    <div class="find-range-body">
+
+      <div class="find-range-keyboard">
+        <svg class="piano-keyboard-svg vr-keyboard-svg" id="refKeyboardSvg"></svg>
+        <p class="keyboard-hint">Click a key to hear it, then hum or sing that pitch back. Slide up and down until it stops feeling comfortable.</p>
+      </div>
+
+      <div class="find-range-pitch">
+        <div class="vr-readout">
+          <div class="vr-note" id="vrNote">–</div>
+          <div class="vr-freq" id="vrFreq">&nbsp;</div>
+        </div>
+
+        <button type="button" class="vr-listen-btn" id="listenBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="2" width="6" height="12" rx="3"></rect>
+            <path d="M5 11a7 7 0 0 0 14 0"></path>
+            <line x1="12" y1="18" x2="12" y2="22"></line>
+            <line x1="8" y1="22" x2="16" y2="22"></line>
+          </svg>
+          <span id="listenBtnLabel">Start Listening</span>
+        </button>
+
+        <p class="vr-status" id="vrStatus">Tap Start, then hum or sing from your lowest comfortable note to your highest.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="dash-columns">
+
+    <div class="dash-col">
+      <section class="widget captured-range-widget widget--filler glass">
+        <span class="widget-eyebrow">Captured Range</span>
+
+        <div class="captured-grid">
+          <div class="captured-cell">
+            <span class="captured-value" id="lowValue">–</span>
+            <span class="captured-label">Lowest</span>
+          </div>
+          <div class="captured-cell">
+            <span class="captured-value" id="highValue">–</span>
+            <span class="captured-label">Highest</span>
+          </div>
+          <div class="captured-cell">
+            <span class="captured-value" id="spanValue">–</span>
+            <span class="captured-label">Span</span>
+          </div>
+        </div>
+
+        <button type="button" class="range-reset-btn" id="resetRangeBtn">Reset Range</button>
+      </section>
+    </div>
+
+    <div class="dash-col">
+      <section class="widget tips-widget widget--filler glass">
+        <span class="widget-eyebrow">Tips</span>
+        <ul class="tips-list">
+          <li>Sing on any comfortable syllable — a hum, "ah," or "oo" all work.</li>
+          <li>Only comfortable, sustained notes count — don't force a strained top or bottom note.</li>
+          <li>Notes need to hold steady for a moment to register, so brief slides and scoops between notes won't skew your range.</li>
+          <li>Warm up first — your range settles after a minute of singing.</li>
+        </ul>
+      </section>
+    </div>
+
+  </div>
+
+  <section class="widget classification-widget glass">
+    <span class="widget-eyebrow">Vocal Range Classification</span>
+
+    <p class="classification-result" id="classificationResult">Sing a bit of your range to see your closest voice type.</p>
+
+    <div class="range-chart" id="rangeChart"></div>
+
+    <p class="classification-disclaimer">A rough guide based on range alone — real voice classification also weighs tone colour, where your voice breaks, and where it feels easiest (tessitura), not just the outer limits. Treat this as a starting point, not a verdict.</p>
+  </section>
+
+</div>
+
+<div class="kbd-hint" id="kbdHint" aria-hidden="true">
+  <div class="kbd-hint-inner">
+    <div class="kbd-hint-row"><kbd class="kbd-hint-key kbd-hint-key--wide">Space</kbd><span class="kbd-hint-text">Start / Stop mic</span></div>
+    <div class="kbd-hint-row"><kbd class="kbd-hint-key kbd-hint-key--wide">R</kbd><span class="kbd-hint-text">Reset range</span></div>
+  </div>
+</div>
+
+<script src="../js/background.js?v=1"></script>
+<script src="../js/theory.js?v=1"></script>
+<script src="../js/pitch.js?v=1"></script>
+<script src="../js/piano.js?v=1"></script>
+<script src="js/vocal-range.js?v=1"></script>
+</body>
+</html>
