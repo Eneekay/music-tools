@@ -114,7 +114,35 @@
     }
   }
 
+  // A plain oscillator reference tone (sine/triangle/etc.) - for tools that
+  // just need a clean, generic pitch rather than a modeled instrument, like
+  // the vocal practice tools. opts: type (default 'sine'), duration in
+  // seconds (default 1.2), gain (default 0.55), delay before ctx.currentTime
+  // (default 0.03, to clear scheduling glitches). Returns the duration used,
+  // same convention as the Tuner's own reference-tone helper.
+  function playSimpleTone(ctx, dest, freq, opts) {
+    opts = opts || {};
+    var time = ctx.currentTime + (opts.delay !== undefined ? opts.delay : 0.03);
+    var duration = opts.duration || 1.2;
+    var vol = opts.gain !== undefined ? opts.gain : 0.55;
+
+    var osc = ctx.createOscillator();
+    osc.type = opts.type || 'sine';
+    osc.frequency.setValueAtTime(freq, time);
+
+    var gain = ctx.createGain();
+    gain.gain.setValueAtTime(0.0001, time);
+    gain.gain.exponentialRampToValueAtTime(Math.max(vol, 0.001), time + 0.03);
+    gain.gain.setValueAtTime(Math.max(vol, 0.001), time + Math.max(duration - 0.3, 0.05));
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+
+    osc.connect(gain); gain.connect(dest);
+    osc.start(time); osc.stop(time + duration + 0.05);
+    return duration;
+  }
+
   window.InstrumentTones = {
-    playRealistic: playRealistic
+    playRealistic: playRealistic,
+    playSimpleTone: playSimpleTone
   };
 })();

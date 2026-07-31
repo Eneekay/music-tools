@@ -1,0 +1,207 @@
+/* Song Key Finder — widget styles specific to this tool. Shared chrome
+   (background layers, glass, dashboard/widget layout, floating keyboard
+   hint) lives in ../../css/site.css. */
+
+/* ---------- hum widget ---------- */
+
+.hum-widget { align-items: center; text-align: center; }
+
+.sk-readout { margin-bottom: 0.4rem; }
+
+.sk-note {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(2.4rem, 5vw, 3.2rem);
+  line-height: 1;
+  color: var(--nk-c4);
+  text-shadow: 0 0 40px rgba(111, 194, 255, 0.28);
+}
+
+.sk-listen-btn {
+  margin-top: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  border: none;
+  background: var(--nk-c2);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.8rem;
+  padding: 0.6rem 1.3rem;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(38, 83, 217, 0.45);
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.sk-listen-btn svg { width: 18px; height: 18px; }
+
+.sk-listen-btn:hover { background: var(--nk-c2h); transform: translateY(-2px); }
+.sk-listen-btn:active { transform: translateY(0) scale(0.97); }
+
+.sk-listen-btn.is-listening {
+  background: var(--nk-gold);
+  box-shadow: 0 10px 24px rgba(255, 122, 51, 0.45);
+}
+
+.sk-status {
+  margin: 0.6rem 0 1.3rem;
+  font-size: 0.68rem;
+  color: var(--nk-cream);
+  min-height: 1.3em;
+  max-width: 420px;
+}
+
+.sk-status.is-error { color: var(--nk-gold); font-weight: 600; }
+
+/* ---------- captured range ---------- */
+
+.captured-grid {
+  width: 100%;
+  max-width: 480px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+}
+
+.captured-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.7rem 0.4rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.captured-value {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+  color: var(--nk-c4);
+}
+
+.captured-label {
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--nk-cream);
+}
+
+.range-reset-btn {
+  margin-top: 1.1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--nk-cream-strong);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.45rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.range-reset-btn:hover, .range-reset-btn:focus-visible {
+  color: var(--nk-c1);
+  border-color: rgba(111, 194, 255, 0.4);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* ---------- tips / how-it-works widgets ---------- */
+
+.tips-widget, .how-widget { justify-content: center; }
+
+.tips-list {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--nk-cream);
+}
+
+.how-text {
+  margin: 0;
+  font-size: 0.72rem;
+  line-height: 1.6;
+  color: var(--nk-cream);
+}
+
+/* ---------- suggestion widget ---------- */
+
+.suggestion-widget { align-items: center; text-align: center; }
+
+.suggestion-result {
+  margin: 0 0 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--nk-c4);
+  max-width: 560px;
+  line-height: 1.6;
+}
+
+.suggestion-result strong { color: var(--nk-gold); }
+
+.key-fit-chart {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.key-fit-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.key-fit-label {
+  flex: 0 0 54px;
+  text-align: right;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--nk-cream-strong);
+  transition: color 0.2s ease;
+}
+
+.key-fit-row.is-match .key-fit-label { color: var(--nk-gold); }
+
+.key-fit-track {
+  position: relative;
+  flex: 1 1 auto;
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.key-fit-bar {
+  height: 100%;
+  border-radius: 999px;
+  background: rgba(111, 194, 255, 0.35);
+  transition: width 0.2s ease;
+}
+
+.key-fit-row.is-match .key-fit-bar { background: var(--nk-gold); }
+
+.backing-link-line {
+  margin: 1.3rem 0 0;
+  font-size: 0.7rem;
+  line-height: 1.6;
+  color: var(--nk-cream);
+  max-width: 560px;
+}
+
+.backing-link-line a {
+  color: var(--nk-c1);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.backing-link-line a:hover { text-decoration: underline; }
