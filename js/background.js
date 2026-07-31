@@ -47,7 +47,7 @@
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
 
     var width = 0, height = 0, notes = [];
-    var NOTE_COLOR = '201, 194, 182';
+    var NOTE_COLOR = '232, 201, 219';
     var NOTE_GLYPHS = ['♩', '♪', '♫', '♬'];
 
     function noteCount() {

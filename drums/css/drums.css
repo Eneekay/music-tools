@@ -47,7 +47,7 @@
 
 .transport-play-btn.is-playing {
   background: var(--nk-gold);
-  box-shadow: 0 10px 24px rgba(255, 122, 51, 0.35);
+  box-shadow: 0 10px 24px rgba(var(--nk-gold-rgb), 0.35);
 }
 .transport-play-btn.is-playing .icon-play { display: none; }
 .transport-play-btn.is-playing .icon-stop { display: inline-block; }
@@ -62,8 +62,8 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 232, 244, 0.18);
+  background: rgba(255, 232, 244, 0.06);
   color: var(--nk-cream-strong);
   font-size: 1rem;
   line-height: 1;
@@ -73,13 +73,13 @@
 
 .bpm-step:hover, .bpm-step:focus-visible {
   border-color: rgba(111, 194, 255, 0.4);
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 232, 244, 0.12);
 }
 
 #bpmInput {
   width: 56px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 232, 244, 0.08);
+  border: 1px solid rgba(255, 232, 244, 0.18);
   border-radius: 10px;
   padding: 0.35rem 0.4rem;
   color: var(--nk-c4);
@@ -112,8 +112,8 @@
 
 .ghost-btn {
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 232, 244, 0.16);
+  background: rgba(255, 232, 244, 0.06);
   color: var(--nk-cream-strong);
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
@@ -125,12 +125,12 @@
 
 .ghost-btn:hover, .ghost-btn:focus-visible {
   border-color: rgba(111, 194, 255, 0.4);
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 232, 244, 0.12);
 }
 
 .kit-select {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 232, 244, 0.08);
+  border: 1px solid rgba(255, 232, 244, 0.18);
   border-radius: 10px;
   padding: 0.4rem 0.6rem;
   color: var(--nk-c4);
@@ -173,8 +173,8 @@
   justify-content: space-between;
   gap: 0.8rem;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 232, 244, 0.14);
+  background: rgba(255, 232, 244, 0.05);
   padding: 0.55rem 0.9rem;
   cursor: pointer;
   text-align: left;
@@ -183,7 +183,7 @@
 
 .preset-btn:hover, .preset-btn:focus-visible {
   border-color: rgba(111, 194, 255, 0.4);
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 232, 244, 0.1);
 }
 
 .preset-btn-name {
@@ -234,9 +234,9 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  background: rgba(255, 122, 51, 0.16);
+  background: rgba(var(--nk-gold-rgb), 0.16);
   color: var(--nk-gold);
-  border: 1px solid rgba(255, 122, 51, 0.3);
+  border: 1px solid rgba(var(--nk-gold-rgb), 0.3);
 }
 
 .pattern-tag--muted {
@@ -319,8 +319,8 @@
   width: 20px;
   height: 20px;
   border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 232, 244, 0.16);
+  background: rgba(255, 232, 244, 0.05);
   color: var(--nk-cream);
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 700;
@@ -349,14 +349,14 @@
 .step-cell {
   height: 26px;
   border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 232, 244, 0.12);
+  background: rgba(255, 232, 244, 0.04);
   cursor: pointer;
   padding: 0;
   transition: background-color 0.12s ease, border-color 0.12s ease, opacity 0.15s ease;
 }
 
-.step-cell.group-alt { background: rgba(255, 255, 255, 0.07); }
+.step-cell.group-alt { background: rgba(255, 232, 244, 0.07); }
 
 .step-cell:hover, .step-cell:focus-visible {
   border-color: rgba(111, 194, 255, 0.5);

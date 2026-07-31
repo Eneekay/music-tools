@@ -31,7 +31,7 @@
   bottom: 14px;
   width: 2px;
   height: 14px;
-  background: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 232, 244, 0.22);
   border-radius: 2px;
   transform-origin: bottom center;
   transform: translateX(-50%) rotate(var(--tick-angle)) translateY(-142px);
@@ -67,7 +67,7 @@
   border-radius: 50%;
   background: var(--nk-gold);
   transform: translate(-50%, -50%);
-  box-shadow: 0 0 10px rgba(255, 122, 51, 0.65);
+  box-shadow: 0 0 10px rgba(var(--nk-gold-rgb), 0.65);
   transition: top 0.3s ease;
 }
 
@@ -96,7 +96,7 @@
   border-radius: 50%;
   border: none;
   background: var(--nk-c2);
-  color: #fff;
+  color: var(--nk-on-accent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -113,7 +113,7 @@
 
 .metro-play.is-playing {
   background: var(--nk-gold);
-  box-shadow: 0 10px 24px rgba(255, 122, 51, 0.45);
+  box-shadow: 0 10px 24px rgba(var(--nk-gold-rgb), 0.45);
 }
 
 .metro-play.is-playing .icon-play { display: none; }
@@ -121,8 +121,8 @@
 
 .metro-tap {
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 232, 244, 0.16);
+  background: rgba(255, 232, 244, 0.06);
   color: var(--nk-cream-strong);
   font-weight: 600;
   font-size: 0.78rem;
@@ -135,7 +135,7 @@
 .metro-tap:hover, .metro-tap:focus-visible {
   color: var(--nk-c1);
   border-color: rgba(111, 194, 255, 0.4);
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 232, 244, 0.12);
 }
 
 .metro-tap.is-tapped { color: var(--nk-c1); border-color: rgba(111, 194, 255, 0.5); }
@@ -153,8 +153,8 @@
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 232, 244, 0.16);
+  background: rgba(255, 232, 244, 0.06);
   color: var(--nk-c4);
   font-size: 1.1rem;
   line-height: 1;
@@ -165,7 +165,7 @@
 .bpm-step:hover, .bpm-step:focus-visible {
   color: var(--nk-c1);
   border-color: rgba(111, 194, 255, 0.4);
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 232, 244, 0.12);
 }
 
 .bpm-readout {
@@ -225,12 +225,12 @@
   width: 13px;
   height: 13px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 232, 244, 0.14);
+  border: 1px solid rgba(255, 232, 244, 0.2);
   transition: background-color 0.1s ease, box-shadow 0.1s ease, transform 0.1s ease;
 }
 
-.beat-dot.is-accent-slot { border-color: rgba(255, 122, 51, 0.45); }
+.beat-dot.is-accent-slot { border-color: rgba(var(--nk-gold-rgb), 0.45); }
 
 .beat-dot.is-active {
   background: var(--nk-c1);
@@ -240,7 +240,7 @@
 
 .beat-dot.is-active.is-accent-slot {
   background: var(--nk-gold);
-  box-shadow: 0 0 12px rgba(255, 122, 51, 0.75);
+  box-shadow: 0 0 12px rgba(var(--nk-gold-rgb), 0.75);
 }
 
 .beat-number {
@@ -283,8 +283,8 @@
 
 .rhythm-preset {
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 232, 244, 0.14);
+  background: rgba(255, 232, 244, 0.05);
   color: var(--nk-cream-strong);
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
@@ -296,7 +296,7 @@
 
 .rhythm-preset:hover, .rhythm-preset:focus-visible {
   border-color: rgba(111, 194, 255, 0.4);
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 232, 244, 0.1);
 }
 
 .rhythm-preset.is-active {
@@ -331,8 +331,8 @@
 .rhythm-field input[type="number"],
 .rhythm-field select {
   width: 62px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 232, 244, 0.08);
+  border: 1px solid rgba(255, 232, 244, 0.18);
   border-radius: 10px;
   padding: 0.4rem 0.3rem;
   color: var(--nk-c4);
@@ -368,8 +368,8 @@
 
 .bars-input {
   width: 60px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 232, 244, 0.08);
+  border: 1px solid rgba(255, 232, 244, 0.18);
   border-radius: 10px;
   padding: 0.35rem 0.3rem;
   color: var(--nk-c4);
@@ -398,8 +398,8 @@
 
 .poly-ratio input {
   width: 54px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 232, 244, 0.08);
+  border: 1px solid rgba(255, 232, 244, 0.18);
   border-radius: 10px;
   padding: 0.4rem 0.3rem;
   color: var(--nk-c4);
@@ -450,8 +450,8 @@
   flex: 1 1 0;
   height: 16px;
   border-radius: 5px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 232, 244, 0.1);
+  border: 1px solid rgba(255, 232, 244, 0.16);
   transition: background-color 0.08s ease, box-shadow 0.08s ease;
 }
 
@@ -462,7 +462,7 @@
 
 #polyRowB .poly-dot.is-active {
   background: var(--nk-gold);
-  box-shadow: 0 0 8px rgba(255, 122, 51, 0.7);
+  box-shadow: 0 0 8px rgba(var(--nk-gold-rgb), 0.7);
 }
 
 /* ---------- sounds ---------- */
@@ -480,8 +480,8 @@
   justify-content: space-between;
   gap: 0.4rem;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 232, 244, 0.14);
+  background: rgba(255, 232, 244, 0.05);
   color: var(--nk-cream-strong);
   padding: 0.5rem 0.6rem;
   cursor: pointer;
@@ -492,7 +492,7 @@
 
 .sound-swatch:hover, .sound-swatch:focus-visible {
   border-color: rgba(111, 194, 255, 0.4);
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 232, 244, 0.12);
   color: var(--nk-c1);
 }
 
@@ -505,7 +505,7 @@
   flex-direction: column;
   gap: 0.55rem;
   padding-top: 0.7rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(255, 232, 244, 0.08);
 }
 
 .sound-assign-row {
@@ -538,8 +538,8 @@
 .role-dot--polyB { background: var(--nk-gold); }
 
 .sound-assign-row select {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 232, 244, 0.08);
+  border: 1px solid rgba(255, 232, 244, 0.18);
   border-radius: 8px;
   padding: 0.3rem 0.5rem;
   color: var(--nk-c4);
