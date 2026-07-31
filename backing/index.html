@@ -110,33 +110,50 @@
       <section class="widget chords-widget widget--filler glass">
         <span class="widget-eyebrow">Chords</span>
 
-        <div class="builder-row">
-          <span class="seg-label">Note</span>
-          <div class="builder-chips" id="keyNoteChips"></div>
+        <div class="seg-control chord-mode-control" id="chordModeControl">
+          <button type="button" data-value="bank" class="is-active">Progression Bank</button>
+          <button type="button" data-value="custom">Type Your Own</button>
+          <button type="button" data-value="structure">Song Structure</button>
         </div>
 
-        <div class="builder-row">
-          <span class="seg-label">Accidental</span>
-          <div class="builder-chips" id="keyAccidentalChips"></div>
-        </div>
-
-        <div class="builder-row">
-          <span class="seg-label">Mode</span>
-          <div class="seg-control" id="modeControl">
-            <button type="button" data-value="major" class="is-active">Major</button>
-            <button type="button" data-value="minor">Minor</button>
+        <div id="chordBankPanel">
+          <div class="builder-row">
+            <span class="seg-label">Note</span>
+            <div class="builder-chips" id="keyNoteChips"></div>
           </div>
+
+          <div class="builder-row">
+            <span class="seg-label">Accidental</span>
+            <div class="builder-chips" id="keyAccidentalChips"></div>
+          </div>
+
+          <div class="builder-row">
+            <span class="seg-label">Mode</span>
+            <div class="seg-control" id="modeControl">
+              <button type="button" data-value="major" class="is-active">Major</button>
+              <button type="button" data-value="minor">Minor</button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <span class="seg-label">Progression</span>
+            <select class="layer-select" id="progressionSelect"></select>
+          </div>
+
+          <button type="button" class="ghost-btn" id="shuffleProgressionBtn">Shuffle Progression</button>
+
+          <h3 class="layer-name" id="progressionName">&mdash;</h3>
+          <p class="layer-desc" id="progressionDesc"></p>
         </div>
 
-        <div class="control-group">
-          <span class="seg-label">Progression</span>
-          <select class="layer-select" id="progressionSelect"></select>
+        <div id="chordCustomPanel" hidden>
+          <span class="seg-label">Type your chords</span>
+          <input type="text" class="custom-chords-input" id="customChordsInput" placeholder="C G Am F">
+          <p class="custom-chords-hint">Separate chords with spaces — try qualities like m, 7, maj7, sus4, m7b5, or slash chords like C/E. Each chord gets 2 beats, looping.</p>
+          <p class="custom-chords-error" id="customChordsError" hidden></p>
         </div>
 
-        <button type="button" class="ghost-btn" id="shuffleProgressionBtn">Shuffle Progression</button>
-
-        <h3 class="layer-name" id="progressionName">&mdash;</h3>
-        <p class="layer-desc" id="progressionDesc"></p>
+        <p class="structure-note" id="structureNote" hidden>Build your song from sections and an arrangement in the Song Structure panel below.</p>
 
         <div class="chord-strip" id="chordStrip"></div>
 
@@ -153,6 +170,43 @@
     </div>
 
   </div>
+
+  <section class="widget structure-widget glass" id="structureWidget" hidden>
+    <span class="widget-eyebrow">Song Structure</span>
+    <p class="capo-hint">Define named sections with their own chords and bar length, then arrange them into a song — e.g. Intro &rarr; Verse &rarr; Chorus &rarr; Verse &rarr; Chorus &rarr; Bridge &rarr; Chorus.</p>
+
+    <div class="structure-columns">
+      <div class="structure-col">
+        <h3 class="structure-subhead">Sections</h3>
+        <div class="section-count-field">
+          <span class="seg-label">Song Parts</span>
+          <input type="number" id="sectionCountInput" class="section-count-input" min="1" max="12" value="4">
+        </div>
+        <div class="section-list" id="sectionList"></div>
+      </div>
+
+      <div class="structure-col">
+        <h3 class="structure-subhead">Arrangement</h3>
+
+        <div class="control-group">
+          <span class="seg-label">Playback</span>
+          <div class="seg-control" id="structureLoopControl">
+            <button type="button" data-value="loop" class="is-active">Loop</button>
+            <button type="button" data-value="once">Play Once</button>
+          </div>
+        </div>
+
+        <p class="arrangement-hint">Drag a part below into the song, or click to add it to the end.</p>
+        <div class="arrangement-palette" id="arrangementPalette"></div>
+
+        <div class="arrangement-strip" id="arrangementStrip"></div>
+        <p class="arrangement-hint">Drag to reorder, or click a chip in the song to remove it.</p>
+        <button type="button" class="ghost-btn" id="clearArrangementBtn">Clear Arrangement</button>
+
+        <p class="structure-summary" id="structureSummary"></p>
+      </div>
+    </div>
+  </section>
 
   <section class="widget riff-widget glass">
     <span class="widget-eyebrow">Riff Generator</span>

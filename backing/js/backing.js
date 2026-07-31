@@ -503,6 +503,81 @@
   ];
 
   /* =========================================================================
+     Custom chord-name parsing — a self-contained copy of the Chord Chart
+     Generator / Capo & Key Transposer's parser (per this codebase's
+     per-tool convention), used by "Type Your Own" mode and by each Song
+     Structure section's chord sequence. Independent of the Progression
+     Bank's roman-numeral system above: a typed chord is an absolute root +
+     quality, not a scale degree relative to the selected key.
+     ========================================================================= */
+
+  var CHORD_QUALITIES = {
+    '': { intervals: [0, 4, 7] }, 'maj': { intervals: [0, 4, 7] }, 'M': { intervals: [0, 4, 7] },
+    'm': { intervals: [0, 3, 7] }, 'min': { intervals: [0, 3, 7] }, '-': { intervals: [0, 3, 7] },
+    '5': { intervals: [0, 7] },
+    'dim': { intervals: [0, 3, 6] }, 'dim7': { intervals: [0, 3, 6, 9] }, 'm7b5': { intervals: [0, 3, 6, 10] },
+    'aug': { intervals: [0, 4, 8] }, '+': { intervals: [0, 4, 8] },
+    'sus2': { intervals: [0, 2, 7] }, 'sus4': { intervals: [0, 5, 7] }, 'sus': { intervals: [0, 5, 7] },
+    '6': { intervals: [0, 4, 7, 9] }, 'maj6': { intervals: [0, 4, 7, 9] }, 'm6': { intervals: [0, 3, 7, 9] }, 'min6': { intervals: [0, 3, 7, 9] },
+    '7': { intervals: [0, 4, 7, 10] }, '7sus4': { intervals: [0, 5, 7, 10] }, '7sus2': { intervals: [0, 2, 7, 10] },
+    '7b5': { intervals: [0, 4, 6, 10] }, '7#5': { intervals: [0, 4, 8, 10] }, '7b9': { intervals: [0, 4, 7, 10, 13] }, '7#9': { intervals: [0, 4, 7, 10, 15] },
+    'maj7': { intervals: [0, 4, 7, 11] }, 'M7': { intervals: [0, 4, 7, 11] },
+    'm7': { intervals: [0, 3, 7, 10] }, 'min7': { intervals: [0, 3, 7, 10] },
+    'mmaj7': { intervals: [0, 3, 7, 11] }, 'mM7': { intervals: [0, 3, 7, 11] },
+    '9': { intervals: [0, 4, 7, 10, 14] }, 'maj9': { intervals: [0, 4, 7, 11, 14] }, 'm9': { intervals: [0, 3, 7, 10, 14] },
+    'add9': { intervals: [0, 4, 7, 14] }, 'madd9': { intervals: [0, 3, 7, 14] },
+    '11': { intervals: [0, 4, 7, 10, 14, 17] }, 'm11': { intervals: [0, 3, 7, 10, 14, 17] },
+    '13': { intervals: [0, 4, 7, 10, 14, 17, 21] }, 'maj13': { intervals: [0, 4, 7, 11, 14, 17, 21] }
+  };
+
+  function parseChordToken(raw) {
+    if (!raw) return null;
+    var input = raw.trim().replace(/\s+/g, '').replace(/♭/g, 'b').replace(/♯/g, '#');
+    if (!input) return null;
+
+    var m = /^([A-Ga-g])([#b]?)([^\/]*)(?:\/([A-Ga-g])([#b]?))?$/.exec(input);
+    if (!m) return null;
+
+    var rootLetter = m[1].toUpperCase();
+    var rootAcc = m[2] || '';
+    var qualityRaw = m[3] || '';
+    var bassLetter = m[4] ? m[4].toUpperCase() : null;
+    var bassAcc = m[5] || '';
+
+    var quality = CHORD_QUALITIES[qualityRaw];
+    if (!quality) return null;
+
+    var rootPc = (((LETTER_SEMITONE[rootLetter] + (rootAcc === '#' ? 1 : rootAcc === 'b' ? -1 : 0)) % 12) + 12) % 12;
+    var bassPc = bassLetter !== null ? (((LETTER_SEMITONE[bassLetter] + (bassAcc === '#' ? 1 : bassAcc === 'b' ? -1 : 0)) % 12) + 12) % 12 : null;
+
+    return {
+      rootPc: rootPc,
+      intervals: quality.intervals,
+      bassPc: bassPc,
+      display: rootLetter + rootAcc + qualityRaw + (bassLetter ? '/' + bassLetter + bassAcc : '')
+    };
+  }
+
+  // Splits on whitespace / commas / pipes, same separators the Capo & Key
+  // Transposer accepts. Returns { chords: [{display, tones}], badTokens } so
+  // callers can surface which tokens failed to parse instead of silently
+  // dropping them.
+  function parseChordSequenceText(raw) {
+    var tokens = (raw || '').trim().split(/[\s,|]+/).filter(Boolean);
+    var chords = [];
+    var badTokens = [];
+    tokens.forEach(function (tok) {
+      var parsed = parseChordToken(tok);
+      if (!parsed) { badTokens.push(tok); return; }
+      var rootMidi = 48 + parsed.rootPc;
+      var tones = parsed.intervals.map(function (iv) { return rootMidi + iv; });
+      if (parsed.bassPc !== null) tones = [36 + parsed.bassPc].concat(tones);
+      chords.push({ display: parsed.display, tones: tones });
+    });
+    return { chords: chords, badTokens: badTokens };
+  }
+
+  /* =========================================================================
      Riff generator — a constrained random walk over a chosen scale's
      degrees, biased toward stepwise motion and resolving to a stable tone.
      New for this tool (not a copy of anything else).
@@ -604,6 +679,23 @@
     chordWaveform: 'triangle',
     currentProgression: null,
 
+    // 'bank' (Progression Bank, roman-numeral, key-relative), 'custom'
+    // (one typed absolute chord sequence), or 'structure' (named sections,
+    // each with its own typed chords + bar length, arranged into a song).
+    chordMode: 'bank',
+    customChordsText: 'C G Am F',
+    customChordsError: null,
+    sections: [
+      { id: 's1', name: 'Intro', chordsText: 'C G', bars: 4 },
+      { id: 's2', name: 'Verse', chordsText: 'Am F C G', bars: 8 },
+      { id: 's3', name: 'Chorus', chordsText: 'F C G Am', bars: 8 },
+      { id: 's4', name: 'Bridge', chordsText: 'Dm Em F G', bars: 4 }
+    ],
+    arrangement: ['s1', 's2', 's3', 's2', 's3', 's4', 's3'],
+    structureLoop: true,
+    nextSectionId: 4,
+    activeChordSequence: [], // resolved flat [{display, tones, beats, sectionName, roman}], recomputed by refreshChordSequence()
+
     riffEnabled: true,
     riffScaleId: 'majorPentatonic',
     riffWaveform: 'sawtooth',
@@ -640,6 +732,21 @@
   var progressionDescEl = document.getElementById('progressionDesc');
   var chordStripEl = document.getElementById('chordStrip');
   var chordWaveControlEl = document.getElementById('chordWaveControl');
+
+  var chordModeControlEl = document.getElementById('chordModeControl');
+  var chordBankPanelEl = document.getElementById('chordBankPanel');
+  var chordCustomPanelEl = document.getElementById('chordCustomPanel');
+  var customChordsInputEl = document.getElementById('customChordsInput');
+  var customChordsErrorEl = document.getElementById('customChordsError');
+  var structureNoteEl = document.getElementById('structureNote');
+  var structureWidgetEl = document.getElementById('structureWidget');
+  var sectionListEl = document.getElementById('sectionList');
+  var sectionCountInputEl = document.getElementById('sectionCountInput');
+  var arrangementPaletteEl = document.getElementById('arrangementPalette');
+  var arrangementStripEl = document.getElementById('arrangementStrip');
+  var clearArrangementBtn = document.getElementById('clearArrangementBtn');
+  var structureSummaryEl = document.getElementById('structureSummary');
+  var structureLoopControlEl = document.getElementById('structureLoopControl');
 
   var riffEnabledControlEl = document.getElementById('riffEnabledControl');
   var riffScaleSelectEl = document.getElementById('riffScaleSelect');
@@ -685,28 +792,328 @@
 
   function renderChordChips() {
     chordStripEl.innerHTML = '';
-    if (!state.currentProgression) {
+    var seq = state.activeChordSequence;
+    if (!seq.length) {
       var empty = document.createElement('p');
       empty.className = 'chord-strip-empty';
-      empty.textContent = 'No progression loaded.';
+      empty.textContent = state.chordMode === 'structure' ? 'Add sections to your arrangement to hear a progression.' : 'No progression loaded.';
       chordStripEl.appendChild(empty);
       return;
     }
-    state.currentProgression.chords.forEach(function (chord, idx) {
+    var lastSection;
+    seq.forEach(function (chord, idx) {
+      if (state.chordMode === 'structure' && chord.sectionName !== lastSection) {
+        lastSection = chord.sectionName;
+        var label = document.createElement('span');
+        label.className = 'chord-strip-section-label';
+        label.textContent = chord.sectionName;
+        chordStripEl.appendChild(label);
+      }
       var chip = document.createElement('button');
       chip.type = 'button';
       chip.className = 'chord-chip';
       chip.dataset.index = String(idx);
-      var roman = document.createElement('span');
-      roman.className = 'chord-chip-roman';
-      roman.textContent = chord.roman;
+      if (chord.roman) {
+        var roman = document.createElement('span');
+        roman.className = 'chord-chip-roman';
+        roman.textContent = chord.roman;
+        chip.appendChild(roman);
+      }
       var name = document.createElement('span');
       name.className = 'chord-chip-name';
-      name.textContent = chordName(chord);
-      chip.appendChild(roman); chip.appendChild(name);
+      name.textContent = chord.display;
+      chip.appendChild(name);
       chip.addEventListener('click', function () { previewChordAt(idx); });
       chordStripEl.appendChild(chip);
     });
+  }
+
+  /* =========================================================================
+     Chord-sequence resolution — unifies all three chord sources
+     (Progression Bank, Type Your Own, Song Structure) into one flat
+     [{display, tones, beats, sectionName, roman}] array that the chip strip,
+     the preview-on-click handler and the playback scheduler all read from,
+     so none of them need to know which mode produced it.
+     ========================================================================= */
+
+  function buildChordSequence() {
+    if (state.chordMode === 'custom') {
+      var parsed = parseChordSequenceText(state.customChordsText);
+      state.customChordsError = parsed.badTokens.length ? 'Couldn’t read: ' + parsed.badTokens.join(', ') : null;
+      return parsed.chords.map(function (ch) { return { display: ch.display, tones: ch.tones, beats: 2 }; });
+    }
+
+    if (state.chordMode === 'structure') {
+      var flat = [];
+      state.arrangement.forEach(function (sectionId) {
+        var section = state.sections.filter(function (s) { return s.id === sectionId; })[0];
+        if (!section) return;
+        var parsedSection = parseChordSequenceText(section.chordsText);
+        if (!parsedSection.chords.length) return;
+        var bars = Math.max(1, section.bars || 1);
+        var beatsPerChord = (bars * 4) / parsedSection.chords.length;
+        parsedSection.chords.forEach(function (ch) {
+          flat.push({ display: ch.display, tones: ch.tones, beats: beatsPerChord, sectionName: section.name });
+        });
+      });
+      return flat;
+    }
+
+    // 'bank'
+    if (!state.currentProgression) return [];
+    return state.currentProgression.chords.map(function (chord) {
+      return { display: chordName(chord), tones: chordMidiTones(chord), beats: 2, roman: chord.roman };
+    });
+  }
+
+  function refreshChordSequence() {
+    state.activeChordSequence = buildChordSequence();
+    renderChordChips();
+    renderCustomChordsError();
+    renderStructureSummary();
+  }
+
+  function renderCustomChordsError() {
+    if (state.chordMode !== 'custom' || !state.customChordsError) { customChordsErrorEl.hidden = true; return; }
+    customChordsErrorEl.textContent = state.customChordsError;
+    customChordsErrorEl.hidden = false;
+  }
+
+  function renderStructureSummary() {
+    if (state.chordMode !== 'structure') return;
+    if (!state.arrangement.length) {
+      structureSummaryEl.textContent = 'Add sections to the arrangement to build your song.';
+      return;
+    }
+    var totalBars = 0;
+    state.arrangement.forEach(function (sectionId) {
+      var section = state.sections.filter(function (s) { return s.id === sectionId; })[0];
+      if (section) totalBars += Math.max(1, section.bars || 1);
+    });
+    var totalSeconds = totalBars * (60 / state.bpm) * 4;
+    var mins = Math.floor(totalSeconds / 60);
+    var secs = Math.round(totalSeconds % 60);
+    structureSummaryEl.textContent = state.arrangement.length + ' sections · ' + totalBars + ' bars · ~' +
+      mins + ':' + (secs < 10 ? '0' : '') + secs + ' per loop at ' + state.bpm + ' BPM';
+  }
+
+  /* =========================================================================
+     Song Structure editor — sections list + arrangement builder
+     ========================================================================= */
+
+  function findSection(id) { return state.sections.filter(function (s) { return s.id === id; })[0] || null; }
+
+  function renderSectionList() {
+    sectionCountInputEl.value = String(state.sections.length);
+    sectionListEl.innerHTML = '';
+    state.sections.forEach(function (section) {
+      var row = document.createElement('div');
+      row.className = 'section-row';
+
+      var nameInput = document.createElement('input');
+      nameInput.type = 'text';
+      nameInput.className = 'section-name-input';
+      nameInput.value = section.name;
+      nameInput.setAttribute('aria-label', 'Section name');
+      nameInput.addEventListener('input', function () {
+        section.name = nameInput.value;
+        renderArrangementPalette();
+        renderArrangementStrip();
+        refreshChordSequence();
+      });
+
+      var chordsInput = document.createElement('input');
+      chordsInput.type = 'text';
+      chordsInput.className = 'section-chords-input';
+      chordsInput.value = section.chordsText;
+      chordsInput.placeholder = 'e.g. Am F C G';
+      chordsInput.setAttribute('aria-label', 'Section chords');
+      chordsInput.addEventListener('input', function () {
+        section.chordsText = chordsInput.value;
+        refreshChordSequence();
+      });
+
+      var barsField = document.createElement('div');
+      barsField.className = 'section-bars-field';
+      var barsInput = document.createElement('input');
+      barsInput.type = 'number';
+      barsInput.className = 'section-bars-input';
+      barsInput.min = '1';
+      barsInput.max = '64';
+      barsInput.value = String(section.bars);
+      barsInput.setAttribute('aria-label', 'Bars');
+      barsInput.addEventListener('input', function () {
+        var v = parseInt(barsInput.value, 10);
+        section.bars = isNaN(v) ? section.bars : Math.max(1, Math.min(64, v));
+        refreshChordSequence();
+      });
+      var barsLabel = document.createElement('span');
+      barsLabel.className = 'section-bars-label';
+      barsLabel.textContent = 'bars';
+      barsField.appendChild(barsInput);
+      barsField.appendChild(barsLabel);
+
+      var removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.className = 'section-remove-btn';
+      removeBtn.setAttribute('aria-label', 'Remove section');
+      removeBtn.textContent = '×';
+      removeBtn.addEventListener('click', function () { removeSection(section.id); });
+
+      row.appendChild(nameInput);
+      row.appendChild(chordsInput);
+      row.appendChild(barsField);
+      row.appendChild(removeBtn);
+      sectionListEl.appendChild(row);
+    });
+  }
+
+  // Grows or shrinks state.sections to match the requested count - the
+  // "how many song parts?" step of the flow, ahead of naming each one and
+  // dragging them into an arrangement.
+  function setSectionCount(n) {
+    n = Math.max(1, Math.min(12, isNaN(n) ? state.sections.length : n));
+    while (state.sections.length < n) {
+      state.nextSectionId++;
+      state.sections.push({ id: 's' + state.nextSectionId, name: 'Part ' + state.sections.length + 1, chordsText: 'C G Am F', bars: 4 });
+    }
+    while (state.sections.length > n) {
+      var removed = state.sections.pop();
+      state.arrangement = state.arrangement.filter(function (sid) { return sid !== removed.id; });
+    }
+    renderSectionList();
+    renderArrangementPalette();
+    renderArrangementStrip();
+    refreshChordSequence();
+  }
+
+  function removeSection(id) {
+    state.sections = state.sections.filter(function (s) { return s.id !== id; });
+    state.arrangement = state.arrangement.filter(function (sid) { return sid !== id; });
+    renderSectionList();
+    renderArrangementPalette();
+    renderArrangementStrip();
+    refreshChordSequence();
+  }
+
+  /* =========================================================================
+     Arrangement drag-and-drop — drag a part from the palette into the song,
+     or drag a placed chip to reorder it; click still works as a simpler
+     append/remove fallback (touch devices and keyboard users don't get
+     native HTML5 drag-and-drop for free). The actual list-splicing math is
+     factored out into insertIntoArrangement() so it's testable without a
+     real drag gesture or getBoundingClientRect().
+     ========================================================================= */
+
+  var dragState = { sourceType: null, sourceId: null, sourceIndex: null };
+
+  function insertIntoArrangement(arrangement, sourceType, sourceId, sourceIndex, dropIndex) {
+    var next = arrangement.slice();
+    if (sourceType === 'palette') {
+      next.splice(dropIndex, 0, sourceId);
+    } else if (sourceType === 'arrangement') {
+      var moved = next.splice(sourceIndex, 1)[0];
+      var adjusted = dropIndex > sourceIndex ? dropIndex - 1 : dropIndex;
+      next.splice(adjusted, 0, moved);
+    }
+    return next;
+  }
+
+  function computeDropIndex(clientX) {
+    var chips = Array.prototype.slice.call(arrangementStripEl.querySelectorAll('.arrangement-chip'));
+    for (var i = 0; i < chips.length; i++) {
+      var rect = chips[i].getBoundingClientRect();
+      if (clientX < rect.left + rect.width / 2) return i;
+    }
+    return chips.length;
+  }
+
+  function renderArrangementPalette() {
+    arrangementPaletteEl.innerHTML = '';
+    if (!state.sections.length) {
+      var empty = document.createElement('p');
+      empty.className = 'arrangement-strip-empty';
+      empty.textContent = 'Add a section first.';
+      arrangementPaletteEl.appendChild(empty);
+      return;
+    }
+    state.sections.forEach(function (section) {
+      var chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'arrangement-chip';
+      chip.textContent = section.name;
+      chip.title = 'Drag into the song, or click to add it to the end';
+      chip.draggable = true;
+      chip.addEventListener('dragstart', function (e) {
+        dragState = { sourceType: 'palette', sourceId: section.id, sourceIndex: null };
+        if (e.dataTransfer) e.dataTransfer.effectAllowed = 'copy';
+      });
+      chip.addEventListener('click', function () {
+        state.arrangement.push(section.id);
+        renderArrangementStrip();
+        refreshChordSequence();
+      });
+      arrangementPaletteEl.appendChild(chip);
+    });
+  }
+
+  function renderArrangementStrip() {
+    arrangementStripEl.innerHTML = '';
+    if (!state.arrangement.length) {
+      var empty = document.createElement('p');
+      empty.className = 'arrangement-strip-empty';
+      empty.textContent = 'Your song is empty — drag or click sections above to build it.';
+      arrangementStripEl.appendChild(empty);
+      return;
+    }
+    state.arrangement.forEach(function (sectionId, idx) {
+      var section = findSection(sectionId);
+      var chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'arrangement-chip arrangement-chip--placed';
+      chip.textContent = section ? section.name : '?';
+      chip.title = 'Drag to reorder, or click to remove';
+      chip.draggable = true;
+      chip.addEventListener('dragstart', function (e) {
+        dragState = { sourceType: 'arrangement', sourceId: null, sourceIndex: idx };
+        if (e.dataTransfer) e.dataTransfer.effectAllowed = 'move';
+        chip.classList.add('is-dragging');
+      });
+      chip.addEventListener('dragend', function () { chip.classList.remove('is-dragging'); });
+      chip.addEventListener('click', function () {
+        state.arrangement.splice(idx, 1);
+        renderArrangementStrip();
+        refreshChordSequence();
+      });
+      arrangementStripEl.appendChild(chip);
+    });
+  }
+
+  arrangementStripEl.addEventListener('dragover', function (e) {
+    if (!dragState.sourceType) return;
+    e.preventDefault();
+    arrangementStripEl.classList.add('is-drag-over');
+  });
+  arrangementStripEl.addEventListener('dragleave', function () { arrangementStripEl.classList.remove('is-drag-over'); });
+  arrangementStripEl.addEventListener('drop', function (e) {
+    if (!dragState.sourceType) return;
+    e.preventDefault();
+    arrangementStripEl.classList.remove('is-drag-over');
+    var dropIndex = computeDropIndex(e.clientX);
+    state.arrangement = insertIntoArrangement(state.arrangement, dragState.sourceType, dragState.sourceId, dragState.sourceIndex, dropIndex);
+    dragState = { sourceType: null, sourceId: null, sourceIndex: null };
+    renderArrangementStrip();
+    refreshChordSequence();
+  });
+
+  function setChordMode(mode) {
+    state.chordMode = mode;
+    chordModeControlEl.querySelectorAll('button').forEach(function (b) { b.classList.toggle('is-active', b.dataset.value === mode); });
+    chordBankPanelEl.hidden = mode !== 'bank';
+    chordCustomPanelEl.hidden = mode !== 'custom';
+    structureNoteEl.hidden = mode !== 'structure';
+    structureWidgetEl.hidden = mode !== 'structure';
+    refreshChordSequence();
   }
 
   function renderRiffChips() {
@@ -797,7 +1204,7 @@
   function applyKeyBuilder() {
     state.keyPc = (((LETTER_SEMITONE[state.keyLetter] + (state.keyAccidental === '#' ? 1 : state.keyAccidental === 'b' ? -1 : 0)) % 12) + 12) % 12;
     state.keyFlats = state.keyAccidental === 'b';
-    renderChordChips();
+    refreshChordSequence();
     renderRiffChips();
   }
 
@@ -831,7 +1238,7 @@
     state.currentProgression = entry;
     progressionSelectEl.value = entry.id;
     updateProgressionInfo();
-    renderChordChips();
+    refreshChordSequence();
   }
 
   function shuffleProgressionPreset() {
@@ -849,6 +1256,8 @@
   function loadBackingPreset(preset) {
     state.bpm = preset.tempo;
     updateBpmUI();
+
+    setChordMode('bank');
 
     state.keyLetter = preset.keyLetter;
     state.keyAccidental = preset.keyAccidental;
@@ -936,10 +1345,11 @@
   }
 
   function previewChordAt(idx) {
-    if (!state.currentProgression) return;
+    var chord = state.activeChordSequence[idx];
+    if (!chord) return;
     ensureAudioContext();
     if (audioCtx.state === 'suspended') audioCtx.resume();
-    playChordTones(chordMidiTones(state.currentProgression.chords[idx]), audioCtx.currentTime, 1.1);
+    playChordTones(chord.tones, audioCtx.currentTime, 1.1);
     flashChordChip(idx, 550);
   }
 
@@ -1022,18 +1432,24 @@
 
   function scheduleChordLoopPass() {
     if (!state.isPlaying) return;
-    if (!state.currentProgression) { chordLoopTimer = setTimeout(scheduleChordLoopPass, 300); return; }
-    var beatDur = 60 / state.bpm * 2;
+    var seq = state.activeChordSequence;
+    if (!seq.length) { chordLoopTimer = setTimeout(scheduleChordLoopPass, 300); return; }
+    var beatDur = 60 / state.bpm;
     var startTime = audioCtx.currentTime + 0.05;
-    var chords = state.currentProgression.chords;
-    chords.forEach(function (chord, idx) {
-      var t = startTime + idx * beatDur;
-      playChordTones(chordMidiTones(chord), t, beatDur * 0.92);
+    var t = startTime;
+    seq.forEach(function (chord, idx) {
+      var dur = chord.beats * beatDur;
+      playChordTones(chord.tones, t, dur * 0.92);
       var delayMs = Math.max(0, (t - audioCtx.currentTime) * 1000);
-      setTimeout(function () { if (state.isPlaying) flashChordChip(idx, beatDur * 1000 * 0.92); }, delayMs);
+      setTimeout(function () { if (state.isPlaying) flashChordChip(idx, dur * 1000 * 0.92); }, delayMs);
+      t += dur;
     });
-    var totalMs = chords.length * beatDur * 1000;
-    chordLoopTimer = setTimeout(scheduleChordLoopPass, totalMs);
+    var totalMs = (t - startTime) * 1000;
+    if (state.chordMode === 'structure' && !state.structureLoop) {
+      chordLoopTimer = setTimeout(function () { if (state.isPlaying) stopPlayback(); }, totalMs);
+    } else {
+      chordLoopTimer = setTimeout(scheduleChordLoopPass, totalMs);
+    }
   }
 
   function visualFrame() {
@@ -1195,6 +1611,25 @@
   shuffleProgressionBtn.addEventListener('click', shuffleProgressionPreset);
   wireSegControl(chordWaveControlEl, function (val) { state.chordWaveform = val; });
 
+  chordModeControlEl.querySelectorAll('button').forEach(function (btn) {
+    btn.addEventListener('click', function () { setChordMode(btn.dataset.value); });
+  });
+
+  customChordsInputEl.addEventListener('input', function () {
+    state.customChordsText = customChordsInputEl.value;
+    refreshChordSequence();
+  });
+
+  sectionCountInputEl.addEventListener('input', function () {
+    setSectionCount(parseInt(sectionCountInputEl.value, 10));
+  });
+  clearArrangementBtn.addEventListener('click', function () {
+    state.arrangement = [];
+    renderArrangementStrip();
+    refreshChordSequence();
+  });
+  wireSegControl(structureLoopControlEl, function (val) { state.structureLoop = val === 'loop'; });
+
   wireSegControl(riffEnabledControlEl, function (val) { state.riffEnabled = val === 'on'; renderRiffChips(); });
   riffScaleSelectEl.addEventListener('change', function () { state.riffScaleId = riffScaleSelectEl.value; regenerateRiff(); });
   wireSegControl(riffWaveControlEl, function (val) { state.riffWaveform = val; });
@@ -1209,7 +1644,7 @@
     if (isTypingTarget(document.activeElement)) return;
     if (e.code === 'Space') { e.preventDefault(); togglePlayback(); return; }
     if (e.key === 'd' || e.key === 'D') { shuffleDrumPreset(); return; }
-    if (e.key === 'p' || e.key === 'P') { shuffleProgressionPreset(); return; }
+    if (e.key === 'p' || e.key === 'P') { if (state.chordMode === 'bank') shuffleProgressionPreset(); return; }
     if (e.key === 'r' || e.key === 'R') { regenerateRiff(); return; }
     if (e.key === 'ArrowUp') { e.preventDefault(); setBpm(state.bpm + (e.shiftKey ? 5 : 1)); return; }
     if (e.key === 'ArrowDown') { e.preventDefault(); setBpm(state.bpm - (e.shiftKey ? 5 : 1)); return; }
@@ -1226,6 +1661,10 @@
   renderKeyNoteChips();
   renderKeyAccidentalChips();
   riffScaleSelectEl.value = state.riffScaleId;
+  customChordsInputEl.value = state.customChordsText;
+  renderSectionList();
+  renderArrangementPalette();
+  renderArrangementStrip();
 
   loadBackingPreset(BACKING_PRESETS[0]); // default: House Jam — a friendly demo of all three layers together
 })();

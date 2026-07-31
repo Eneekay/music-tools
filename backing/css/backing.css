@@ -349,6 +349,281 @@
   padding: 1rem 0;
 }
 
+/* ---------- chords: mode switch + custom/structure panels ---------- */
+
+.chord-mode-control { justify-content: center; margin-bottom: 0.9rem; }
+
+.custom-chords-input {
+  width: 100%;
+  max-width: 320px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  padding: 0.5rem 0.7rem;
+  color: var(--nk-c4);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-align: center;
+  outline: none;
+}
+
+.custom-chords-input:focus { border-color: var(--nk-c1); box-shadow: 0 0 0 3px rgba(111, 194, 255, 0.15); }
+
+.custom-chords-hint {
+  margin: 0.6rem 0 0;
+  font-size: 0.68rem;
+  line-height: 1.5;
+  color: var(--nk-cream);
+  max-width: 320px;
+}
+
+.custom-chords-error {
+  margin: 0.6rem 0 0;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--nk-gold);
+}
+
+.structure-note {
+  margin: 0.4rem 0 0;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--nk-cream);
+  max-width: 320px;
+}
+
+.chord-strip-section-label {
+  flex-basis: 100%;
+  text-align: center;
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--nk-gold);
+  margin: 0.6rem 0 -0.15rem;
+}
+
+.chord-strip-section-label:first-child { margin-top: 0; }
+
+/* ---------- song structure widget ---------- */
+
+.structure-widget { align-items: center; }
+
+.structure-columns {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(1.2rem, 3vw, 2.5rem);
+  justify-content: center;
+}
+
+.structure-col {
+  flex: 1 1 340px;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.structure-subhead {
+  margin: 0 0 0.8rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--nk-c4);
+}
+
+.section-count-field {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.section-count-input {
+  width: 52px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  padding: 0.35rem 0.4rem;
+  color: var(--nk-c4);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-align: center;
+  outline: none;
+}
+
+.section-count-input:focus { border-color: var(--nk-c1); box-shadow: 0 0 0 3px rgba(111, 194, 255, 0.15); }
+
+.section-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.section-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.section-name-input {
+  flex: 0 0 88px;
+  min-width: 0;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  padding: 0.4rem 0.5rem;
+  color: var(--nk-c4);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.76rem;
+  outline: none;
+}
+
+.section-chords-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  padding: 0.4rem 0.5rem;
+  color: var(--nk-c4);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.76rem;
+  outline: none;
+}
+
+.section-name-input:focus, .section-chords-input:focus, .section-bars-input:focus {
+  border-color: var(--nk-c1);
+  box-shadow: 0 0 0 3px rgba(111, 194, 255, 0.15);
+}
+
+.section-bars-field {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.section-bars-input {
+  width: 44px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  padding: 0.4rem 0.3rem;
+  color: var(--nk-c4);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.76rem;
+  text-align: center;
+  outline: none;
+}
+
+.section-bars-label {
+  font-size: 0.62rem;
+  color: var(--nk-cream);
+  white-space: nowrap;
+}
+
+.section-remove-btn {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--nk-cream-strong);
+  font-size: 0.9rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.section-remove-btn:hover, .section-remove-btn:focus-visible {
+  border-color: var(--nk-gold);
+  color: var(--nk-gold);
+  background: rgba(255, 122, 51, 0.12);
+}
+
+.arrangement-hint {
+  margin: 0 0 0.6rem;
+  font-size: 0.68rem;
+  line-height: 1.5;
+  color: var(--nk-cream);
+  text-align: center;
+}
+
+.arrangement-palette, .arrangement-strip {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 38px;
+}
+
+.arrangement-strip { margin: 0.8rem 0; padding: 0.6rem; border-radius: 12px; background: rgba(255, 255, 255, 0.04); border: 1px dashed rgba(255, 255, 255, 0.14); }
+
+.arrangement-chip {
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--nk-cream-strong);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.74rem;
+  padding: 0.4rem 0.7rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.arrangement-chip:hover, .arrangement-chip:focus-visible {
+  border-color: rgba(111, 194, 255, 0.4);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.arrangement-chip--placed {
+  background: var(--nk-c2);
+  border-color: var(--nk-c2);
+  color: #fff;
+}
+
+.arrangement-chip--placed:hover { background: var(--nk-c2h); }
+
+.arrangement-chip[draggable="true"] { cursor: grab; }
+.arrangement-chip.is-dragging { opacity: 0.35; }
+
+.arrangement-strip.is-drag-over {
+  border-color: rgba(111, 194, 255, 0.5);
+  background: rgba(111, 194, 255, 0.06);
+}
+
+.arrangement-strip-empty {
+  width: 100%;
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--nk-cream);
+  padding: 0.3rem 0;
+}
+
+.structure-summary {
+  margin: 0.6rem 0 0;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--nk-cream-strong);
+  text-align: center;
+}
+
 /* ---------- riff widget ---------- */
 
 .riff-widget { align-items: center; }
