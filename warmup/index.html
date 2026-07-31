@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Warm-Up Routine Generator — Music Tools</title>
+<meta name="description" content="Sequenced siren, 5-note scale, arpeggio and octave-bounce vocal warm-ups on a click track, transposed to your range. Pick your voice type to signpost a comfortable starting key.">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="../css/site.css?v=1" rel="stylesheet">
+<link href="css/warmup.css?v=1" rel="stylesheet">
+</head>
+<body>
+
+<div class="contour-bg" aria-hidden="true">
+  <svg class="contour-group contour-group--a" viewBox="0 0 2880 64" preserveAspectRatio="none">
+    <path class="contour-line" d="M0,14 C240,23 480,5 720,14 C960,23 1200,5 1440,14 C1680,23 1920,5 2160,14 C2400,23 2640,5 2880,14"></path>
+    <path class="contour-line" d="M0,23 C240,32 480,14 720,23 C960,32 1200,14 1440,23 C1680,32 1920,14 2160,23 C2400,32 2640,14 2880,23"></path>
+    <path class="contour-line" d="M0,32 C240,41 480,23 720,32 C960,41 1200,23 1440,32 C1680,41 1920,23 2160,32 C2400,41 2640,23 2880,32"></path>
+    <path class="contour-line" d="M0,41 C240,50 480,32 720,41 C960,50 1200,32 1440,41 C1680,50 1920,32 2160,41 C2400,50 2640,32 2880,41"></path>
+    <path class="contour-line" d="M0,50 C240,59 480,41 720,50 C960,59 1200,41 1440,50 C1680,59 1920,41 2160,50 C2400,59 2640,41 2880,50"></path>
+  </svg>
+  <svg class="contour-group contour-group--b" viewBox="0 0 2880 64" preserveAspectRatio="none">
+    <path class="contour-line" d="M0,14 C240,8 480,20 720,14 C960,8 1200,20 1440,14 C1680,8 1920,20 2160,14 C2400,8 2640,20 2880,14"></path>
+    <path class="contour-line" d="M0,23 C240,17 480,29 720,23 C960,17 1200,29 1440,23 C1680,17 1920,29 2160,23 C2400,17 2640,29 2880,23"></path>
+    <path class="contour-line" d="M0,32 C240,26 480,38 720,32 C960,26 1200,38 1440,32 C1680,26 1920,38 2160,32 C2400,26 2640,38 2880,32"></path>
+    <path class="contour-line" d="M0,41 C240,35 480,47 720,41 C960,35 1200,47 1440,41 C1680,35 1920,47 2160,41 C2400,35 2640,47 2880,41"></path>
+    <path class="contour-line" d="M0,50 C240,44 480,56 720,50 C960,44 1200,56 1440,50 C1680,44 1920,56 2160,50 C2400,44 2640,56 2880,50"></path>
+  </svg>
+  <svg class="contour-group contour-group--c" viewBox="0 0 2880 64" preserveAspectRatio="none">
+    <path class="contour-line" d="M0,14 C240,26 480,2 720,14 C960,26 1200,2 1440,14 C1680,26 1920,2 2160,14 C2400,26 2640,2 2880,14"></path>
+    <path class="contour-line" d="M0,23 C240,35 480,11 720,23 C960,35 1200,11 1440,23 C1680,35 1920,11 2160,23 C2400,35 2640,11 2880,23"></path>
+    <path class="contour-line" d="M0,32 C240,44 480,20 720,32 C960,44 1200,20 1440,32 C1680,44 1920,20 2160,32 C2400,44 2640,20 2880,32"></path>
+    <path class="contour-line" d="M0,41 C240,53 480,29 720,41 C960,53 1200,29 1440,41 C1680,53 1920,29 2160,41 C2400,53 2640,29 2880,41"></path>
+    <path class="contour-line" d="M0,50 C240,62 480,38 720,50 C960,62 1200,38 1440,50 C1680,62 1920,38 2160,50 C2400,62 2640,38 2880,50"></path>
+  </svg>
+</div>
+<canvas id="notes-canvas" aria-hidden="true"></canvas>
+<div class="dot-grid" aria-hidden="true"></div>
+<div class="blob blob-1" aria-hidden="true"></div>
+<div class="blob blob-2" aria-hidden="true"></div>
+<div class="blob blob-3" aria-hidden="true"></div>
+
+<div class="dashboard">
+
+  <header class="app-header">
+    <a class="back-link" href="../">&larr; Music Tools</a>
+    <h1 class="app-title">Warm-Up Routine Generator</h1>
+    <p class="app-sub">Sequenced siren, scale, arpeggio and octave-bounce exercises on a click track, transposed to sit in your range.</p>
+  </header>
+
+  <div class="dash-columns">
+
+    <div class="dash-col">
+      <section class="widget starting-widget widget--filler glass">
+        <span class="widget-eyebrow">Starting Note</span>
+
+        <p class="voice-type-hint">Not sure of your voice type? Pick one below to signpost a comfortable starting key — each is labelled with its typical range.</p>
+        <div class="voice-type-chips" id="voiceTypeChips"></div>
+
+        <div class="control-group control-group--root" id="rootGroup">
+          <span class="seg-label">Root</span>
+          <div class="root-picker" id="rootPicker">
+            <button type="button" data-pc="0" data-flats="false" class="is-active">C</button>
+            <button type="button" data-pc="1" data-flats="true">D&#9837;</button>
+            <button type="button" data-pc="2" data-flats="false">D</button>
+            <button type="button" data-pc="3" data-flats="true">E&#9837;</button>
+            <button type="button" data-pc="4" data-flats="false">E</button>
+            <button type="button" data-pc="5" data-flats="true">F</button>
+            <button type="button" data-pc="6" data-flats="false">F&#9839;</button>
+            <button type="button" data-pc="7" data-flats="false">G</button>
+            <button type="button" data-pc="8" data-flats="true">A&#9837;</button>
+            <button type="button" data-pc="9" data-flats="false">A</button>
+            <button type="button" data-pc="10" data-flats="true">B&#9837;</button>
+            <button type="button" data-pc="11" data-flats="false">B</button>
+          </div>
+        </div>
+
+        <div class="control-group" id="octaveGroup">
+          <span class="seg-label">Octave</span>
+          <div class="seg-control" id="octaveControl">
+            <button type="button" data-value="2">2</button>
+            <button type="button" data-value="3" class="is-active">3</button>
+            <button type="button" data-value="4">4</button>
+            <button type="button" data-value="5">5</button>
+          </div>
+        </div>
+
+        <p class="starting-note-line" id="startingNoteLine">Starting on C3 (130.8 Hz)</p>
+      </section>
+    </div>
+
+    <div class="dash-col">
+      <section class="widget exercises-widget widget--filler glass">
+        <span class="widget-eyebrow">Exercises</span>
+        <div class="exercise-list" id="exerciseList"></div>
+        <p class="exercises-hint">Played in this order, each climbing through your reps before moving to the next.</p>
+      </section>
+    </div>
+
+  </div>
+
+  <section class="widget settings-widget glass">
+    <span class="widget-eyebrow">Routine Settings</span>
+
+    <div class="settings-row">
+      <div class="control-group">
+        <span class="seg-label">Tempo</span>
+        <div class="tempo-field">
+          <input type="range" id="tempoSlider" min="50" max="140" step="1" value="84" class="tempo-slider">
+          <span class="tempo-value" id="tempoValue">84 BPM</span>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <span class="seg-label">Reps per exercise</span>
+        <div class="seg-control" id="repsControl">
+          <button type="button" data-value="3">3</button>
+          <button type="button" data-value="5" class="is-active">5</button>
+          <button type="button" data-value="8">8</button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <span class="seg-label">Climb by</span>
+        <div class="seg-control" id="stepControl">
+          <button type="button" data-value="1" class="is-active">Half step</button>
+          <button type="button" data-value="2">Whole step</button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <span class="seg-label">Click track</span>
+        <label class="switch">
+          <input type="checkbox" id="clickToggle" checked>
+          <span class="switch-track"><span class="switch-thumb"></span></span>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <section class="widget practice-widget glass">
+    <span class="widget-eyebrow">Practice</span>
+
+    <p class="prompt-status" id="promptStatus">Press Start to begin your warm-up routine.</p>
+
+    <button type="button" class="warmup-play-btn" id="playBtn">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5z"></path></svg>
+      <span id="playBtnLabel">Start</span>
+    </button>
+
+    <div class="progress-wrap">
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+  </section>
+
+</div>
+
+<div class="kbd-hint" id="kbdHint" aria-hidden="true">
+  <div class="kbd-hint-inner">
+    <div class="kbd-hint-row"><kbd class="kbd-hint-key kbd-hint-key--wide">Space</kbd><span class="kbd-hint-text">Start / Stop</span></div>
+  </div>
+</div>
+
+<script src="../js/background.js?v=1"></script>
+<script src="../js/theory.js?v=1"></script>
+<script src="../js/voice-ranges.js?v=1"></script>
+<script src="js/warmup.js?v=1"></script>
+</body>
+</html>

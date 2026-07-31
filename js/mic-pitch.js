@@ -18,11 +18,15 @@
   //     of reporting silence immediately. 0 disables holding.
   //   a4, detune - passed through to MT.freqToNearestChromatic
   //   onMatch(match, held) - called every tick a pitch is detected. match:
-  //     { freq, midi, name, octave, nearestFreq, cents } - cents is the
-  //     detected freq's distance from the nearest chromatic note (not from
-  //     any tool-specific target); tools wanting cents-off-target should
-  //     compute it themselves from match.freq.
-  //   onSilence() - called every tick with no pitch (after any hold expires)
+  //     { freq, midi, name, octave, nearestFreq, cents, level } - cents is
+  //     the detected freq's distance from the nearest chromatic note (not
+  //     from any tool-specific target); tools wanting cents-off-target
+  //     should compute it themselves from match.freq. level is the input's
+  //     RMS amplitude (roughly 0-0.3 for a voice, no hard ceiling) - useful
+  //     for breath/volume-consistency tools, independent of pitch.
+  //   onSilence(level) - called every tick with no pitch (after any hold
+  //     expires); level is still reported so a tool can tell silence from
+  //     quiet unpitched breath noise.
   // Returns { start(onReady, onError), stop(), isListening(), getAudioContext() }.
   function create(opts) {
     opts = opts || {};
@@ -37,9 +41,16 @@
     var audioCtx = null, micStream = null, micSource = null, analyser = null, pitchBuffer = null, timer = null;
     var lastMatch = null, lastMatchTime = 0, listening = false;
 
+    function computeLevel(buf) {
+      var sumSquares = 0;
+      for (var i = 0; i < buf.length; i++) sumSquares += buf[i] * buf[i];
+      return Math.sqrt(sumSquares / buf.length);
+    }
+
     function tick() {
       if (!analyser) return;
       analyser.getFloatTimeDomainData(pitchBuffer);
+      var level = computeLevel(pitchBuffer);
       var freq = window.PitchDetect.autoCorrelate(pitchBuffer, audioCtx.sampleRate);
 
       if (freq === -1) {
@@ -48,7 +59,7 @@
           return;
         }
         lastMatch = null;
-        onSilence();
+        onSilence(level);
         return;
       }
 
@@ -59,7 +70,8 @@
         name: nearest.name,
         octave: nearest.octave,
         nearestFreq: nearest.freq,
-        cents: 1200 * Math.log2(freq / nearest.freq)
+        cents: 1200 * Math.log2(freq / nearest.freq),
+        level: level
       };
       lastMatch = match;
       lastMatchTime = performance.now();

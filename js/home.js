@@ -6,7 +6,7 @@
 (function () {
   'use strict';
 
-  var LABELS = { guitar: 'Guitar', bass: 'Bass', ukulele: 'Ukulele', violin: 'Violin', bouzouki: 'Bouzouki', piano: 'Piano' };
+  var LABELS = { guitar: 'Guitar', bass: 'Bass', ukulele: 'Ukulele', violin: 'Violin', bouzouki: 'Bouzouki', piano: 'Piano', vocals: 'Vocals' };
 
   var chipsWrap = document.getElementById('instrumentFilterChips');
   var clearBtn = document.getElementById('clearInstrumentFilter');

@@ -75,10 +75,23 @@
 
 /* ---------- stability trace ---------- */
 
+.trace-section-label {
+  display: block;
+  width: 100%;
+  max-width: 680px;
+  margin: 1.4rem auto 0;
+  font-size: 0.64rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--nk-gold);
+  text-align: left;
+}
+
 .trace-wrap {
   width: 100%;
   max-width: 680px;
-  margin-top: 1.4rem;
+  margin-top: 0.5rem;
   display: flex;
   align-items: stretch;
   gap: 0.5rem;
@@ -113,6 +126,24 @@
   padding: 4px 0;
   font-size: 0.6rem;
   color: var(--nk-cream);
+}
+
+.level-trace-svg {
+  flex: 1 1 auto;
+  width: 100%;
+  height: 90px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.level-trace-line {
+  fill: none;
+  stroke: var(--nk-gold);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 4px rgba(255, 122, 51, 0.55));
 }
 
 .trace-hint {
@@ -219,7 +250,7 @@
 .stats-grid {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 0.6rem;
 }
 
@@ -257,3 +288,56 @@
   color: var(--nk-cream);
   max-width: 320px;
 }
+
+.stats-hint.is-record { color: var(--nk-gold); font-weight: 600; }
+
+/* ---------- session history widget ---------- */
+
+.history-widget { align-items: center; text-align: center; }
+
+.history-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 1.2rem;
+}
+
+.stat-cell--best {
+  min-width: 180px;
+  border-color: rgba(255, 122, 51, 0.3);
+  background: rgba(255, 122, 51, 0.08);
+}
+
+.stat-cell--best .stat-value { color: var(--nk-gold); }
+
+.history-hint {
+  margin: 0;
+  font-size: 0.66rem;
+  line-height: 1.5;
+  color: var(--nk-cream);
+  max-width: 420px;
+}
+
+.history-list {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  color: var(--nk-cream);
+}
+
+.history-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0.8rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--nk-cream-strong);
+  font-weight: 500;
+}
+
+.history-row .history-row-date { color: var(--nk-cream); font-weight: 600; }

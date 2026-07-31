@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Vocal Pitch Tuner — Music Tools</title>
-<meta name="description" content="Hold a note and watch a live stability trace of your pitch over time, with cents-off, time-in-tune and longest-hold stats — built for breath-support practice.">
+<meta name="description" content="Hold a note and watch live pitch and breath/volume stability traces over time, with cents-off, time-in-tune, longest-hold stats and session history — built for breath-support practice.">
 <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -47,7 +47,7 @@
   <header class="app-header">
     <a class="back-link" href="../">&larr; Music Tools</a>
     <h1 class="app-title">Vocal Pitch Tuner</h1>
-    <p class="app-sub">Hold a note and watch your pitch stability over time — cents-off, time-in-tune and longest-hold, for breath-support practice.</p>
+    <p class="app-sub">Hold a note and watch your pitch and breath stability over time — cents-off, time-in-tune, longest-hold and session history, for breath-support practice.</p>
   </header>
 
   <section class="widget hold-widget glass">
@@ -72,6 +72,7 @@
 
     <p class="vt-status" id="vtStatus">Tap Start, pick a target note, then hold it as steadily as you can.</p>
 
+    <span class="trace-section-label">Pitch</span>
     <div class="trace-wrap">
       <svg class="trace-svg" id="traceSvg" viewBox="0 0 640 130" preserveAspectRatio="none">
         <rect class="trace-band" x="0" y="53" width="640" height="24"></rect>
@@ -81,6 +82,15 @@
       <div class="trace-labels"><span>+50&cent;</span><span>0</span><span>&minus;50&cent;</span></div>
     </div>
     <p class="trace-hint">Last 12 seconds. The green band is &plusmn;10&cent; — the zone breath-support drills aim to stay inside.</p>
+
+    <span class="trace-section-label">Breath / Volume</span>
+    <div class="trace-wrap">
+      <svg class="level-trace-svg" id="levelTraceSvg" viewBox="0 0 640 90" preserveAspectRatio="none">
+        <g id="levelTraceLines"></g>
+      </svg>
+      <div class="trace-labels trace-labels--level"><span>Loud</span><span>Quiet</span></div>
+    </div>
+    <p class="trace-hint">A flat line means steady breath support; a downward slope usually means you're running out of air.</p>
 
     <button type="button" class="trace-reset-btn" id="resetTraceBtn">Reset Trace &amp; Stats</button>
   </section>
@@ -147,12 +157,32 @@
             <span class="stat-value" id="statLongestHold">0.0s</span>
             <span class="stat-label">Longest hold</span>
           </div>
+          <div class="stat-cell">
+            <span class="stat-value" id="statVolumeStability">&ndash;</span>
+            <span class="stat-label">Volume steadiness</span>
+          </div>
         </div>
-        <p class="stats-hint">A "hold" is unbroken time on one note. It resets on a breath (silence) or a note change.</p>
+        <p class="stats-hint" id="personalBestHint">A "hold" is unbroken time on one note. It resets on a breath (silence) or a note change.</p>
       </section>
     </div>
 
   </div>
+
+  <section class="widget history-widget glass">
+    <span class="widget-eyebrow">Session History</span>
+
+    <div class="history-top">
+      <div class="stat-cell stat-cell--best">
+        <span class="stat-value" id="statPersonalBest">&ndash;</span>
+        <span class="stat-label">Personal best hold</span>
+      </div>
+      <p class="history-hint">Saved automatically whenever you stop listening after holding at least one note. Kept on this device only.</p>
+    </div>
+
+    <div class="history-list" id="historyList">No sessions recorded yet — stop listening after a hold to save one.</div>
+
+    <button type="button" class="trace-reset-btn" id="clearHistoryBtn">Clear History</button>
+  </section>
 
 </div>
 

@@ -1,9 +1,11 @@
 /* Vocal Range Finder — click through a reference keyboard (or just start
    singing), and the mic tracks the lowest and highest comfortably-sung note
-   using the shared autocorrelation pitch detector (../js/pitch.js, same one
-   the Tuner uses). Once enough range is captured, it's matched against a
-   table of typical classical voice-type ranges (Bass through Soprano) by
-   whichever category overlaps it the most.
+   using the shared MicPitch controller (../js/mic-pitch.js), which wraps
+   the same autocorrelation pitch detector (../js/pitch.js) the Tuner uses.
+   Once enough range is captured, it's matched against a shared table of
+   typical classical voice-type ranges (../js/voice-ranges.js, Bass through
+   Soprano - also used by the Warm-up Routine Generator) by whichever
+   category overlaps it the most.
 
    A note only extends the captured range once it's held steady for a few
    consecutive detection frames (MIC_STABLE_SAMPLES) - this is the same
@@ -16,23 +18,7 @@
   'use strict';
 
   var MT = window.MusicTheory;
-
-  /* =========================================================================
-     Voice-type classification table (rough classical ranges, MIDI note
-     numbers). Each category overlaps its neighbors, matching how real voice
-     types are commonly taught - classification picks whichever category's
-     range overlaps the singer's captured range the most.
-     ========================================================================= */
-
-  var CATEGORIES = [
-    { id: 'bass', label: 'Bass', lowMidi: 40, highMidi: 64, desc: 'The deepest common voice type, typically ranging from about E2 to E4.' },
-    { id: 'baritone', label: 'Baritone', lowMidi: 45, highMidi: 69, desc: 'The most common male voice, sitting between bass and tenor, typically about A2 to A4.' },
-    { id: 'tenor', label: 'Tenor', lowMidi: 48, highMidi: 72, desc: 'The highest common male voice type, typically about C3 to C5.' },
-    { id: 'countertenor', label: 'Countertenor', lowMidi: 52, highMidi: 76, desc: 'A rare, high male voice singing largely in falsetto, typically about E3 to E5.' },
-    { id: 'alto', label: 'Alto (Contralto)', lowMidi: 53, highMidi: 77, desc: 'The lowest common female voice, typically about F3 to F5.' },
-    { id: 'mezzo', label: 'Mezzo-Soprano', lowMidi: 57, highMidi: 81, desc: 'The most common female voice, sitting between alto and soprano, typically about A3 to A5.' },
-    { id: 'soprano', label: 'Soprano', lowMidi: 60, highMidi: 84, desc: 'The highest common female voice type, typically about C4 to C6.' }
-  ];
+  var CATEGORIES = window.VoiceRanges.CATEGORIES;
 
   var CHART_LOW_MIDI = 36;  // C2
   var CHART_HIGH_MIDI = 88; // E6
@@ -53,13 +39,11 @@
      ========================================================================= */
 
   var state = {
-    isListening: false,
     lowMidi: null,
     highMidi: null,
     currentMatch: null
   };
 
-  var lastMatchTime = 0;
   var micLastMidi = null;
   var micStableCount = 0;
 
@@ -77,22 +61,7 @@
   function playReferenceTone(freq) {
     ensureAudioContext();
     if (audioCtx.state === 'suspended') audioCtx.resume();
-    var t = audioCtx.currentTime;
-    var dur = 1.3;
-    var vol = 0.5;
-
-    var osc = audioCtx.createOscillator();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(freq, t);
-
-    var gain = audioCtx.createGain();
-    gain.gain.setValueAtTime(0.0001, t);
-    gain.gain.exponentialRampToValueAtTime(vol, t + 0.04);
-    gain.gain.setValueAtTime(vol, t + dur - 0.3);
-    gain.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-
-    osc.connect(gain); gain.connect(audioCtx.destination);
-    osc.start(t); osc.stop(t + dur + 0.05);
+    window.InstrumentTones.playSimpleTone(audioCtx, audioCtx.destination, freq, { type: 'sine', duration: 1.3, gain: 0.5 });
   }
 
   /* =========================================================================
@@ -160,20 +129,7 @@
   function classify() {
     if (state.lowMidi === null || state.highMidi === null) return null;
     if (state.highMidi - state.lowMidi < MIN_SPAN_FOR_CLASSIFICATION) return null;
-
-    var bestCat = null, bestOverlap = -1, bestCenterDist = Infinity;
-    var userCenter = (state.lowMidi + state.highMidi) / 2;
-
-    CATEGORIES.forEach(function (cat) {
-      var overlap = Math.max(0, Math.min(state.highMidi, cat.highMidi) - Math.max(state.lowMidi, cat.lowMidi));
-      var catCenter = (cat.lowMidi + cat.highMidi) / 2;
-      var centerDist = Math.abs(userCenter - catCenter);
-      if (overlap > bestOverlap || (overlap === bestOverlap && centerDist < bestCenterDist)) {
-        bestCat = cat; bestOverlap = overlap; bestCenterDist = centerDist;
-      }
-    });
-
-    return bestCat;
+    return window.VoiceRanges.classify(state.lowMidi, state.highMidi);
   }
 
   function renderClassification() {
@@ -252,14 +208,8 @@
   resetRangeBtn.addEventListener('click', resetRange);
 
   /* =========================================================================
-     Pitch detection (autocorrelation) — shared implementation in ../js/pitch.js
+     Pitch detection — shared controller in ../js/mic-pitch.js
      ========================================================================= */
-
-  var micStream = null;
-  var micSource = null;
-  var analyser = null;
-  var pitchBuffer = null;
-  var detectionTimer = null;
 
   function setListenButtonState(listening) {
     listenBtn.classList.toggle('is-listening', listening);
@@ -281,75 +231,44 @@
     vrFreqEl.textContent = match.freq.toFixed(1) + ' Hz';
   }
 
-  function runDetection() {
-    if (!analyser) return;
-    analyser.getFloatTimeDomainData(pitchBuffer);
-    var freq = window.PitchDetect.autoCorrelate(pitchBuffer, audioCtx.sampleRate);
+  var mic = window.MicPitch.create({
+    silenceHoldMs: SILENCE_HOLD_MS,
+    intervalMs: MIC_DETECTION_INTERVAL_MS,
+    onMatch: function (match, held) {
+      state.currentMatch = { name: match.name + match.octave, midi: match.midi, freq: match.freq };
+      updateReadout(state.currentMatch);
+      if (held) { renderKeyboard(); return; }
 
-    if (freq === -1) {
+      if (match.midi === micLastMidi) micStableCount++;
+      else { micLastMidi = match.midi; micStableCount = 1; }
+
+      if (micStableCount >= MIC_STABLE_SAMPLES) extendRange(match.midi);
+      else renderKeyboard();
+    },
+    onSilence: function () {
       micLastMidi = null;
       micStableCount = 0;
-      if (state.currentMatch && performance.now() - lastMatchTime < SILENCE_HOLD_MS) return;
       state.currentMatch = null;
       showIdleReadout();
       renderKeyboard();
-      return;
     }
-
-    var nearest = MT.freqToNearestChromatic(freq, 440, 0);
-    var match = { name: nearest.name + nearest.octave, midi: nearest.midi, freq: freq };
-
-    state.currentMatch = match;
-    lastMatchTime = performance.now();
-    updateReadout(match);
-
-    if (nearest.midi === micLastMidi) micStableCount++;
-    else { micLastMidi = nearest.midi; micStableCount = 1; }
-
-    if (micStableCount >= MIC_STABLE_SAMPLES) {
-      extendRange(nearest.midi);
-    } else {
-      renderKeyboard();
-    }
-  }
+  });
 
   function startListening() {
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      showStatus('Microphone input is not supported in this browser.', true);
-      return;
-    }
-    ensureAudioContext();
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-
-    navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } })
-      .then(function (stream) {
-        micStream = stream;
-        micSource = audioCtx.createMediaStreamSource(stream);
-        analyser = audioCtx.createAnalyser();
-        analyser.fftSize = 2048;
-        micSource.connect(analyser);
-        pitchBuffer = new Float32Array(analyser.fftSize);
-        micLastMidi = null;
-        micStableCount = 0;
-
-        state.isListening = true;
+    mic.start(
+      function () {
         setListenButtonState(true);
         showStatus('Listening… hum or sing from your lowest note to your highest.', false);
-
-        detectionTimer = setInterval(runDetection, MIC_DETECTION_INTERVAL_MS);
-      })
-      .catch(function () {
+      },
+      function () {
         showStatus('Microphone access was denied or unavailable.', true);
-      });
+      }
+    );
   }
 
   function stopListening() {
-    state.isListening = false;
+    mic.stop();
     setListenButtonState(false);
-    if (detectionTimer) { clearInterval(detectionTimer); detectionTimer = null; }
-    if (micSource) { micSource.disconnect(); micSource = null; }
-    if (micStream) { micStream.getTracks().forEach(function (t) { t.stop(); }); micStream = null; }
-    analyser = null;
     state.currentMatch = null;
     micLastMidi = null;
     micStableCount = 0;
@@ -359,7 +278,7 @@
   }
 
   listenBtn.addEventListener('click', function () {
-    if (state.isListening) stopListening(); else startListening();
+    if (mic.isListening()) stopListening(); else startListening();
   });
 
   /* =========================================================================
@@ -375,7 +294,7 @@
 
     if (e.code === 'Space') {
       e.preventDefault();
-      if (state.isListening) stopListening(); else startListening();
+      if (mic.isListening()) stopListening(); else startListening();
       return;
     }
     if (e.key.toLowerCase() === 'r') { resetRange(); return; }
