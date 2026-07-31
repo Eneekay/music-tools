@@ -13,6 +13,17 @@
 </head>
 <body>
 
+<div class="splash-overlay" id="splashOverlay">
+  <div class="splash-stripes" id="splashStripes"></div>
+  <div class="splash-icon" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8.5 20h7l-2-14.5a1 1 0 0 0-1-.9h-1a1 1 0 0 0-1 .9L8.5 20z"></path>
+      <path d="M7 15.5h10"></path>
+      <line x1="12" y1="18" x2="14.8" y2="6.4"></line>
+    </svg>
+  </div>
+</div>
+
 <div class="contour-bg" aria-hidden="true">
   <!-- Each group is one <svg>, so its 5 lines share a single transform and can
        never drift out of lockstep. Every path in a group is the same waveform
@@ -200,6 +211,7 @@
 </div>
 
 <script src="../js/background.js?v=1"></script>
+<script src="../js/splash.js?v=1"></script>
 <script src="js/metronome.js?v=1"></script>
 </body>
 </html>

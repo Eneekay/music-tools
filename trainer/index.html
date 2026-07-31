@@ -13,6 +13,21 @@
 </head>
 <body>
 
+<div class="splash-overlay" id="splashOverlay">
+  <div class="splash-stripes" id="splashStripes"></div>
+  <div class="splash-icon" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="4" y1="6" x2="4" y2="18"></line>
+      <line x1="9" y1="5" x2="9" y2="19"></line>
+      <line x1="14" y1="5" x2="14" y2="19"></line>
+      <line x1="19" y1="6" x2="19" y2="18"></line>
+      <line x1="3" y1="9" x2="20" y2="9"></line>
+      <line x1="3" y1="15" x2="20" y2="15"></line>
+      <path d="M9 15v-2.4l3-1.2 3 1.2V15"></path>
+    </svg>
+  </div>
+</div>
+
 <div class="contour-bg" aria-hidden="true">
   <svg class="contour-group contour-group--a" viewBox="0 0 2880 64" preserveAspectRatio="none">
     <path class="contour-line" d="M0,14 C240,23 480,5 720,14 C960,23 1200,5 1440,14 C1680,23 1920,5 2160,14 C2400,23 2640,5 2880,14"></path>
@@ -244,6 +259,7 @@
 </div>
 
 <script src="../js/background.js?v=1"></script>
+<script src="../js/splash.js?v=1"></script>
 <script src="../js/theory.js?v=1"></script>
 <script src="../js/pitch.js?v=1"></script>
 <script src="js/trainer.js?v=1"></script>

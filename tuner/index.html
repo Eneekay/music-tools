@@ -13,6 +13,16 @@
 </head>
 <body>
 
+<div class="splash-overlay" id="splashOverlay">
+  <div class="splash-stripes" id="splashStripes"></div>
+  <div class="splash-icon" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8 3v6a4 4 0 0 0 8 0V3"></path>
+      <line x1="12" y1="13" x2="12" y2="21"></line>
+    </svg>
+  </div>
+</div>
+
 <div class="contour-bg" aria-hidden="true">
   <svg class="contour-group contour-group--a" viewBox="0 0 2880 64" preserveAspectRatio="none">
     <path class="contour-line" d="M0,14 C240,23 480,5 720,14 C960,23 1200,5 1440,14 C1680,23 1920,5 2160,14 C2400,23 2640,5 2880,14"></path>
@@ -217,6 +227,7 @@
 </div>
 
 <script src="../js/background.js?v=1"></script>
+<script src="../js/splash.js?v=1"></script>
 <script src="../js/theory.js?v=1"></script>
 <script src="../js/tones.js?v=1"></script>
 <script src="../js/pitch.js?v=1"></script>
