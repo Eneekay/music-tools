@@ -52,8 +52,8 @@
   gap: 0.2rem;
   padding: 0.7rem 0.4rem;
   border-radius: var(--nk-shape-md);
-  background: rgba(255, 232, 244, 0.05);
-  border: 1px solid rgba(255, 232, 244, 0.1);
+  background: rgba(var(--nk-overlay-rgb), 0.05);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.1);
 }
 
 .captured-value {
@@ -140,8 +140,8 @@
   flex: 1 1 auto;
   height: 12px;
   border-radius: var(--nk-shape-full);
-  background: rgba(255, 232, 244, 0.05);
-  border: 1px solid rgba(255, 232, 244, 0.08);
+  background: rgba(var(--nk-overlay-rgb), 0.05);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.08);
   overflow: hidden;
 }
 

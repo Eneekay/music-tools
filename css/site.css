@@ -20,6 +20,24 @@
   --nk-green: #4ADE80;
   --nk-green-rgb: 74, 222, 128;
 
+  /* Page background — separate from --nk-c0 because c0 is also reused
+     elsewhere as a fixed near-black (e.g. text sitting on a bright accent
+     fill), which must NOT flip to a light color in the light theme. */
+  --nk-bg: var(--nk-c0);
+
+  /* A handful of elements are physical/fixed light-colored objects
+     regardless of theme (switch thumb, piano white keys, the kbd-hint
+     tooltip card) — they read var(--nk-fixed-light) instead of --nk-c4,
+     which flips per theme. */
+  --nk-fixed-light: #F3EEF2;
+  --nk-fixed-light-rgb: 243, 238, 242;
+
+  /* Base RGB for the neutral "overlay" tint used throughout every tool's
+     CSS for card wells, hairline borders and chip fills (rgba(var(--nk-overlay-rgb), alpha)).
+     Dark theme lightens the surface it sits on; light theme darkens it —
+     each call site's alpha was tuned per-case and stays untouched. */
+  --nk-overlay-rgb: 255, 232, 244;
+
   /* ---- Material Design tokens ----
      Two flat surface tones (resting / hover-elevated), outline roles, an
      elevation shadow scale and a shape scale, all mapped onto the existing
@@ -55,6 +73,37 @@
   --nk-easing-spring-soft: cubic-bezier(0.34, 1.2, 0.4, 1);
 }
 
+/* ---------- light theme ----------
+   Surfaces and text/accent roles that need genuinely different values to
+   stay legible on a light background (Material recommends distinct tonal
+   values per scheme, not a blind color-role swap). --nk-c0, --nk-c2,
+   --nk-c2h, --nk-c3, --nk-on-accent and --nk-fixed-light are deliberately
+   NOT overridden here — they're either self-contained fills paired with
+   their own fixed text color, or physical/fixed elements that must not
+   flip. js/theme.js sets data-theme on <html> before first paint. */
+:root[data-theme="light"] {
+  --nk-bg: #FFF7FA;
+  --nk-surface: #FCEEF4;
+  --nk-surface-high: #F6DFEB;
+
+  --nk-c4: #23181F;
+  --nk-c4-rgb: 35, 24, 31;
+
+  --nk-cream: #755E71;
+  --nk-cream-strong: #6B5361;
+
+  --nk-c1: #C21C6B;
+  --nk-c1-rgb: 194, 28, 107;
+
+  --nk-gold: #B8004A;
+  --nk-gold-rgb: 184, 0, 74;
+
+  --nk-green: #0F7A41;
+  --nk-green-rgb: 15, 122, 65;
+
+  --nk-overlay-rgb: 35, 24, 31;
+}
+
 * { box-sizing: border-box; }
 
 /* The HTML `hidden` attribute is only display:none in the UA stylesheet,
@@ -68,7 +117,7 @@ html, body { height: 100%; }
 body {
   margin: 0;
   min-height: 100vh;
-  background: var(--nk-c0);
+  background: var(--nk-bg);
   color: var(--nk-c4);
   font-family: 'Inter', system-ui, sans-serif;
 }
@@ -104,7 +153,7 @@ body {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: var(--nk-c4);
+  background: var(--nk-fixed-light);
   transition: transform 0.3s var(--nk-easing-spring);
 }
 
@@ -161,6 +210,40 @@ body {
 .seg-control.is-disabled {
   opacity: 0.4;
   pointer-events: none;
+}
+
+/* ---------- theme switch (Light / Dark / System) ----------
+   Fixed top-right on every page (homepage included), reusing the
+   segmented-control visual language. js/theme.js sets the .is-active
+   button and writes data-theme on <html>; the FOUC-prevention inline
+   script in each page's <head> sets data-theme before first paint. */
+
+.theme-switch {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 60;
+}
+
+.theme-switch .seg-control {
+  background: var(--nk-surface);
+  box-shadow: var(--nk-elevation-1);
+}
+
+.theme-switch .seg-control button {
+  padding: 0.4rem 0.55rem;
+}
+
+.theme-switch .seg-control svg {
+  display: block;
+  width: 15px;
+  height: 15px;
+}
+
+@media (max-width: 560px) {
+  .theme-switch { top: 8px; right: 8px; }
+  .theme-switch .seg-control button { padding: 0.32rem 0.42rem; }
+  .theme-switch .seg-control svg { width: 13px; height: 13px; }
 }
 
 /* ---------- volume / labeled slider row ---------- */
@@ -493,7 +576,7 @@ body {
 }
 
 .tool-card-soon .tool-card-icon {
-  background: rgba(255, 232, 244, 0.08);
+  background: rgba(var(--nk-overlay-rgb), 0.08);
   color: var(--nk-cream);
 }
 
@@ -530,7 +613,7 @@ body {
   flex-direction: column;
   gap: 0.4rem;
   padding: 0.7rem 0.9rem;
-  background: var(--nk-c4);
+  background: var(--nk-fixed-light);
   border-radius: var(--nk-shape-md);
   box-shadow: var(--nk-elevation-3);
 }
@@ -596,7 +679,7 @@ body {
 }
 
 .piano-key--white {
-  fill: var(--nk-c4);
+  fill: var(--nk-fixed-light);
   stroke: rgba(16, 20, 31, 0.35);
   stroke-width: 1;
 }
@@ -605,7 +688,7 @@ body {
 
 .piano-key--black {
   fill: var(--nk-c0);
-  stroke: rgba(255, 232, 244, 0.25);
+  stroke: rgba(var(--nk-fixed-light-rgb), 0.25);
   stroke-width: 1;
 }
 
@@ -688,4 +771,4 @@ body {
   .splash-icon { transition: opacity 0.25s ease; }
 }
 
-.piano-key-label--black { fill: var(--nk-c4); font-size: 9px; }
+.piano-key-label--black { fill: var(--nk-fixed-light); font-size: 9px; }

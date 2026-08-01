@@ -34,8 +34,8 @@
 
 .instrument-tab {
   border-radius: var(--nk-shape-sm);
-  border: 1px solid rgba(255, 232, 244, 0.14);
-  background: rgba(255, 232, 244, 0.05);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.14);
+  background: rgba(var(--nk-overlay-rgb), 0.05);
   color: var(--nk-cream-strong);
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
@@ -47,7 +47,7 @@
 
 .instrument-tab:hover, .instrument-tab:focus-visible {
   border-color: rgba(var(--nk-c1-rgb), 0.4);
-  background: rgba(255, 232, 244, 0.1);
+  background: rgba(var(--nk-overlay-rgb), 0.1);
 }
 
 .instrument-tab.is-active {
@@ -57,8 +57,8 @@
 }
 
 .tuning-select {
-  background: rgba(255, 232, 244, 0.08);
-  border: 1px solid rgba(255, 232, 244, 0.18);
+  background: rgba(var(--nk-overlay-rgb), 0.08);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.18);
   border-radius: var(--nk-shape-sm);
   padding: 0.4rem 0.6rem;
   color: var(--nk-c4);
@@ -137,23 +137,23 @@
 }
 
 .fret-wire {
-  stroke: rgba(255, 232, 244, 0.18);
+  stroke: rgba(var(--nk-overlay-rgb), 0.18);
   stroke-width: 1.5;
 }
 
 .fret-nut {
-  stroke: rgba(255, 232, 244, 0.4);
+  stroke: rgba(var(--nk-overlay-rgb), 0.4);
   stroke-width: 4;
   stroke-linecap: round;
 }
 
 .fret-string {
-  stroke: rgba(255, 232, 244, 0.28);
+  stroke: rgba(var(--nk-overlay-rgb), 0.28);
   stroke-width: 1.2;
 }
 
 .fret-marker {
-  fill: rgba(255, 232, 244, 0.1);
+  fill: rgba(var(--nk-overlay-rgb), 0.1);
 }
 
 .fret-number {
@@ -173,8 +173,8 @@
 }
 
 .target-dot {
-  fill: rgba(255, 232, 244, 0.14);
-  stroke: rgba(255, 232, 244, 0.28);
+  fill: rgba(var(--nk-overlay-rgb), 0.14);
+  stroke: rgba(var(--nk-overlay-rgb), 0.28);
   stroke-width: 1;
   cursor: pointer;
   transition: fill 0.12s ease, stroke 0.12s ease, transform 0.1s ease;
@@ -290,8 +290,8 @@
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: rgba(255, 232, 244, 0.14);
-  border: 1px solid rgba(255, 232, 244, 0.2);
+  background: rgba(var(--nk-overlay-rgb), 0.14);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.2);
   transition: background-color 0.1s ease, box-shadow 0.1s ease, transform 0.15s var(--nk-easing-spring);
 }
 
@@ -331,7 +331,7 @@
   gap: 0.9rem;
   margin-top: 0.9rem;
   padding-top: 0.9rem;
-  border-top: 1px solid rgba(255, 232, 244, 0.08);
+  border-top: 1px solid rgba(var(--nk-overlay-rgb), 0.08);
 }
 
 .scale-picker-group.is-visible { display: flex; }
@@ -348,8 +348,8 @@
   width: 30px;
   height: 30px;
   border-radius: var(--nk-shape-sm);
-  border: 1px solid rgba(255, 232, 244, 0.16);
-  background: rgba(255, 232, 244, 0.06);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.16);
+  background: rgba(var(--nk-overlay-rgb), 0.06);
   color: var(--nk-cream-strong);
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
@@ -360,7 +360,7 @@
 
 .root-picker button:hover, .root-picker button:focus-visible {
   border-color: rgba(var(--nk-c1-rgb), 0.4);
-  background: rgba(255, 232, 244, 0.12);
+  background: rgba(var(--nk-overlay-rgb), 0.12);
 }
 
 .root-picker button.is-active {
@@ -395,8 +395,8 @@
   gap: 0.2rem;
   padding: 0.6rem 0.4rem;
   border-radius: var(--nk-shape-md);
-  background: rgba(255, 232, 244, 0.05);
-  border: 1px solid rgba(255, 232, 244, 0.1);
+  background: rgba(var(--nk-overlay-rgb), 0.05);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.1);
 }
 
 .stat-value {
@@ -424,7 +424,7 @@
   width: 100%;
   margin-top: 1rem;
   padding-top: 0.8rem;
-  border-top: 1px solid rgba(255, 232, 244, 0.08);
+  border-top: 1px solid rgba(var(--nk-overlay-rgb), 0.08);
 }
 
 .weak-notes-label {

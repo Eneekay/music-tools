@@ -32,8 +32,8 @@
 
 .builder-chip {
   border-radius: var(--nk-shape-sm);
-  border: 1px solid rgba(255, 232, 244, 0.14);
-  background: rgba(255, 232, 244, 0.05);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.14);
+  background: rgba(var(--nk-overlay-rgb), 0.05);
   color: var(--nk-cream-strong);
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
@@ -45,7 +45,7 @@
 
 .builder-chip:hover, .builder-chip:focus-visible {
   border-color: rgba(var(--nk-c1-rgb), 0.4);
-  background: rgba(255, 232, 244, 0.1);
+  background: rgba(var(--nk-overlay-rgb), 0.1);
 }
 
 .builder-chip.is-active {
@@ -181,8 +181,8 @@
   align-items: center;
   gap: 0.3rem;
   border-radius: var(--nk-shape-lg);
-  border: 1px solid rgba(255, 232, 244, 0.16);
-  background: rgba(255, 232, 244, 0.06);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.16);
+  background: rgba(var(--nk-overlay-rgb), 0.06);
   padding: 0.6rem 1rem;
   cursor: pointer;
   min-width: 74px;
@@ -191,7 +191,7 @@
 
 .chord-chip:hover, .chord-chip:focus-visible {
   border-color: rgba(var(--nk-c1-rgb), 0.4);
-  background: rgba(255, 232, 244, 0.12);
+  background: rgba(var(--nk-overlay-rgb), 0.12);
 }
 
 .chord-chip.is-playing {
@@ -260,8 +260,8 @@
   justify-content: space-between;
   gap: 0.8rem;
   border-radius: var(--nk-shape-md);
-  border: 1px solid rgba(255, 232, 244, 0.12);
-  background: rgba(255, 232, 244, 0.05);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.12);
+  background: rgba(var(--nk-overlay-rgb), 0.05);
   padding: 0.55rem 0.9rem;
   cursor: pointer;
   text-align: left;
@@ -270,7 +270,7 @@
 
 .history-item:hover, .history-item:focus-visible {
   border-color: rgba(var(--nk-c1-rgb), 0.4);
-  background: rgba(255, 232, 244, 0.1);
+  background: rgba(var(--nk-overlay-rgb), 0.1);
 }
 
 .history-item-key {

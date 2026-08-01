@@ -31,7 +31,7 @@
   bottom: 14px;
   width: 2px;
   height: 14px;
-  background: rgba(255, 232, 244, 0.22);
+  background: rgba(var(--nk-overlay-rgb), 0.22);
   border-radius: var(--nk-shape-xs);
   transform-origin: bottom center;
   transform: translateX(-50%) rotate(var(--tick-angle)) translateY(-142px);
@@ -76,7 +76,7 @@
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: var(--nk-c4);
+  background: var(--nk-fixed-light);
   transform: translateX(-50%);
 }
 
@@ -172,8 +172,8 @@
   width: 13px;
   height: 13px;
   border-radius: 50%;
-  background: rgba(255, 232, 244, 0.14);
-  border: 1px solid rgba(255, 232, 244, 0.2);
+  background: rgba(var(--nk-overlay-rgb), 0.14);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.2);
   transition: background-color 0.1s ease, box-shadow 0.1s ease, transform 0.15s var(--nk-easing-spring), border-radius 0.15s var(--nk-easing-spring);
 }
 
@@ -233,8 +233,8 @@
 
 .rhythm-preset {
   border-radius: var(--nk-shape-sm);
-  border: 1px solid rgba(255, 232, 244, 0.14);
-  background: rgba(255, 232, 244, 0.05);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.14);
+  background: rgba(var(--nk-overlay-rgb), 0.05);
   color: var(--nk-cream-strong);
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
@@ -246,7 +246,7 @@
 
 .rhythm-preset:hover, .rhythm-preset:focus-visible {
   border-color: rgba(var(--nk-c1-rgb), 0.4);
-  background: rgba(255, 232, 244, 0.1);
+  background: rgba(var(--nk-overlay-rgb), 0.1);
 }
 
 .rhythm-preset.is-active {
@@ -281,8 +281,8 @@
 .rhythm-field input[type="number"],
 .rhythm-field select {
   width: 62px;
-  background: rgba(255, 232, 244, 0.08);
-  border: 1px solid rgba(255, 232, 244, 0.18);
+  background: rgba(var(--nk-overlay-rgb), 0.08);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.18);
   border-radius: var(--nk-shape-sm);
   padding: 0.4rem 0.3rem;
   color: var(--nk-c4);
@@ -318,8 +318,8 @@
 
 .bars-input {
   width: 60px;
-  background: rgba(255, 232, 244, 0.08);
-  border: 1px solid rgba(255, 232, 244, 0.18);
+  background: rgba(var(--nk-overlay-rgb), 0.08);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.18);
   border-radius: var(--nk-shape-sm);
   padding: 0.35rem 0.3rem;
   color: var(--nk-c4);
@@ -348,8 +348,8 @@
 
 .poly-ratio input {
   width: 54px;
-  background: rgba(255, 232, 244, 0.08);
-  border: 1px solid rgba(255, 232, 244, 0.18);
+  background: rgba(var(--nk-overlay-rgb), 0.08);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.18);
   border-radius: var(--nk-shape-sm);
   padding: 0.4rem 0.3rem;
   color: var(--nk-c4);
@@ -400,8 +400,8 @@
   flex: 1 1 0;
   height: 16px;
   border-radius: var(--nk-shape-xs);
-  background: rgba(255, 232, 244, 0.1);
-  border: 1px solid rgba(255, 232, 244, 0.16);
+  background: rgba(var(--nk-overlay-rgb), 0.1);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.16);
   transition: background-color 0.08s ease, box-shadow 0.08s ease;
 }
 
@@ -430,8 +430,8 @@
   justify-content: space-between;
   gap: 0.4rem;
   border-radius: var(--nk-shape-md);
-  border: 1px solid rgba(255, 232, 244, 0.14);
-  background: rgba(255, 232, 244, 0.05);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.14);
+  background: rgba(var(--nk-overlay-rgb), 0.05);
   color: var(--nk-cream-strong);
   padding: 0.5rem 0.6rem;
   cursor: pointer;
@@ -442,7 +442,7 @@
 
 .sound-swatch:hover, .sound-swatch:focus-visible {
   border-color: rgba(var(--nk-c1-rgb), 0.4);
-  background: rgba(255, 232, 244, 0.12);
+  background: rgba(var(--nk-overlay-rgb), 0.12);
   color: var(--nk-c1);
 }
 
@@ -455,7 +455,7 @@
   flex-direction: column;
   gap: 0.55rem;
   padding-top: 0.7rem;
-  border-top: 1px solid rgba(255, 232, 244, 0.08);
+  border-top: 1px solid rgba(var(--nk-overlay-rgb), 0.08);
 }
 
 .sound-assign-row {
@@ -483,13 +483,13 @@
 
 .role-dot--accent { background: var(--nk-gold); }
 .role-dot--beat { background: var(--nk-c1); }
-.role-dot--subdivision { background: var(--nk-c3); }
+.role-dot--subdivision { background: var(--nk-cream-strong); }
 .role-dot--polyA { background: var(--nk-c1); }
 .role-dot--polyB { background: var(--nk-gold); }
 
 .sound-assign-row select {
-  background: rgba(255, 232, 244, 0.08);
-  border: 1px solid rgba(255, 232, 244, 0.18);
+  background: rgba(var(--nk-overlay-rgb), 0.08);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.18);
   border-radius: var(--nk-shape-sm);
   padding: 0.3rem 0.5rem;
   color: var(--nk-c4);

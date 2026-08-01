@@ -44,8 +44,8 @@
 
 #bpmInput {
   width: 56px;
-  background: rgba(255, 232, 244, 0.08);
-  border: 1px solid rgba(255, 232, 244, 0.18);
+  background: rgba(var(--nk-overlay-rgb), 0.08);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.18);
   border-radius: var(--nk-shape-sm);
   padding: 0.35rem 0.4rem;
   color: var(--nk-c4);
@@ -89,8 +89,8 @@
   align-items: center;
   gap: 0.25rem;
   border-radius: var(--nk-shape-md);
-  border: 1px solid rgba(255, 232, 244, 0.14);
-  background: rgba(255, 232, 244, 0.05);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.14);
+  background: rgba(var(--nk-overlay-rgb), 0.05);
   padding: 0.6rem 1.1rem;
   cursor: pointer;
   text-align: center;
@@ -99,7 +99,7 @@
 
 .preset-btn:hover, .preset-btn:focus-visible {
   border-color: rgba(var(--nk-c1-rgb), 0.4);
-  background: rgba(255, 232, 244, 0.1);
+  background: rgba(var(--nk-overlay-rgb), 0.1);
 }
 
 .preset-btn.is-active {
@@ -126,8 +126,8 @@
 .chords-widget { align-items: center; text-align: center; }
 
 .layer-select {
-  background: rgba(255, 232, 244, 0.08);
-  border: 1px solid rgba(255, 232, 244, 0.18);
+  background: rgba(var(--nk-overlay-rgb), 0.08);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.18);
   border-radius: var(--nk-shape-sm);
   padding: 0.4rem 0.6rem;
   color: var(--nk-c4);
@@ -186,8 +186,8 @@
 
 .builder-chip {
   border-radius: var(--nk-shape-sm);
-  border: 1px solid rgba(255, 232, 244, 0.14);
-  background: rgba(255, 232, 244, 0.05);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.14);
+  background: rgba(var(--nk-overlay-rgb), 0.05);
   color: var(--nk-cream-strong);
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
@@ -199,7 +199,7 @@
 
 .builder-chip:hover, .builder-chip:focus-visible {
   border-color: rgba(var(--nk-c1-rgb), 0.4);
-  background: rgba(255, 232, 244, 0.1);
+  background: rgba(var(--nk-overlay-rgb), 0.1);
 }
 
 .builder-chip.is-active {
@@ -229,8 +229,8 @@
   align-items: center;
   gap: 0.2rem;
   border-radius: var(--nk-shape-md);
-  border: 1px solid rgba(255, 232, 244, 0.16);
-  background: rgba(255, 232, 244, 0.06);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.16);
+  background: rgba(var(--nk-overlay-rgb), 0.06);
   padding: 0.45rem 0.8rem;
   cursor: pointer;
   min-width: 58px;
@@ -239,7 +239,7 @@
 
 .chord-chip:hover, .chord-chip:focus-visible {
   border-color: rgba(var(--nk-c1-rgb), 0.4);
-  background: rgba(255, 232, 244, 0.12);
+  background: rgba(var(--nk-overlay-rgb), 0.12);
 }
 
 .chord-chip.is-playing {
@@ -266,8 +266,8 @@
 
 .riff-chip {
   border-radius: var(--nk-shape-sm);
-  border: 1px solid rgba(255, 232, 244, 0.16);
-  background: rgba(255, 232, 244, 0.06);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.16);
+  background: rgba(var(--nk-overlay-rgb), 0.06);
   color: var(--nk-c4);
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 700;
@@ -280,7 +280,7 @@
 
 .riff-chip:hover, .riff-chip:focus-visible {
   border-color: rgba(var(--nk-c1-rgb), 0.4);
-  background: rgba(255, 232, 244, 0.12);
+  background: rgba(var(--nk-overlay-rgb), 0.12);
 }
 
 .riff-chip.is-playing {
@@ -305,8 +305,8 @@
 .custom-chords-input {
   width: 100%;
   max-width: 320px;
-  background: rgba(255, 232, 244, 0.08);
-  border: 1px solid rgba(255, 232, 244, 0.18);
+  background: rgba(var(--nk-overlay-rgb), 0.08);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.18);
   border-radius: var(--nk-shape-sm);
   padding: 0.5rem 0.7rem;
   color: var(--nk-c4);
@@ -392,8 +392,8 @@
 
 .section-count-input {
   width: 52px;
-  background: rgba(255, 232, 244, 0.08);
-  border: 1px solid rgba(255, 232, 244, 0.18);
+  background: rgba(var(--nk-overlay-rgb), 0.08);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.18);
   border-radius: var(--nk-shape-sm);
   padding: 0.35rem 0.4rem;
   color: var(--nk-c4);
@@ -420,15 +420,15 @@
   gap: 0.4rem;
   padding: 0.5rem;
   border-radius: var(--nk-shape-md);
-  background: rgba(255, 232, 244, 0.05);
-  border: 1px solid rgba(255, 232, 244, 0.1);
+  background: rgba(var(--nk-overlay-rgb), 0.05);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.1);
 }
 
 .section-name-input {
   flex: 0 0 88px;
   min-width: 0;
-  background: rgba(255, 232, 244, 0.08);
-  border: 1px solid rgba(255, 232, 244, 0.18);
+  background: rgba(var(--nk-overlay-rgb), 0.08);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.18);
   border-radius: var(--nk-shape-sm);
   padding: 0.4rem 0.5rem;
   color: var(--nk-c4);
@@ -441,8 +441,8 @@
 .section-chords-input {
   flex: 1 1 auto;
   min-width: 0;
-  background: rgba(255, 232, 244, 0.08);
-  border: 1px solid rgba(255, 232, 244, 0.18);
+  background: rgba(var(--nk-overlay-rgb), 0.08);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.18);
   border-radius: var(--nk-shape-sm);
   padding: 0.4rem 0.5rem;
   color: var(--nk-c4);
@@ -466,8 +466,8 @@
 
 .section-bars-input {
   width: 44px;
-  background: rgba(255, 232, 244, 0.08);
-  border: 1px solid rgba(255, 232, 244, 0.18);
+  background: rgba(var(--nk-overlay-rgb), 0.08);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.18);
   border-radius: var(--nk-shape-sm);
   padding: 0.4rem 0.3rem;
   color: var(--nk-c4);
@@ -489,8 +489,8 @@
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 232, 244, 0.16);
-  background: rgba(255, 232, 244, 0.06);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.16);
+  background: rgba(var(--nk-overlay-rgb), 0.06);
   color: var(--nk-cream-strong);
   font-size: 0.9rem;
   line-height: 1;
@@ -521,12 +521,12 @@
   min-height: 38px;
 }
 
-.arrangement-strip { margin: 0.8rem 0; padding: 0.6rem; border-radius: var(--nk-shape-md); background: rgba(255, 232, 244, 0.04); border: 1px dashed rgba(255, 232, 244, 0.14); }
+.arrangement-strip { margin: 0.8rem 0; padding: 0.6rem; border-radius: var(--nk-shape-md); background: rgba(var(--nk-overlay-rgb), 0.04); border: 1px dashed rgba(var(--nk-overlay-rgb), 0.14); }
 
 .arrangement-chip {
   border-radius: var(--nk-shape-sm);
-  border: 1px solid rgba(255, 232, 244, 0.16);
-  background: rgba(255, 232, 244, 0.06);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.16);
+  background: rgba(var(--nk-overlay-rgb), 0.06);
   color: var(--nk-cream-strong);
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
@@ -538,7 +538,7 @@
 
 .arrangement-chip:hover, .arrangement-chip:focus-visible {
   border-color: rgba(var(--nk-c1-rgb), 0.4);
-  background: rgba(255, 232, 244, 0.12);
+  background: rgba(var(--nk-overlay-rgb), 0.12);
 }
 
 .arrangement-chip--placed {

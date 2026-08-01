@@ -74,8 +74,8 @@
   text-transform: uppercase;
   letter-spacing: 0.03em;
   color: var(--nk-cream);
-  background: rgba(255, 232, 244, 0.07);
-  border: 1px solid rgba(255, 232, 244, 0.12);
+  background: rgba(var(--nk-overlay-rgb), 0.07);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.12);
 }
 
 .card-tag--all {

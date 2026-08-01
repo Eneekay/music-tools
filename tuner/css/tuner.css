@@ -51,8 +51,8 @@
 
 .instrument-tab {
   border-radius: var(--nk-shape-sm);
-  border: 1px solid rgba(255, 232, 244, 0.14);
-  background: rgba(255, 232, 244, 0.05);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.14);
+  background: rgba(var(--nk-overlay-rgb), 0.05);
   color: var(--nk-cream-strong);
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
@@ -64,7 +64,7 @@
 
 .instrument-tab:hover, .instrument-tab:focus-visible {
   border-color: rgba(var(--nk-c1-rgb), 0.4);
-  background: rgba(255, 232, 244, 0.1);
+  background: rgba(var(--nk-overlay-rgb), 0.1);
 }
 
 .instrument-tab.is-active {
@@ -95,18 +95,18 @@
 .instrument-art.is-active { display: block; }
 
 .instrument-body {
-  fill: rgba(255, 232, 244, 0.05);
-  stroke: rgba(255, 232, 244, 0.22);
+  fill: rgba(var(--nk-overlay-rgb), 0.05);
+  stroke: rgba(var(--nk-overlay-rgb), 0.22);
   stroke-width: 1.5;
 }
 
 .instrument-neck-edge {
-  stroke: rgba(255, 232, 244, 0.14);
+  stroke: rgba(var(--nk-overlay-rgb), 0.14);
   stroke-width: 1;
 }
 
 .instrument-nut, .instrument-bridge {
-  stroke: rgba(255, 232, 244, 0.3);
+  stroke: rgba(var(--nk-overlay-rgb), 0.3);
   stroke-width: 2;
   stroke-linecap: round;
 }
@@ -151,8 +151,8 @@
 
 .string-pill {
   border-radius: var(--nk-shape-full);
-  border: 1px solid rgba(255, 232, 244, 0.16);
-  background: rgba(255, 232, 244, 0.06);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.16);
+  background: rgba(var(--nk-overlay-rgb), 0.06);
   color: var(--nk-cream-strong);
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
@@ -164,7 +164,7 @@
 
 .string-pill:hover, .string-pill:focus-visible {
   border-color: rgba(var(--nk-c1-rgb), 0.4);
-  background: rgba(255, 232, 244, 0.12);
+  background: rgba(var(--nk-overlay-rgb), 0.12);
 }
 
 .string-pill:active { transform: scale(0.95); }
@@ -195,8 +195,8 @@
 }
 
 .tuning-select {
-  background: rgba(255, 232, 244, 0.08);
-  border: 1px solid rgba(255, 232, 244, 0.18);
+  background: rgba(var(--nk-overlay-rgb), 0.08);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.18);
   border-radius: var(--nk-shape-sm);
   padding: 0.4rem 0.6rem;
   color: var(--nk-c4);
@@ -226,7 +226,7 @@
   bottom: 4px;
   width: 2px;
   height: 12px;
-  background: rgba(255, 232, 244, 0.22);
+  background: rgba(var(--nk-overlay-rgb), 0.22);
   border-radius: var(--nk-shape-xs);
   transform-origin: bottom center;
   transform: translateX(-50%) rotate(var(--tick-angle)) translateY(-84px);
@@ -265,7 +265,7 @@
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: var(--nk-c4);
+  background: var(--nk-fixed-light);
   transform: translateX(-50%);
 }
 
@@ -342,8 +342,8 @@
 
 .calib-value input {
   width: 4.5ch;
-  background: rgba(255, 232, 244, 0.08);
-  border: 1px solid rgba(255, 232, 244, 0.18);
+  background: rgba(var(--nk-overlay-rgb), 0.08);
+  border: 1px solid rgba(var(--nk-overlay-rgb), 0.18);
   border-radius: var(--nk-shape-sm);
   padding: 0.25rem 0.4rem;
   color: var(--nk-c4);
