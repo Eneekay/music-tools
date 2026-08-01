@@ -36,7 +36,7 @@
   <section class="widget transport-widget glass">
     <span class="widget-eyebrow">Transport</span>
     <div class="transport-row">
-      <button type="button" class="transport-play-btn" id="playBtn">
+      <button type="button" class="transport-play-btn btn-filled btn-lg" id="playBtn">
         <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5z"></path></svg>
         <svg class="icon-stop" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="1.5"></rect></svg>
         <span id="playBtnLabel">Play</span>
@@ -59,10 +59,10 @@
       <div class="control-group control-group--bpm">
         <span class="seg-label">Tempo</span>
         <div class="bpm-control">
-          <button type="button" class="bpm-step" id="bpmDown" aria-label="Decrease tempo">&minus;</button>
+          <button type="button" class="bpm-step btn-outlined btn-icon" id="bpmDown" aria-label="Decrease tempo">&minus;</button>
           <input type="number" id="bpmInput" min="40" max="220" value="124" inputmode="numeric">
           <span class="bpm-unit">BPM</span>
-          <button type="button" class="bpm-step" id="bpmUp" aria-label="Increase tempo">+</button>
+          <button type="button" class="bpm-step btn-outlined btn-icon" id="bpmUp" aria-label="Increase tempo">+</button>
         </div>
         <input type="range" id="bpmSlider" min="40" max="220" value="124" class="bpm-slider">
       </div>
@@ -75,8 +75,8 @@
       <div class="control-group">
         <span class="seg-label">Pattern</span>
         <div class="action-btns">
-          <button type="button" class="ghost-btn" id="randomizeBtn">Randomize</button>
-          <button type="button" class="ghost-btn" id="clearBtn">Clear</button>
+          <button type="button" class="ghost-btn btn-outlined btn-sm" id="randomizeBtn">Randomize</button>
+          <button type="button" class="ghost-btn btn-outlined btn-sm" id="clearBtn">Clear</button>
         </div>
       </div>
     </div>

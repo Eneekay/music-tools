@@ -85,7 +85,7 @@
     <div class="prompt-stage">
       <div class="prompt-note" id="promptNote">&ndash;</div>
       <p class="prompt-status" id="promptStatus">Press Start to begin a session.</p>
-      <button type="button" class="trainer-session-btn" id="sessionBtn">
+      <button type="button" class="trainer-session-btn btn-filled btn-lg" id="sessionBtn">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5z"></path></svg>
         <span id="sessionBtnLabel">Start Session</span>
       </button>
@@ -104,18 +104,18 @@
         <span class="widget-eyebrow">Metronome</span>
 
         <div class="mini-metro-transport">
-          <button type="button" class="mini-metro-play" id="metroPlayBtn" aria-label="Start metronome" aria-pressed="false">
+          <button type="button" class="mini-metro-play btn-tonal btn-icon" id="metroPlayBtn" aria-label="Start metronome" aria-pressed="false">
             <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5z"></path></svg>
             <svg class="icon-stop" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"></rect></svg>
           </button>
           <div class="mini-bpm-block">
             <div class="mini-bpm-row">
-              <button type="button" class="mini-bpm-step" id="metroBpmDown" aria-label="Decrease tempo">&ndash;</button>
+              <button type="button" class="mini-bpm-step btn-outlined btn-icon" id="metroBpmDown" aria-label="Decrease tempo">&ndash;</button>
               <div class="mini-bpm-readout">
                 <input type="number" id="metroBpmInput" class="mini-bpm-input" min="30" max="260" step="1" value="90" inputmode="numeric" aria-label="Beats per minute">
                 <span class="mini-bpm-unit">BPM</span>
               </div>
-              <button type="button" class="mini-bpm-step" id="metroBpmUp" aria-label="Increase tempo">+</button>
+              <button type="button" class="mini-bpm-step btn-outlined btn-icon" id="metroBpmUp" aria-label="Increase tempo">+</button>
             </div>
             <input type="range" id="metroBpmSlider" class="mini-bpm-slider" min="30" max="260" step="1" value="90" aria-label="Tempo slider">
           </div>
@@ -213,7 +213,7 @@
           <div class="weak-notes-list" id="weakNotesList">&mdash;</div>
         </div>
 
-        <button type="button" class="stats-reset-btn" id="resetStatsBtn">Reset Stats</button>
+        <button type="button" class="stats-reset-btn btn-outlined btn-sm" id="resetStatsBtn">Reset Stats</button>
       </section>
     </div>
 

@@ -34,7 +34,7 @@
   <section class="widget transport-widget glass">
     <span class="widget-eyebrow">Transport</span>
     <div class="transport-row">
-      <button type="button" class="transport-play-btn" id="playBtn">
+      <button type="button" class="transport-play-btn btn-filled btn-lg" id="playBtn">
         <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5z"></path></svg>
         <svg class="icon-stop" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="1.5"></rect></svg>
         <span id="playBtnLabel">Play Backing Track</span>
@@ -43,10 +43,10 @@
       <div class="control-group control-group--bpm">
         <span class="seg-label">Tempo</span>
         <div class="bpm-control">
-          <button type="button" class="bpm-step" id="bpmDown" aria-label="Decrease tempo">&minus;</button>
+          <button type="button" class="bpm-step btn-outlined btn-icon" id="bpmDown" aria-label="Decrease tempo">&minus;</button>
           <input type="number" id="bpmInput" min="40" max="220" value="124" inputmode="numeric">
           <span class="bpm-unit">BPM</span>
-          <button type="button" class="bpm-step" id="bpmUp" aria-label="Increase tempo">+</button>
+          <button type="button" class="bpm-step btn-outlined btn-icon" id="bpmUp" aria-label="Increase tempo">+</button>
         </div>
         <input type="range" id="bpmSlider" min="40" max="220" value="124" class="bpm-slider">
       </div>
@@ -79,7 +79,7 @@
           <select class="layer-select" id="kitSelect"></select>
         </div>
 
-        <button type="button" class="ghost-btn" id="shuffleDrumBtn">Shuffle Drum Pattern</button>
+        <button type="button" class="ghost-btn btn-outlined btn-sm" id="shuffleDrumBtn">Shuffle Drum Pattern</button>
 
         <h3 class="layer-name" id="drumName">&mdash;</h3>
         <p class="layer-desc" id="drumDesc"></p>
@@ -121,7 +121,7 @@
             <select class="layer-select" id="progressionSelect"></select>
           </div>
 
-          <button type="button" class="ghost-btn" id="shuffleProgressionBtn">Shuffle Progression</button>
+          <button type="button" class="ghost-btn btn-outlined btn-sm" id="shuffleProgressionBtn">Shuffle Progression</button>
 
           <h3 class="layer-name" id="progressionName">&mdash;</h3>
           <p class="layer-desc" id="progressionDesc"></p>
@@ -182,7 +182,7 @@
 
         <div class="arrangement-strip" id="arrangementStrip"></div>
         <p class="arrangement-hint">Drag to reorder, or click a chip in the song to remove it.</p>
-        <button type="button" class="ghost-btn" id="clearArrangementBtn">Clear Arrangement</button>
+        <button type="button" class="ghost-btn btn-outlined btn-sm" id="clearArrangementBtn">Clear Arrangement</button>
 
         <p class="structure-summary" id="structureSummary"></p>
       </div>
@@ -220,8 +220,8 @@
       <div class="control-group">
         <span class="seg-label">Actions</span>
         <div class="action-btns">
-          <button type="button" class="ghost-btn" id="newRiffBtn">New Riff</button>
-          <button type="button" class="ghost-btn" id="previewRiffBtn">Preview Alone</button>
+          <button type="button" class="ghost-btn btn-outlined btn-sm" id="newRiffBtn">New Riff</button>
+          <button type="button" class="ghost-btn btn-outlined btn-sm" id="previewRiffBtn">Preview Alone</button>
         </div>
       </div>
     </div>

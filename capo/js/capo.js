@@ -636,7 +636,7 @@
 
     var playBtn = document.createElement('button');
     playBtn.type = 'button';
-    playBtn.className = 'result-play-btn';
+    playBtn.className = 'result-play-btn btn-tonal btn-sm';
     playBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5z"></path></svg><span>Play</span>';
     playBtn.addEventListener('click', function () { playResult(opts.fingering.fretPattern, opts.openMidis, opts.capoFret); });
     card.appendChild(playBtn);

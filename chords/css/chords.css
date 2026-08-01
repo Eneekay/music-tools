@@ -32,7 +32,7 @@
 }
 
 .instrument-tab {
-  border-radius: 10px;
+  border-radius: var(--nk-shape-sm);
   border: 1px solid rgba(255, 232, 244, 0.14);
   background: rgba(255, 232, 244, 0.05);
   color: var(--nk-cream-strong);
@@ -52,13 +52,13 @@
 .instrument-tab.is-active {
   background: var(--nk-c2);
   border-color: var(--nk-c2);
-  color: #fff;
+  color: var(--nk-on-accent);
 }
 
 .tuning-select {
   background: rgba(255, 232, 244, 0.08);
   border: 1px solid rgba(255, 232, 244, 0.18);
-  border-radius: 10px;
+  border-radius: var(--nk-shape-sm);
   padding: 0.4rem 0.6rem;
   color: var(--nk-c4);
   font-family: 'Space Grotesk', sans-serif;
@@ -82,7 +82,7 @@
   width: min(100%, 320px);
   background: rgba(255, 232, 244, 0.06);
   border: 1px solid rgba(255, 232, 244, 0.18);
-  border-radius: 16px;
+  border-radius: var(--nk-shape-lg);
   padding: 0.7rem 1.1rem;
   color: var(--nk-c4);
   font-family: 'Space Grotesk', sans-serif;
@@ -117,7 +117,7 @@
 }
 
 .quick-pick-btn {
-  border-radius: 999px;
+  border-radius: var(--nk-shape-full);
   border: 1px solid rgba(255, 232, 244, 0.16);
   background: rgba(255, 232, 244, 0.06);
   color: var(--nk-cream-strong);
@@ -137,7 +137,7 @@
 .quick-pick-btn.is-active {
   background: var(--nk-c2);
   border-color: var(--nk-c2);
-  color: #fff;
+  color: var(--nk-on-accent);
 }
 
 /* ---------- parsed chord info / error ---------- */
@@ -199,7 +199,7 @@
 }
 
 .builder-chip {
-  border-radius: 10px;
+  border-radius: var(--nk-shape-sm);
   border: 1px solid rgba(255, 232, 244, 0.14);
   background: rgba(255, 232, 244, 0.05);
   color: var(--nk-cream-strong);
@@ -219,7 +219,7 @@
 .builder-chip.is-active {
   background: var(--nk-c2);
   border-color: var(--nk-c2);
-  color: #fff;
+  color: var(--nk-on-accent);
 }
 
 /* ---------- diagrams widget ---------- */
@@ -240,7 +240,7 @@
   align-items: center;
   gap: 0.7rem;
   padding: 1rem 1.1rem 1.2rem;
-  border-radius: 16px;
+  border-radius: var(--nk-shape-lg);
   background: rgba(255, 232, 244, 0.05);
   border: 1px solid rgba(255, 232, 244, 0.1);
   width: 220px;
@@ -325,26 +325,7 @@
   min-height: 1.2em;
 }
 
-.diagram-play-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  border-radius: 999px;
-  border: none;
-  background: var(--nk-c2);
-  color: var(--nk-on-accent);
-  font-weight: 600;
-  font-size: 0.74rem;
-  padding: 0.45rem 1rem;
-  cursor: pointer;
-  box-shadow: var(--nk-elevation-1);
-  transition: background-color 0.2s ease, transform 0.15s ease;
-}
-
 .diagram-play-btn svg { width: 13px; height: 13px; }
-
-.diagram-play-btn:hover { background: var(--nk-c2h); transform: translateY(-1px); box-shadow: var(--nk-elevation-4); }
-.diagram-play-btn:active { transform: translateY(0) scale(0.96); }
 
 .diagram-empty {
   color: var(--nk-cream);

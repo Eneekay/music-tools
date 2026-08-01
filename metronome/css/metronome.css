@@ -32,7 +32,7 @@
   width: 2px;
   height: 14px;
   background: rgba(255, 232, 244, 0.22);
-  border-radius: 2px;
+  border-radius: var(--nk-shape-xs);
   transform-origin: bottom center;
   transform: translateX(-50%) rotate(var(--tick-angle)) translateY(-142px);
 }
@@ -49,10 +49,10 @@
   width: 4px;
   height: 168px;
   background: var(--nk-c1);
-  border-radius: 3px;
+  border-radius: var(--nk-shape-xs);
   transform-origin: bottom center;
   transform: translateX(-50%) rotate(0deg);
-  transition: transform 0.4s cubic-bezier(0.34, 1.2, 0.4, 1);
+  transition: transform 0.4s var(--nk-easing-spring-soft);
 }
 
 .metro-needle.is-live { transition: none; }
@@ -87,26 +87,10 @@
   margin-top: 0.3rem;
 }
 
-.metro-play {
-  width: 62px;
-  height: 62px;
-  border-radius: 50%;
-  border: none;
-  background: var(--nk-c2);
-  color: var(--nk-on-accent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: var(--nk-elevation-1);
-  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
-}
+.metro-play.btn-icon { width: 62px; height: 62px; }
 
 .metro-play svg { width: 26px; height: 26px; }
 .metro-play .icon-stop { display: none; }
-
-.metro-play:hover { background: var(--nk-c2h); transform: translateY(-2px); box-shadow: var(--nk-elevation-4); }
-.metro-play:active { transform: translateY(0) scale(0.96); }
 
 .metro-play.is-playing {
   background: var(--nk-gold);
@@ -116,24 +100,7 @@
 .metro-play.is-playing .icon-play { display: none; }
 .metro-play.is-playing .icon-stop { display: block; }
 
-.metro-tap {
-  border-radius: 999px;
-  border: 1px solid rgba(255, 232, 244, 0.16);
-  background: rgba(255, 232, 244, 0.06);
-  color: var(--nk-cream-strong);
-  font-weight: 600;
-  font-size: 0.78rem;
-  letter-spacing: 0.03em;
-  padding: 0.6rem 1.2rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-}
-
-.metro-tap:hover, .metro-tap:focus-visible {
-  color: var(--nk-c1);
-  border-color: rgba(var(--nk-c1-rgb), 0.4);
-  background: rgba(255, 232, 244, 0.12);
-}
+.metro-tap { letter-spacing: 0.03em; }
 
 .metro-tap.is-tapped { color: var(--nk-c1); border-color: rgba(var(--nk-c1-rgb), 0.5); }
 
@@ -146,24 +113,7 @@
   gap: 0.8rem;
 }
 
-.bpm-step {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 232, 244, 0.16);
-  background: rgba(255, 232, 244, 0.06);
-  color: var(--nk-c4);
-  font-size: 1.1rem;
-  line-height: 1;
-  cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-}
-
-.bpm-step:hover, .bpm-step:focus-visible {
-  color: var(--nk-c1);
-  border-color: rgba(var(--nk-c1-rgb), 0.4);
-  background: rgba(255, 232, 244, 0.12);
-}
+.bpm-step.btn-icon { width: 34px; height: 34px; font-size: 1.1rem; line-height: 1; }
 
 .bpm-readout {
   display: flex;
@@ -224,14 +174,18 @@
   border-radius: 50%;
   background: rgba(255, 232, 244, 0.14);
   border: 1px solid rgba(255, 232, 244, 0.2);
-  transition: background-color 0.1s ease, box-shadow 0.1s ease, transform 0.1s ease;
+  transition: background-color 0.1s ease, box-shadow 0.1s ease, transform 0.15s var(--nk-easing-spring), border-radius 0.15s var(--nk-easing-spring);
 }
 
 .beat-dot.is-accent-slot { border-color: rgba(var(--nk-gold-rgb), 0.45); }
 
+/* The beat dot is the page's "now playing" indicator — it briefly
+   becomes a soft rounded square instead of a plain circle on each hit,
+   so the beat reads as a shape pulse, not just a color pulse. */
 .beat-dot.is-active {
   background: var(--nk-c1);
   box-shadow: 0 0 4px rgba(var(--nk-c1-rgb), 0.6);
+  border-radius: var(--nk-shape-xs);
   transform: scale(1.15);
 }
 
@@ -278,7 +232,7 @@
 }
 
 .rhythm-preset {
-  border-radius: 10px;
+  border-radius: var(--nk-shape-sm);
   border: 1px solid rgba(255, 232, 244, 0.14);
   background: rgba(255, 232, 244, 0.05);
   color: var(--nk-cream-strong);
@@ -298,7 +252,7 @@
 .rhythm-preset.is-active {
   background: var(--nk-c2);
   border-color: var(--nk-c2);
-  color: #fff;
+  color: var(--nk-on-accent);
 }
 
 .rhythm-custom {
@@ -329,7 +283,7 @@
   width: 62px;
   background: rgba(255, 232, 244, 0.08);
   border: 1px solid rgba(255, 232, 244, 0.18);
-  border-radius: 10px;
+  border-radius: var(--nk-shape-sm);
   padding: 0.4rem 0.3rem;
   color: var(--nk-c4);
   font-family: 'Space Grotesk', sans-serif;
@@ -366,7 +320,7 @@
   width: 60px;
   background: rgba(255, 232, 244, 0.08);
   border: 1px solid rgba(255, 232, 244, 0.18);
-  border-radius: 10px;
+  border-radius: var(--nk-shape-sm);
   padding: 0.35rem 0.3rem;
   color: var(--nk-c4);
   font-family: 'Space Grotesk', sans-serif;
@@ -396,7 +350,7 @@
   width: 54px;
   background: rgba(255, 232, 244, 0.08);
   border: 1px solid rgba(255, 232, 244, 0.18);
-  border-radius: 10px;
+  border-radius: var(--nk-shape-sm);
   padding: 0.4rem 0.3rem;
   color: var(--nk-c4);
   font-family: 'Space Grotesk', sans-serif;
@@ -445,7 +399,7 @@
 .poly-dot {
   flex: 1 1 0;
   height: 16px;
-  border-radius: 5px;
+  border-radius: var(--nk-shape-xs);
   background: rgba(255, 232, 244, 0.1);
   border: 1px solid rgba(255, 232, 244, 0.16);
   transition: background-color 0.08s ease, box-shadow 0.08s ease;
@@ -475,7 +429,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.4rem;
-  border-radius: 12px;
+  border-radius: var(--nk-shape-md);
   border: 1px solid rgba(255, 232, 244, 0.14);
   background: rgba(255, 232, 244, 0.05);
   color: var(--nk-cream-strong);
@@ -536,7 +490,7 @@
 .sound-assign-row select {
   background: rgba(255, 232, 244, 0.08);
   border: 1px solid rgba(255, 232, 244, 0.18);
-  border-radius: 8px;
+  border-radius: var(--nk-shape-sm);
   padding: 0.3rem 0.5rem;
   color: var(--nk-c4);
   font-size: 0.72rem;

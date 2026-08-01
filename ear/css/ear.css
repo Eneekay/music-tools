@@ -32,7 +32,7 @@
 }
 
 .instrument-tab {
-  border-radius: 10px;
+  border-radius: var(--nk-shape-sm);
   border: 1px solid rgba(255, 232, 244, 0.14);
   background: rgba(255, 232, 244, 0.05);
   color: var(--nk-cream-strong);
@@ -52,7 +52,7 @@
 .instrument-tab.is-active {
   background: var(--nk-c2);
   border-color: var(--nk-c2);
-  color: #fff;
+  color: var(--nk-on-accent);
 }
 
 /* ---------- mode widget ---------- */
@@ -82,7 +82,7 @@
 .root-picker button {
   width: 32px;
   height: 32px;
-  border-radius: 8px;
+  border-radius: var(--nk-shape-sm);
   border: 1px solid rgba(255, 232, 244, 0.16);
   background: rgba(255, 232, 244, 0.06);
   color: var(--nk-cream-strong);
@@ -107,7 +107,7 @@
 .scale-select {
   background: rgba(255, 232, 244, 0.08);
   border: 1px solid rgba(255, 232, 244, 0.18);
-  border-radius: 10px;
+  border-radius: var(--nk-shape-sm);
   padding: 0.4rem 0.6rem;
   color: var(--nk-c4);
   font-family: 'Space Grotesk', sans-serif;
@@ -155,26 +155,7 @@
 .prompt-status.is-correct { color: var(--nk-green); }
 .prompt-status.is-wrong { color: var(--nk-gold); }
 
-.ear-play-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  border-radius: 999px;
-  border: none;
-  background: var(--nk-c2);
-  color: var(--nk-on-accent);
-  font-weight: 600;
-  font-size: 0.85rem;
-  padding: 0.65rem 1.5rem;
-  cursor: pointer;
-  box-shadow: var(--nk-elevation-1);
-  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
-}
-
 .ear-play-btn svg { width: 17px; height: 17px; }
-
-.ear-play-btn:hover { background: var(--nk-c2h); transform: translateY(-2px); box-shadow: var(--nk-elevation-4); }
-.ear-play-btn:active { transform: translateY(0) scale(0.97); }
 
 /* ---------- answer grid ---------- */
 
@@ -189,7 +170,7 @@
 }
 
 .answer-btn {
-  border-radius: 12px;
+  border-radius: var(--nk-shape-md);
   border: 1px solid rgba(255, 232, 244, 0.16);
   background: rgba(255, 232, 244, 0.06);
   color: var(--nk-cream-strong);
@@ -198,7 +179,7 @@
   font-size: 0.78rem;
   padding: 0.55rem 0.9rem;
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.3s var(--nk-easing-spring);
 }
 
 .answer-btn:hover:not(:disabled), .answer-btn:focus-visible:not(:disabled) {
@@ -208,8 +189,8 @@
 
 .answer-btn:disabled { cursor: default; opacity: 0.55; }
 
-.answer-btn.is-correct { background: var(--nk-green); border-color: var(--nk-green); color: var(--nk-c0); opacity: 1; }
-.answer-btn.is-wrong { background: var(--nk-gold); border-color: var(--nk-gold); color: var(--nk-c0); opacity: 1; }
+.answer-btn.is-correct { background: var(--nk-green); border-color: var(--nk-green); color: var(--nk-c0); opacity: 1; transform: scale(1.05); }
+.answer-btn.is-wrong { background: var(--nk-gold); border-color: var(--nk-gold); color: var(--nk-c0); opacity: 1; transform: scale(1.05); }
 .answer-btn.is-reveal { border-color: var(--nk-green); color: var(--nk-green); opacity: 1; }
 
 /* ---------- piano feedback ---------- */
@@ -256,7 +237,7 @@
   align-items: center;
   gap: 0.2rem;
   padding: 0.6rem 0.4rem;
-  border-radius: 12px;
+  border-radius: var(--nk-shape-md);
   background: rgba(255, 232, 244, 0.05);
   border: 1px solid rgba(255, 232, 244, 0.1);
 }
@@ -308,21 +289,4 @@
   min-height: 1.3em;
 }
 
-.stats-reset-btn {
-  margin-top: 1.1rem;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 232, 244, 0.16);
-  background: rgba(255, 232, 244, 0.06);
-  color: var(--nk-cream-strong);
-  font-size: 0.72rem;
-  font-weight: 600;
-  padding: 0.45rem 1rem;
-  cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-}
-
-.stats-reset-btn:hover, .stats-reset-btn:focus-visible {
-  color: var(--nk-c1);
-  border-color: rgba(var(--nk-c1-rgb), 0.4);
-  background: rgba(255, 232, 244, 0.12);
-}
+.stats-reset-btn { margin-top: 1.1rem; }

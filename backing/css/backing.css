@@ -22,28 +22,10 @@
   gap: 0.4rem;
 }
 
-.transport-play-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  border-radius: 999px;
-  border: none;
-  background: var(--nk-green);
-  color: var(--nk-c0);
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 700;
-  font-size: 0.9rem;
-  padding: 0.7rem 1.6rem;
-  cursor: pointer;
-  box-shadow: var(--nk-elevation-1);
-  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
-}
+.transport-play-btn { font-family: 'Space Grotesk', sans-serif; }
 
 .transport-play-btn svg { width: 18px; height: 18px; }
 .transport-play-btn .icon-stop { display: none; }
-
-.transport-play-btn:hover { transform: translateY(-2px); box-shadow: var(--nk-elevation-4); }
-.transport-play-btn:active { transform: translateY(0) scale(0.97); }
 
 .transport-play-btn.is-playing {
   background: var(--nk-gold);
@@ -58,29 +40,13 @@
   gap: 0.5rem;
 }
 
-.bpm-step {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 232, 244, 0.18);
-  background: rgba(255, 232, 244, 0.06);
-  color: var(--nk-cream-strong);
-  font-size: 1rem;
-  line-height: 1;
-  cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
-}
-
-.bpm-step:hover, .bpm-step:focus-visible {
-  border-color: rgba(var(--nk-c1-rgb), 0.4);
-  background: rgba(255, 232, 244, 0.12);
-}
+.bpm-step.btn-icon { width: 28px; height: 28px; font-size: 1rem; line-height: 1; }
 
 #bpmInput {
   width: 56px;
   background: rgba(255, 232, 244, 0.08);
   border: 1px solid rgba(255, 232, 244, 0.18);
-  border-radius: 10px;
+  border-radius: var(--nk-shape-sm);
   padding: 0.35rem 0.4rem;
   color: var(--nk-c4);
   font-family: 'Space Grotesk', sans-serif;
@@ -122,7 +88,7 @@
   flex-direction: column;
   align-items: center;
   gap: 0.25rem;
-  border-radius: 12px;
+  border-radius: var(--nk-shape-md);
   border: 1px solid rgba(255, 232, 244, 0.14);
   background: rgba(255, 232, 244, 0.05);
   padding: 0.6rem 1.1rem;
@@ -162,7 +128,7 @@
 .layer-select {
   background: rgba(255, 232, 244, 0.08);
   border: 1px solid rgba(255, 232, 244, 0.18);
-  border-radius: 10px;
+  border-radius: var(--nk-shape-sm);
   padding: 0.4rem 0.6rem;
   color: var(--nk-c4);
   font-family: 'Space Grotesk', sans-serif;
@@ -175,24 +141,7 @@
 
 .layer-select:focus { border-color: var(--nk-c1); box-shadow: 0 0 0 3px rgba(var(--nk-c1-rgb), 0.15); }
 
-.ghost-btn {
-  margin-top: 0.6rem;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 232, 244, 0.16);
-  background: rgba(255, 232, 244, 0.06);
-  color: var(--nk-cream-strong);
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 600;
-  font-size: 0.76rem;
-  padding: 0.45rem 0.9rem;
-  cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-}
-
-.ghost-btn:hover, .ghost-btn:focus-visible {
-  border-color: rgba(var(--nk-c1-rgb), 0.4);
-  background: rgba(255, 232, 244, 0.12);
-}
+.ghost-btn { margin-top: 0.6rem; font-family: 'Space Grotesk', sans-serif; }
 
 .layer-name {
   margin: 1rem 0 0.3rem;
@@ -236,7 +185,7 @@
 }
 
 .builder-chip {
-  border-radius: 10px;
+  border-radius: var(--nk-shape-sm);
   border: 1px solid rgba(255, 232, 244, 0.14);
   background: rgba(255, 232, 244, 0.05);
   color: var(--nk-cream-strong);
@@ -256,7 +205,7 @@
 .builder-chip.is-active {
   background: var(--nk-c2);
   border-color: var(--nk-c2);
-  color: #fff;
+  color: var(--nk-on-accent);
 }
 
 .chords-widget .control-group { margin-top: 0.8rem; }
@@ -279,7 +228,7 @@
   flex-direction: column;
   align-items: center;
   gap: 0.2rem;
-  border-radius: 12px;
+  border-radius: var(--nk-shape-md);
   border: 1px solid rgba(255, 232, 244, 0.16);
   background: rgba(255, 232, 244, 0.06);
   padding: 0.45rem 0.8rem;
@@ -316,7 +265,7 @@
 }
 
 .riff-chip {
-  border-radius: 10px;
+  border-radius: var(--nk-shape-sm);
   border: 1px solid rgba(255, 232, 244, 0.16);
   background: rgba(255, 232, 244, 0.06);
   color: var(--nk-c4);
@@ -358,7 +307,7 @@
   max-width: 320px;
   background: rgba(255, 232, 244, 0.08);
   border: 1px solid rgba(255, 232, 244, 0.18);
-  border-radius: 10px;
+  border-radius: var(--nk-shape-sm);
   padding: 0.5rem 0.7rem;
   color: var(--nk-c4);
   font-family: 'Space Grotesk', sans-serif;
@@ -445,7 +394,7 @@
   width: 52px;
   background: rgba(255, 232, 244, 0.08);
   border: 1px solid rgba(255, 232, 244, 0.18);
-  border-radius: 8px;
+  border-radius: var(--nk-shape-sm);
   padding: 0.35rem 0.4rem;
   color: var(--nk-c4);
   font-family: 'Space Grotesk', sans-serif;
@@ -470,7 +419,7 @@
   align-items: center;
   gap: 0.4rem;
   padding: 0.5rem;
-  border-radius: 12px;
+  border-radius: var(--nk-shape-md);
   background: rgba(255, 232, 244, 0.05);
   border: 1px solid rgba(255, 232, 244, 0.1);
 }
@@ -480,7 +429,7 @@
   min-width: 0;
   background: rgba(255, 232, 244, 0.08);
   border: 1px solid rgba(255, 232, 244, 0.18);
-  border-radius: 8px;
+  border-radius: var(--nk-shape-sm);
   padding: 0.4rem 0.5rem;
   color: var(--nk-c4);
   font-family: 'Space Grotesk', sans-serif;
@@ -494,7 +443,7 @@
   min-width: 0;
   background: rgba(255, 232, 244, 0.08);
   border: 1px solid rgba(255, 232, 244, 0.18);
-  border-radius: 8px;
+  border-radius: var(--nk-shape-sm);
   padding: 0.4rem 0.5rem;
   color: var(--nk-c4);
   font-family: 'Space Grotesk', sans-serif;
@@ -519,7 +468,7 @@
   width: 44px;
   background: rgba(255, 232, 244, 0.08);
   border: 1px solid rgba(255, 232, 244, 0.18);
-  border-radius: 8px;
+  border-radius: var(--nk-shape-sm);
   padding: 0.4rem 0.3rem;
   color: var(--nk-c4);
   font-family: 'Space Grotesk', sans-serif;
@@ -572,10 +521,10 @@
   min-height: 38px;
 }
 
-.arrangement-strip { margin: 0.8rem 0; padding: 0.6rem; border-radius: 12px; background: rgba(255, 232, 244, 0.04); border: 1px dashed rgba(255, 232, 244, 0.14); }
+.arrangement-strip { margin: 0.8rem 0; padding: 0.6rem; border-radius: var(--nk-shape-md); background: rgba(255, 232, 244, 0.04); border: 1px dashed rgba(255, 232, 244, 0.14); }
 
 .arrangement-chip {
-  border-radius: 10px;
+  border-radius: var(--nk-shape-sm);
   border: 1px solid rgba(255, 232, 244, 0.16);
   background: rgba(255, 232, 244, 0.06);
   color: var(--nk-cream-strong);
@@ -595,7 +544,7 @@
 .arrangement-chip--placed {
   background: var(--nk-c2);
   border-color: var(--nk-c2);
-  color: #fff;
+  color: var(--nk-on-accent);
 }
 
 .arrangement-chip--placed:hover { background: var(--nk-c2h); }

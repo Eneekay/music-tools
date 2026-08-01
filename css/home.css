@@ -44,19 +44,9 @@
   color: var(--nk-on-accent);
 }
 
-.filter-clear {
-  border: none;
-  background: none;
-  color: var(--nk-c1);
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 600;
-  font-size: 0.72rem;
-  cursor: pointer;
-  padding: 0.3rem 0.2rem;
-  opacity: 0.8;
-}
+.filter-clear { font-family: 'Space Grotesk', sans-serif; font-size: 0.72rem; padding: 0.3rem 0.2rem; opacity: 0.8; }
 
-.filter-clear:hover, .filter-clear:focus-visible { opacity: 1; text-decoration: underline; }
+.filter-clear:hover, .filter-clear:focus-visible { opacity: 1; }
 
 .filter-hint {
   width: 100%;

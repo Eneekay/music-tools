@@ -53,21 +53,21 @@
         </div>
 
         <div class="metro-transport">
-          <button type="button" class="metro-play" id="playBtn" aria-label="Start metronome" aria-pressed="false">
+          <button type="button" class="metro-play btn-filled btn-icon" id="playBtn" aria-label="Start metronome" aria-pressed="false">
             <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5z"></path></svg>
             <svg class="icon-stop" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"></rect></svg>
           </button>
-          <button type="button" class="metro-tap" id="tapBtn">Tap</button>
+          <button type="button" class="metro-tap btn-outlined" id="tapBtn">Tap</button>
         </div>
 
         <div class="bpm-block">
           <div class="bpm-row">
-            <button type="button" class="bpm-step" id="bpmDown" aria-label="Decrease tempo">–</button>
+            <button type="button" class="bpm-step btn-outlined btn-icon" id="bpmDown" aria-label="Decrease tempo">–</button>
             <div class="bpm-readout">
               <input type="number" id="bpmInput" class="bpm-input" min="20" max="300" step="1" value="120" inputmode="numeric" aria-label="Beats per minute">
               <span class="bpm-unit">BPM</span>
             </div>
-            <button type="button" class="bpm-step" id="bpmUp" aria-label="Increase tempo">+</button>
+            <button type="button" class="bpm-step btn-outlined btn-icon" id="bpmUp" aria-label="Increase tempo">+</button>
           </div>
           <input type="range" id="bpmSlider" class="bpm-slider" min="20" max="300" step="1" value="120" aria-label="Tempo slider">
         </div>

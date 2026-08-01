@@ -22,28 +22,10 @@
   gap: 0.4rem;
 }
 
-.transport-play-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  border-radius: 999px;
-  border: none;
-  background: var(--nk-green);
-  color: var(--nk-c0);
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 700;
-  font-size: 0.9rem;
-  padding: 0.7rem 1.6rem;
-  cursor: pointer;
-  box-shadow: var(--nk-elevation-1);
-  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
-}
+.transport-play-btn { font-family: 'Space Grotesk', sans-serif; }
 
 .transport-play-btn svg { width: 18px; height: 18px; }
 .transport-play-btn .icon-stop { display: none; }
-
-.transport-play-btn:hover { transform: translateY(-2px); box-shadow: var(--nk-elevation-4); }
-.transport-play-btn:active { transform: translateY(0) scale(0.97); }
 
 .transport-play-btn.is-playing {
   background: var(--nk-gold);
@@ -58,29 +40,13 @@
   gap: 0.5rem;
 }
 
-.bpm-step {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 232, 244, 0.18);
-  background: rgba(255, 232, 244, 0.06);
-  color: var(--nk-cream-strong);
-  font-size: 1rem;
-  line-height: 1;
-  cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
-}
-
-.bpm-step:hover, .bpm-step:focus-visible {
-  border-color: rgba(var(--nk-c1-rgb), 0.4);
-  background: rgba(255, 232, 244, 0.12);
-}
+.bpm-step.btn-icon { width: 28px; height: 28px; font-size: 1rem; line-height: 1; }
 
 #bpmInput {
   width: 56px;
   background: rgba(255, 232, 244, 0.08);
   border: 1px solid rgba(255, 232, 244, 0.18);
-  border-radius: 10px;
+  border-radius: var(--nk-shape-sm);
   padding: 0.35rem 0.4rem;
   color: var(--nk-c4);
   font-family: 'Space Grotesk', sans-serif;
@@ -110,28 +76,12 @@
   gap: 0.5rem;
 }
 
-.ghost-btn {
-  border-radius: 999px;
-  border: 1px solid rgba(255, 232, 244, 0.16);
-  background: rgba(255, 232, 244, 0.06);
-  color: var(--nk-cream-strong);
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 600;
-  font-size: 0.76rem;
-  padding: 0.45rem 0.9rem;
-  cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-}
-
-.ghost-btn:hover, .ghost-btn:focus-visible {
-  border-color: rgba(var(--nk-c1-rgb), 0.4);
-  background: rgba(255, 232, 244, 0.12);
-}
+.ghost-btn { font-family: 'Space Grotesk', sans-serif; }
 
 .kit-select {
   background: rgba(255, 232, 244, 0.08);
   border: 1px solid rgba(255, 232, 244, 0.18);
-  border-radius: 10px;
+  border-radius: var(--nk-shape-sm);
   padding: 0.4rem 0.6rem;
   color: var(--nk-c4);
   font-family: 'Space Grotesk', sans-serif;
@@ -172,7 +122,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.8rem;
-  border-radius: 12px;
+  border-radius: var(--nk-shape-md);
   border: 1px solid rgba(255, 232, 244, 0.14);
   background: rgba(255, 232, 244, 0.05);
   padding: 0.55rem 0.9rem;
@@ -228,7 +178,7 @@
 }
 
 .pattern-tag {
-  border-radius: 999px;
+  border-radius: var(--nk-shape-full);
   padding: 0.25rem 0.65rem;
   font-size: 0.65rem;
   font-weight: 600;
@@ -318,7 +268,7 @@
 .track-toggle {
   width: 20px;
   height: 20px;
-  border-radius: 6px;
+  border-radius: var(--nk-shape-xs);
   border: 1px solid rgba(255, 232, 244, 0.16);
   background: rgba(255, 232, 244, 0.05);
   color: var(--nk-cream);
@@ -327,7 +277,7 @@
   font-size: 0.62rem;
   line-height: 1;
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.25s var(--nk-easing-spring);
 }
 
 .track-toggle:hover, .track-toggle:focus-visible {
@@ -338,17 +288,19 @@
   background: var(--nk-gold);
   border-color: var(--nk-gold);
   color: var(--nk-c0);
+  transform: scale(1.12);
 }
 
 .track-solo.is-active {
   background: var(--nk-green);
   border-color: var(--nk-green);
   color: var(--nk-c0);
+  transform: scale(1.12);
 }
 
 .step-cell {
   height: 26px;
-  border-radius: 6px;
+  border-radius: var(--nk-shape-xs);
   border: 1px solid rgba(255, 232, 244, 0.12);
   background: rgba(255, 232, 244, 0.04);
   cursor: pointer;
