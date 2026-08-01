@@ -798,7 +798,7 @@
     QUICK_PICKS.forEach(function (name) {
       var btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'quick-pick-btn';
+      btn.className = 'quick-pick-btn btn-tonal btn-sm';
       btn.textContent = name;
       btn.addEventListener('click', function () {
         chordInput.value = name;

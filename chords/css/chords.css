@@ -116,29 +116,7 @@
   margin-top: 1rem;
 }
 
-.quick-pick-btn {
-  border-radius: var(--nk-shape-full);
-  border: 1px solid rgba(255, 232, 244, 0.16);
-  background: rgba(255, 232, 244, 0.06);
-  color: var(--nk-cream-strong);
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 600;
-  font-size: 0.74rem;
-  padding: 0.35rem 0.8rem;
-  cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-}
-
-.quick-pick-btn:hover, .quick-pick-btn:focus-visible {
-  border-color: rgba(var(--nk-c1-rgb), 0.4);
-  background: rgba(255, 232, 244, 0.12);
-}
-
-.quick-pick-btn.is-active {
-  background: var(--nk-c2);
-  border-color: var(--nk-c2);
-  color: var(--nk-on-accent);
-}
+.quick-pick-btn { font-family: 'Space Grotesk', sans-serif; }
 
 /* ---------- parsed chord info / error ---------- */
 
