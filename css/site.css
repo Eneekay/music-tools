@@ -153,8 +153,8 @@ body {
 .seg-control button:hover { background: rgba(var(--nk-c1-rgb), 0.1); color: var(--nk-c1); }
 
 .seg-control button.is-active {
-  background: var(--nk-c2);
-  color: var(--nk-on-accent);
+  background: rgba(var(--nk-c1-rgb), 0.18);
+  color: var(--nk-c1);
   transform: scale(1.06);
 }
 

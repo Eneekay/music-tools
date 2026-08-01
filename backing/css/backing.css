@@ -203,9 +203,9 @@
 }
 
 .builder-chip.is-active {
-  background: var(--nk-c2);
-  border-color: var(--nk-c2);
-  color: var(--nk-on-accent);
+  background: var(--nk-surface-high);
+  border-color: var(--nk-c1);
+  color: var(--nk-c1);
 }
 
 .chords-widget .control-group { margin-top: 0.8rem; }
@@ -542,9 +542,9 @@
 }
 
 .arrangement-chip--placed {
-  background: var(--nk-c2);
-  border-color: var(--nk-c2);
-  color: var(--nk-on-accent);
+  background: var(--nk-surface-high);
+  border-color: var(--nk-c1);
+  color: var(--nk-c1);
 }
 
 .arrangement-chip--placed:hover { background: var(--nk-c2h); }

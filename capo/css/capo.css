@@ -34,9 +34,9 @@
 }
 
 .instrument-tab.is-active {
-  background: var(--nk-c2);
-  border-color: var(--nk-c2);
-  color: var(--nk-on-accent);
+  background: var(--nk-surface-high);
+  border-color: var(--nk-c1);
+  color: var(--nk-c1);
 }
 
 /* ---------- key builder (note / accidental) ---------- */
@@ -77,9 +77,9 @@
 }
 
 .builder-chip.is-active {
-  background: var(--nk-c2);
-  border-color: var(--nk-c2);
-  color: var(--nk-on-accent);
+  background: var(--nk-surface-high);
+  border-color: var(--nk-c1);
+  color: var(--nk-c1);
 }
 
 /* ---------- hint ---------- */
