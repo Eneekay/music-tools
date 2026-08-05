@@ -46,21 +46,6 @@
     <p class="app-sub">Sequenced siren, scale, arpeggio and octave-bounce exercises on a click track, transposed to sit in your range.</p>
   </header>
 
-  <section class="widget practice-widget widget--sticky-primary glass">
-    <span class="widget-eyebrow">Practice</span>
-
-    <p class="prompt-status" id="promptStatus">Press Start to begin your warm-up routine.</p>
-
-    <button type="button" class="warmup-play-btn btn-filled btn-lg" id="playBtn">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5z"></path></svg>
-      <span id="playBtnLabel">Start</span>
-    </button>
-
-    <div class="progress-wrap">
-      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-    </div>
-  </section>
-
   <div class="dash-columns">
 
     <div class="dash-col">
@@ -151,6 +136,21 @@
     </div>
   </section>
 
+  <section class="widget practice-widget glass">
+    <span class="widget-eyebrow">Practice</span>
+
+    <p class="prompt-status" id="promptStatus">Press Start to begin your warm-up routine.</p>
+
+    <button type="button" class="warmup-play-btn btn-filled btn-lg" id="playBtn">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5z"></path></svg>
+      <span id="playBtnLabel">Start</span>
+    </button>
+
+    <div class="progress-wrap">
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+  </section>
+
 </div>
 
 <div class="kbd-hint" id="kbdHint" aria-hidden="true">
@@ -162,7 +162,6 @@
 <script src="../js/background.js?v=1"></script>
 <script src="../js/theme.js?v=1"></script>
 <script src="../js/splash.js?v=1"></script>
-<script src="../js/sticky-primary.js?v=1"></script>
 <script src="../js/theory.js?v=1"></script>
 <script src="../js/voice-ranges.js?v=1"></script>
 <script src="js/warmup.js?v=1"></script>

@@ -479,30 +479,6 @@ body {
   .widget--filler { flex: 0 0 auto; }
 }
 
-/* ---------- sticky primary widget ----------
-   Every tool page has one widget that shows the tool actually running (a
-   needle, a step grid, a live result, a practice prompt) and owns the main
-   action button. That widget is always first in the DOM, right after the
-   header, and carries this modifier so it pins to the top of the viewport
-   once the header scrolls past — it stays visible while the rest of the
-   tool's settings scroll underneath. js/sticky-primary.js toggles
-   .is-stuck once it's actually pinned, for the extra elevation below. */
-
-.widget--sticky-primary {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-}
-
-.widget--sticky-primary.is-stuck {
-  box-shadow: var(--nk-elevation-4);
-  border-color: rgba(var(--nk-c1-rgb), 0.3);
-}
-
-.sticky-primary-sentinel {
-  height: 1px;
-}
-
 .widget-eyebrow {
   display: block;
   font-size: 0.62rem;

@@ -51,22 +51,6 @@
     <p class="app-sub">Type a chord sequence and see it transposed to any key instantly &mdash; handy for capo shortcuts and vocal range changes.</p>
   </header>
 
-  <section class="widget results-widget widget--sticky-primary glass">
-    <span class="widget-eyebrow">Transposed Sequence</span>
-
-    <div class="voicing-control-row">
-      <span class="seg-label">Voicing</span>
-      <div class="seg-control" id="voicingControl">
-        <button type="button" data-value="capo" class="is-active">Use Capo</button>
-        <button type="button" data-value="new">New Chords</button>
-      </div>
-    </div>
-
-    <p class="capo-banner" id="capoBanner"></p>
-
-    <div class="result-row" id="resultRow"></div>
-  </section>
-
   <section class="widget instrument-widget glass">
     <span class="widget-eyebrow">Instrument</span>
     <div class="instrument-tabs" id="instrumentTabs">
@@ -122,6 +106,22 @@
 
   </div>
 
+  <section class="widget results-widget glass">
+    <span class="widget-eyebrow">Transposed Sequence</span>
+
+    <div class="voicing-control-row">
+      <span class="seg-label">Voicing</span>
+      <div class="seg-control" id="voicingControl">
+        <button type="button" data-value="capo" class="is-active">Use Capo</button>
+        <button type="button" data-value="new">New Chords</button>
+      </div>
+    </div>
+
+    <p class="capo-banner" id="capoBanner"></p>
+
+    <div class="result-row" id="resultRow"></div>
+  </section>
+
 </div>
 
 <div class="kbd-hint" id="kbdHint" aria-hidden="true">
@@ -136,7 +136,6 @@
 <script src="../js/background.js?v=1"></script>
 <script src="../js/theme.js?v=1"></script>
 <script src="../js/splash.js?v=1"></script>
-<script src="../js/sticky-primary.js?v=1"></script>
 <script src="../js/theory.js?v=1"></script>
 <script src="../js/tones.js?v=1"></script>
 <script src="js/capo.js?v=1"></script>

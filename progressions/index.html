@@ -48,33 +48,6 @@
     <p class="app-sub">Pick a key and a mood, and pull a chord progression from the bank &mdash; for songwriting practice on any instrument.</p>
   </header>
 
-  <section class="widget practice-widget widget--sticky-primary glass">
-    <span class="widget-eyebrow">Progression</span>
-
-    <div class="practice-actions">
-      <button type="button" class="gen-btn btn-filled btn-lg" id="generateBtn">Generate</button>
-      <button type="button" class="gen-btn gen-btn--ghost btn-outlined" id="regenerateBtn">Shuffle Another</button>
-    </div>
-
-    <div class="chord-strip" id="chordStrip"></div>
-
-    <div class="practice-actions practice-actions--play">
-      <button type="button" class="prog-play-btn btn-tonal" id="playAllBtn">
-        <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5z"></path></svg>
-        <svg class="icon-stop" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="1.5"></rect></svg>
-        <span id="playAllLabel">Play Progression</span>
-      </button>
-      <div class="control-group">
-        <span class="seg-label">Tempo</span>
-        <div class="seg-control" id="tempoControl">
-          <button type="button" data-value="70">Slow</button>
-          <button type="button" data-value="100" class="is-active">Medium</button>
-          <button type="button" data-value="140">Fast</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <section class="widget key-widget glass">
     <span class="widget-eyebrow">Key</span>
     <div class="key-controls">
@@ -133,6 +106,33 @@
 
   </div>
 
+  <section class="widget practice-widget glass">
+    <span class="widget-eyebrow">Progression</span>
+
+    <div class="practice-actions">
+      <button type="button" class="gen-btn btn-filled btn-lg" id="generateBtn">Generate</button>
+      <button type="button" class="gen-btn gen-btn--ghost btn-outlined" id="regenerateBtn">Shuffle Another</button>
+    </div>
+
+    <div class="chord-strip" id="chordStrip"></div>
+
+    <div class="practice-actions practice-actions--play">
+      <button type="button" class="prog-play-btn btn-tonal" id="playAllBtn">
+        <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5z"></path></svg>
+        <svg class="icon-stop" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="1.5"></rect></svg>
+        <span id="playAllLabel">Play Progression</span>
+      </button>
+      <div class="control-group">
+        <span class="seg-label">Tempo</span>
+        <div class="seg-control" id="tempoControl">
+          <button type="button" data-value="70">Slow</button>
+          <button type="button" data-value="100" class="is-active">Medium</button>
+          <button type="button" data-value="140">Fast</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="widget history-widget glass">
     <span class="widget-eyebrow">Session History</span>
     <p class="history-empty" id="historyEmpty">Progressions you generate this session will show up here &mdash; click one to reload it.</p>
@@ -151,7 +151,6 @@
 <script src="../js/background.js?v=1"></script>
 <script src="../js/theme.js?v=1"></script>
 <script src="../js/splash.js?v=1"></script>
-<script src="../js/sticky-primary.js?v=1"></script>
 <script src="../js/theory.js?v=1"></script>
 <script src="../js/tones.js?v=1"></script>
 <script src="js/progressions.js?v=1"></script>

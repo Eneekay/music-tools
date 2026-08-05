@@ -48,45 +48,47 @@
     <p class="app-sub">Pendulum &amp; numeric click, custom rhythms, polyrhythms, switchable sounds</p>
   </header>
 
-  <section class="widget metro-widget widget--sticky-primary glass">
-    <div class="metro-stage">
-      <div class="metro-body">
-        <div class="metro-scale">
-          <span class="metro-tick" style="--tick-angle:-25deg"></span>
-          <span class="metro-tick" style="--tick-angle:-12.5deg"></span>
-          <span class="metro-tick metro-tick--center" style="--tick-angle:0deg"></span>
-          <span class="metro-tick" style="--tick-angle:12.5deg"></span>
-          <span class="metro-tick" style="--tick-angle:25deg"></span>
-        </div>
-        <div class="metro-needle" id="metroNeedle">
-          <div class="metro-weight" id="metroWeight"></div>
-        </div>
-        <div class="metro-pivot"></div>
-      </div>
-    </div>
-
-    <div class="metro-transport">
-      <button type="button" class="metro-play btn-filled btn-icon" id="playBtn" aria-label="Start metronome" aria-pressed="false">
-        <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5z"></path></svg>
-        <svg class="icon-stop" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"></rect></svg>
-      </button>
-      <button type="button" class="metro-tap btn-outlined" id="tapBtn">Tap</button>
-    </div>
-
-    <div class="bpm-block">
-      <div class="bpm-row">
-        <button type="button" class="bpm-step btn-outlined btn-icon" id="bpmDown" aria-label="Decrease tempo">–</button>
-        <div class="bpm-readout">
-          <input type="number" id="bpmInput" class="bpm-input" min="20" max="300" step="1" value="120" inputmode="numeric" aria-label="Beats per minute">
-          <span class="bpm-unit">BPM</span>
-        </div>
-        <button type="button" class="bpm-step btn-outlined btn-icon" id="bpmUp" aria-label="Increase tempo">+</button>
-      </div>
-      <input type="range" id="bpmSlider" class="bpm-slider" min="20" max="300" step="1" value="120" aria-label="Tempo slider">
-    </div>
-  </section>
-
   <div class="dash-columns">
+
+    <div class="dash-col">
+      <section class="widget metro-widget widget--filler glass">
+        <div class="metro-stage">
+          <div class="metro-body">
+            <div class="metro-scale">
+              <span class="metro-tick" style="--tick-angle:-25deg"></span>
+              <span class="metro-tick" style="--tick-angle:-12.5deg"></span>
+              <span class="metro-tick metro-tick--center" style="--tick-angle:0deg"></span>
+              <span class="metro-tick" style="--tick-angle:12.5deg"></span>
+              <span class="metro-tick" style="--tick-angle:25deg"></span>
+            </div>
+            <div class="metro-needle" id="metroNeedle">
+              <div class="metro-weight" id="metroWeight"></div>
+            </div>
+            <div class="metro-pivot"></div>
+          </div>
+        </div>
+
+        <div class="metro-transport">
+          <button type="button" class="metro-play btn-filled btn-icon" id="playBtn" aria-label="Start metronome" aria-pressed="false">
+            <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5z"></path></svg>
+            <svg class="icon-stop" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"></rect></svg>
+          </button>
+          <button type="button" class="metro-tap btn-outlined" id="tapBtn">Tap</button>
+        </div>
+
+        <div class="bpm-block">
+          <div class="bpm-row">
+            <button type="button" class="bpm-step btn-outlined btn-icon" id="bpmDown" aria-label="Decrease tempo">–</button>
+            <div class="bpm-readout">
+              <input type="number" id="bpmInput" class="bpm-input" min="20" max="300" step="1" value="120" inputmode="numeric" aria-label="Beats per minute">
+              <span class="bpm-unit">BPM</span>
+            </div>
+            <button type="button" class="bpm-step btn-outlined btn-icon" id="bpmUp" aria-label="Increase tempo">+</button>
+          </div>
+          <input type="range" id="bpmSlider" class="bpm-slider" min="20" max="300" step="1" value="120" aria-label="Tempo slider">
+        </div>
+      </section>
+    </div>
 
     <div class="dash-col">
       <section class="widget counter-widget widget--filler glass">
@@ -194,7 +196,6 @@
 <script src="../js/background.js?v=1"></script>
 <script src="../js/theme.js?v=1"></script>
 <script src="../js/splash.js?v=1"></script>
-<script src="../js/sticky-primary.js?v=1"></script>
 <script src="js/metronome.js?v=1"></script>
 </body>
 </html>

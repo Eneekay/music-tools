@@ -47,25 +47,6 @@
     <p class="app-sub">Two notes play &mdash; guess the interval, name the note, or go in cold. Builds relative pitch.</p>
   </header>
 
-  <section class="widget practice-widget widget--sticky-primary glass">
-    <span class="widget-eyebrow">Practice</span>
-
-    <div class="prompt-stage">
-      <p class="prompt-status" id="promptStatus">Press Play to hear the first question.</p>
-      <button type="button" class="ear-play-btn btn-filled btn-lg" id="playBtn">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5z"></path></svg>
-        <span id="playBtnLabel">Play</span>
-      </button>
-    </div>
-
-    <div class="answer-grid" id="answerGrid"></div>
-
-    <div class="piano-feedback" id="pianoFeedback" hidden>
-      <span class="piano-feedback-label">That question, on the keyboard:</span>
-      <svg class="piano-keyboard-svg" id="feedbackPianoSvg"></svg>
-    </div>
-  </section>
-
   <section class="widget instrument-widget glass">
     <span class="widget-eyebrow">Instrument</span>
     <div class="ear-controls">
@@ -137,6 +118,25 @@
 
   </div>
 
+  <section class="widget practice-widget glass">
+    <span class="widget-eyebrow">Practice</span>
+
+    <div class="prompt-stage">
+      <p class="prompt-status" id="promptStatus">Press Play to hear the first question.</p>
+      <button type="button" class="ear-play-btn btn-filled btn-lg" id="playBtn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5z"></path></svg>
+        <span id="playBtnLabel">Play</span>
+      </button>
+    </div>
+
+    <div class="answer-grid" id="answerGrid"></div>
+
+    <div class="piano-feedback" id="pianoFeedback" hidden>
+      <span class="piano-feedback-label">That question, on the keyboard:</span>
+      <svg class="piano-keyboard-svg" id="feedbackPianoSvg"></svg>
+    </div>
+  </section>
+
   <section class="widget stats-widget glass">
     <span class="widget-eyebrow">Stats</span>
 
@@ -181,7 +181,6 @@
 <script src="../js/background.js?v=1"></script>
 <script src="../js/theme.js?v=1"></script>
 <script src="../js/splash.js?v=1"></script>
-<script src="../js/sticky-primary.js?v=1"></script>
 <script src="../js/theory.js?v=1"></script>
 <script src="../js/tones.js?v=1"></script>
 <script src="../js/piano.js?v=1"></script>
