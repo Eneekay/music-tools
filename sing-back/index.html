@@ -48,6 +48,55 @@
     <p class="app-sub">A reference pitch plays and names an interval &mdash; you sing it back, and the mic scores your accuracy in cents.</p>
   </header>
 
+  <section class="widget practice-widget widget--sticky-primary glass">
+    <span class="widget-eyebrow">Practice</span>
+
+    <p class="prompt-status" id="promptStatus">Press New Prompt to hear a reference pitch and your target interval.</p>
+
+    <div class="prompt-target" id="promptTarget" hidden>
+      <span class="prompt-target-label">Sing:</span>
+      <span class="prompt-target-interval" id="promptTargetInterval"></span>
+    </div>
+
+    <div class="practice-actions">
+      <button type="button" class="sb-action-btn btn-filled btn-lg" id="promptBtn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5z"></path></svg>
+        <span id="promptBtnLabel">New Prompt</span>
+      </button>
+      <button type="button" class="sb-action-btn sb-action-btn--ghost btn-outlined" id="replayBtn" disabled>Replay Reference</button>
+      <button type="button" class="sb-listen-btn btn-tonal" id="listenBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="2" width="6" height="12" rx="3"></rect>
+          <path d="M5 11a7 7 0 0 0 14 0"></path>
+          <line x1="12" y1="18" x2="12" y2="22"></line>
+          <line x1="8" y1="22" x2="16" y2="22"></line>
+        </svg>
+        <span id="listenBtnLabel">Start Listening</span>
+      </button>
+    </div>
+
+    <p class="sb-status" id="sbStatus">Mic is off — tap Start Listening to sing your answers.</p>
+
+    <div class="live-readout" id="liveReadout" hidden>
+      <span class="live-readout-label">You're singing:</span>
+      <span class="live-readout-note" id="liveNote">–</span>
+    </div>
+
+    <div class="feedback-block" id="feedbackBlock" hidden>
+      <div class="cents-meter">
+        <div class="cents-meter-track">
+          <span class="cents-meter-zone cents-meter-zone--flat"></span>
+          <span class="cents-meter-zone cents-meter-zone--center"></span>
+          <span class="cents-meter-zone cents-meter-zone--sharp"></span>
+          <div class="cents-meter-marker" id="centsMarker"></div>
+        </div>
+        <div class="cents-meter-labels"><span>&minus;100&cent;</span><span>0</span><span>+100&cent;</span></div>
+      </div>
+      <p class="feedback-grade" id="feedbackGrade"></p>
+      <p class="feedback-detail" id="feedbackDetail"></p>
+    </div>
+  </section>
+
   <div class="dash-columns">
 
     <div class="dash-col">
@@ -106,55 +155,6 @@
 
   </div>
 
-  <section class="widget practice-widget glass">
-    <span class="widget-eyebrow">Practice</span>
-
-    <p class="prompt-status" id="promptStatus">Press New Prompt to hear a reference pitch and your target interval.</p>
-
-    <div class="prompt-target" id="promptTarget" hidden>
-      <span class="prompt-target-label">Sing:</span>
-      <span class="prompt-target-interval" id="promptTargetInterval"></span>
-    </div>
-
-    <div class="practice-actions">
-      <button type="button" class="sb-action-btn btn-filled btn-lg" id="promptBtn">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5z"></path></svg>
-        <span id="promptBtnLabel">New Prompt</span>
-      </button>
-      <button type="button" class="sb-action-btn sb-action-btn--ghost btn-outlined" id="replayBtn" disabled>Replay Reference</button>
-      <button type="button" class="sb-listen-btn btn-tonal" id="listenBtn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="9" y="2" width="6" height="12" rx="3"></rect>
-          <path d="M5 11a7 7 0 0 0 14 0"></path>
-          <line x1="12" y1="18" x2="12" y2="22"></line>
-          <line x1="8" y1="22" x2="16" y2="22"></line>
-        </svg>
-        <span id="listenBtnLabel">Start Listening</span>
-      </button>
-    </div>
-
-    <p class="sb-status" id="sbStatus">Mic is off — tap Start Listening to sing your answers.</p>
-
-    <div class="live-readout" id="liveReadout" hidden>
-      <span class="live-readout-label">You're singing:</span>
-      <span class="live-readout-note" id="liveNote">–</span>
-    </div>
-
-    <div class="feedback-block" id="feedbackBlock" hidden>
-      <div class="cents-meter">
-        <div class="cents-meter-track">
-          <span class="cents-meter-zone cents-meter-zone--flat"></span>
-          <span class="cents-meter-zone cents-meter-zone--center"></span>
-          <span class="cents-meter-zone cents-meter-zone--sharp"></span>
-          <div class="cents-meter-marker" id="centsMarker"></div>
-        </div>
-        <div class="cents-meter-labels"><span>&minus;100&cent;</span><span>0</span><span>+100&cent;</span></div>
-      </div>
-      <p class="feedback-grade" id="feedbackGrade"></p>
-      <p class="feedback-detail" id="feedbackDetail"></p>
-    </div>
-  </section>
-
   <section class="widget stats-widget glass">
     <span class="widget-eyebrow">Stats</span>
 
@@ -198,6 +198,7 @@
 <script src="../js/background.js?v=1"></script>
 <script src="../js/theme.js?v=1"></script>
 <script src="../js/splash.js?v=1"></script>
+<script src="../js/sticky-primary.js?v=1"></script>
 <script src="../js/theory.js?v=1"></script>
 <script src="../js/pitch.js?v=1"></script>
 <script src="js/sing-back.js?v=1"></script>
